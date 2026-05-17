@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="FastTrack.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:FastTrack"
+    xmlns:views="clr-namespace:FastTrack.Views"
+    Title="FastTrack">
+
+    <!-- Onboarding lives outside the TabBar so navigating to it hides the chrome. -->
+    <ShellContent Title="Onboarding"
+                  ContentTemplate="{DataTemplate views:OnboardingPage}"
+                  Route="OnboardingPage"
+                  Shell.TabBarIsVisible="False"
+                  Shell.NavBarIsVisible="False"
+                  Shell.FlyoutItemIsVisible="False" />
+
+    <TabBar>
+        <ShellContent Title="Home"
+                      Icon="tab_home.svg"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      Route="MainPage" />
+        <ShellContent Title="History"
+                      Icon="tab_history.svg"
+                      ContentTemplate="{DataTemplate views:HistoryPage}"
+                      Route="HistoryPage" />
+        <ShellContent Title="Protocols"
+                      Icon="tab_protocols.svg"
+                      ContentTemplate="{DataTemplate views:ProtocolsPage}"
+                      Route="ProtocolsPage" />
+        <ShellContent Title="Insights"
+                      Icon="tab_insights.svg"
+                      ContentTemplate="{DataTemplate views:InsightsPage}"
+                      Route="InsightsPage" />
+        <ShellContent Title="Settings"
+                      Icon="tab_settings.svg"
+                      ContentTemplate="{DataTemplate views:SettingsPage}"
+                      Route="SettingsPage" />
+    </TabBar>
+
+</Shell>

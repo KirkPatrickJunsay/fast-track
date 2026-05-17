@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.EditFastPage"
+             x:DataType="vm:EditFastViewModel"
+             Title="Edit fast">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="Edit fast" Style="{StaticResource HeadlineLg}" />
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="START TIME" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <DatePicker Grid.Column="0" Date="{Binding StartDate}" />
+                        <TimePicker Grid.Column="1" Time="{Binding StartTime}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding IsPastFast}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="END TIME" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <DatePicker Grid.Column="0" Date="{Binding EndDate}" />
+                        <TimePicker Grid.Column="1" Time="{Binding EndTime}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="Original times are kept for the audit trail."
+                   Style="{StaticResource BodyMuted}" FontSize="12" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Button Text="Save changes"
+                    Command="{Binding SaveCommand}"
+                    HorizontalOptions="Fill" Margin="0,16,0,0" />
+            <Button Text="Cancel"
+                    Style="{StaticResource LinkButton}"
+                    Command="{Binding CancelCommand}"
+                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

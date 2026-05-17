@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.NotificationPreferencesPage"
+             x:DataType="vm:NotificationPreferencesViewModel"
+             Title="Notifications">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="🔔 Notifications" Style="{StaticResource HeadlineLg}" />
+            <Label Text="Local-only. Nothing is sent anywhere. Toggle off any category you don't want."
+                   Style="{StaticResource BodyMuted}" />
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="CATEGORIES" Style="{StaticResource LabelCaps}" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Fast lifecycle" FontAttributes="Bold" />
+                            <Label Text="Halfway, goal reached, eating window opens."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding FastLifecycle}"
+                                OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Stage transitions" FontAttributes="Bold" />
+                            <Label Text="A tip when you enter each fasting stage."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding StageTransitions}"
+                                OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Eating window" FontAttributes="Bold" />
+                            <Label Text="Opens after your fast ends, closes before the next."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding EatingWindow}"
+                                OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Streak protection" FontAttributes="Bold" />
+                            <Label Text="Gentle warnings before you'd lose your streak."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding StreakProtection}"
+                                OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Quest reminders" FontAttributes="Bold" />
+                            <Label Text="Daily summary of today's quests."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding QuestReminders}"
+                                OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="QUIET HOURS" Style="{StaticResource LabelCaps}" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Respect quiet hours" FontAttributes="Bold" />
+                            <Label Text="Notifications shift outside this window."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding QuietHoursEnabled}"
+                                OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12"
+                          IsVisible="{Binding QuietHoursEnabled}">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="START" Style="{StaticResource LabelCaps}" />
+                            <TimePicker Time="{Binding QuietHoursStart}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="END" Style="{StaticResource LabelCaps}" />
+                            <TimePicker Time="{Binding QuietHoursEnd}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding StatusMessage}"
+                   IsVisible="{Binding HasStatus}"
+                   Style="{StaticResource BodyMuted}"
+                   TextColor="{StaticResource Secondary}"
+                   HorizontalOptions="Center" />
+
+            <Button Text="Save"
+                    Command="{Binding SaveCommand}"
+                    HorizontalOptions="Fill" />
+
+            <Button Text="Send test notification"
+                    Style="{StaticResource GhostButton}"
+                    Command="{Binding SendTestCommand}"
+                    HorizontalOptions="Fill" />
+
+            <Label Text="Tap test to schedule a real notification 5 seconds out. The first tap will ask for permission."
+                   Style="{StaticResource BodyMuted}" FontSize="11"
+                   HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

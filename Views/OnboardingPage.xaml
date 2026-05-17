@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.OnboardingPage"
+             x:DataType="vm:OnboardingViewModel"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False"
+             Title="Welcome">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20,16,20,24">
+
+        <!-- Header / progress -->
+        <VerticalStackLayout Grid.Row="0" Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Grid.Column="0" Text="FASTTRACK" Style="{StaticResource LabelCaps}"
+                       TextColor="{StaticResource Primary}" />
+                <Label Grid.Column="1" Text="{Binding StepLabel}" Style="{StaticResource LabelCaps}" />
+            </Grid>
+            <ProgressBar Progress="{Binding ProgressFraction}" HeightRequest="4" />
+        </VerticalStackLayout>
+
+        <!-- Step body -->
+        <ScrollView Grid.Row="1" Margin="0,16,0,16">
+            <Grid>
+
+                <!-- 1. WELCOME -->
+                <VerticalStackLayout Spacing="16" IsVisible="{Binding IsWelcomeStep}">
+                    <Border StrokeShape="RoundRectangle 16"
+                            Background="{StaticResource SurfaceContainerHigh}"
+                            HeightRequest="220"
+                            Padding="0">
+                        <Border StrokeShape="Ellipse"
+                                Background="{StaticResource PrimaryContainer}"
+                                WidthRequest="64" HeightRequest="64"
+                                HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="🔒" FontSize="28"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                    </Border>
+
+                    <Label Text="PRIVACY FIRST" Style="{StaticResource LabelCaps}"
+                           TextColor="{StaticResource Primary}" />
+                    <Label Text="Your data stays on your device." Style="{StaticResource HeadlineLg}" />
+                    <Label Text="FastTrack is local-only. No accounts, no cloud, just you and your progress."
+                           Style="{StaticResource BodyMd}" />
+
+                    <Frame Style="{StaticResource CardCompact}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <Label Grid.Column="0" Text="🛡" FontSize="22" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="Offline control" FontAttributes="Bold" />
+                                <Label Text="Complete functionality without ever needing an internet connection."
+                                       Style="{StaticResource BodyMuted}" FontSize="13" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <Frame Style="{StaticResource CardCompact}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <Label Grid.Column="0" Text="🙈" FontSize="22" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="Total anonymity" FontAttributes="Bold" />
+                                <Label Text="We don't collect names, emails, or personal identifiers. Your data is yours."
+                                       Style="{StaticResource BodyMuted}" FontSize="13" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <!-- 2. GOALS -->
+                <VerticalStackLayout Spacing="14" IsVisible="{Binding IsGoalsStep}">
+                    <Label Text="What brings you to fasting?" Style="{StaticResource HeadlineLg}" />
+                    <Label Text="Select all that apply. We'll tailor your defaults."
+                           Style="{StaticResource BodyMuted}" />
+
+                    <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Start"
+                                BindableLayout.ItemsSource="{Binding Goals}"
+                                Margin="0,8,0,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:GoalChipViewModel">
+                                <Border StrokeShape="RoundRectangle 999"
+                                        Stroke="{StaticResource Outline}"
+                                        StrokeThickness="1"
+                                        Margin="0,0,8,8"
+                                        Padding="14,8">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OnboardingViewModel}}, Path=ToggleGoalCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                                            <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Label Text="{Binding Label}" FontSize="14" />
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </VerticalStackLayout>
+
+                <!-- 3. EXPERIENCE -->
+                <VerticalStackLayout Spacing="14" IsVisible="{Binding IsExperienceStep}">
+                    <Label Text="How experienced are you?" Style="{StaticResource HeadlineLg}" />
+                    <Label Text="We won't push you into protocols beyond your comfort zone."
+                           Style="{StaticResource BodyMuted}" />
+
+                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                            Padding="16" Margin="0,8,0,0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickBeginnerCommand}" />
+                        </Border.GestureRecognizers>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsBeginnerSelected}" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsBeginnerSelected}" Value="False">
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Beginner" FontAttributes="Bold" FontSize="18" />
+                            <Label Text="New to fasting. We'll suggest 16:8 and stop there until you've got a few wins."
+                                   Style="{StaticResource BodyMuted}" FontSize="13" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                            Padding="16">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickIntermediateCommand}" />
+                        </Border.GestureRecognizers>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsIntermediateSelected}" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsIntermediateSelected}" Value="False">
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Intermediate" FontAttributes="Bold" FontSize="18" />
+                            <Label Text="Comfortable with 16+ hour fasts. Ready for 18:6 and longer."
+                                   Style="{StaticResource BodyMuted}" FontSize="13" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                            Padding="16">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickAdvancedCommand}" />
+                        </Border.GestureRecognizers>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsAdvancedSelected}" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsAdvancedSelected}" Value="False">
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Advanced" FontAttributes="Bold" FontSize="18" />
+                            <Label Text="Done extended fasts before. Full library unlocked."
+                                   Style="{StaticResource BodyMuted}" FontSize="13" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- 4. MEDICAL -->
+                <VerticalStackLayout Spacing="14" IsVisible="{Binding IsMedicalStep}">
+                    <Label Text="🛡 Medical safety" Style="{StaticResource HeadlineLg}" />
+                    <Label Text="Fasting is powerful, but not for everyone. Please check all that apply so we can keep your journey safe."
+                           Style="{StaticResource BodyMuted}" />
+
+                    <Frame Style="{StaticResource CardCompact}">
+                        <VerticalStackLayout Spacing="14">
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding MedPregnantOrBreastfeeding}" Color="{StaticResource Primary}" />
+                                <Label Text="Pregnant or breastfeeding" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding MedUnder18}" Color="{StaticResource Primary}" />
+                                <Label Text="Under 18 years of age" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding MedEatingDisorderHistory}" Color="{StaticResource Primary}" />
+                                <Label Text="History of eating disorders" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding MedInsulinDependentDiabetes}" Color="{StaticResource Primary}" />
+                                <Label Text="Type 1 or insulin-dependent type 2 diabetes" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding MedFoodDependentMeds}" Color="{StaticResource Primary}" />
+                                <Label Text="Take medications that require food" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <CheckBox IsChecked="{Binding MedOtherChronic}" Color="{StaticResource Primary}" />
+                                <Label Text="Other chronic medical condition (kidney, liver, etc.)"
+                                       VerticalOptions="Center" LineBreakMode="WordWrap" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Style="{StaticResource CardCompact}">
+                        <Label Text="{Binding MedicalStatusText}" Style="{StaticResource BodyMuted}" FontSize="13" />
+                    </Frame>
+                </VerticalStackLayout>
+
+                <!-- 5. NOTIFICATIONS -->
+                <VerticalStackLayout Spacing="14" IsVisible="{Binding IsNotificationsStep}">
+                    <Label Text="🔔 Notifications" Style="{StaticResource HeadlineLg}" />
+                    <Label Text="We use only local, on-device notifications. Nothing is sent anywhere."
+                           Style="{StaticResource BodyMuted}" />
+
+                    <Frame Style="{StaticResource CardCompact}">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Fast lifecycle" FontAttributes="Bold" />
+                                    <Label Text="Halfway, goal reached, eating window opens."
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" IsToggled="{Binding NotifFastLifecycle}"
+                                        OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Stage transitions" FontAttributes="Bold" />
+                                    <Label Text="A tip when you enter each fasting stage."
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" IsToggled="{Binding NotifStageTransitions}"
+                                        OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Eating window" FontAttributes="Bold" />
+                                    <Label Text="Opens after your fast ends, closes before the next."
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" IsToggled="{Binding NotifEatingWindow}"
+                                        OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Streak protection" FontAttributes="Bold" />
+                                    <Label Text="Gentle warnings before you'd lose your streak."
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" IsToggled="{Binding NotifStreakProtection}"
+                                        OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Quest reminders" FontAttributes="Bold" />
+                                    <Label Text="Daily summary of today's quests."
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" IsToggled="{Binding NotifQuestReminders}"
+                                        OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Style="{StaticResource CardCompact}">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Quiet hours" FontAttributes="Bold" />
+                                    <Label Text="Notifications shift outside this window."
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Switch Grid.Column="1" IsToggled="{Binding QuietHoursEnabled}"
+                                        OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12"
+                                  IsVisible="{Binding QuietHoursEnabled}">
+                                <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                    <Label Text="START" Style="{StaticResource LabelCaps}" />
+                                    <TimePicker Time="{Binding QuietHoursStart}" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="END" Style="{StaticResource LabelCaps}" />
+                                    <TimePicker Time="{Binding QuietHoursEnd}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Label Text="You can change all of these later in Settings."
+                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                </VerticalStackLayout>
+
+                <!-- 6. DONE -->
+                <VerticalStackLayout Spacing="16" IsVisible="{Binding IsDoneStep}">
+                    <Label Text="You're ready." Style="{StaticResource HeadlineLg}" />
+                    <Label Text="{Binding SuggestedProtocolText}" Style="{StaticResource BodyMd}" />
+
+                    <Frame Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="DISPLAY NAME" Style="{StaticResource LabelCaps}" />
+                            <Entry Text="{Binding DisplayName}" Placeholder="Faster" />
+                            <Label Text="Optional — only stored on this device."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+
+        <!-- Footer / navigation -->
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+            <Button Grid.Column="0"
+                    Text="Back"
+                    Style="{StaticResource LinkButton}"
+                    Command="{Binding BackCommand}"
+                    IsVisible="{Binding CanGoBack}" />
+            <Button Grid.Column="2"
+                    Text="Continue"
+                    Command="{Binding NextCommand}"
+                    IsVisible="{Binding IsDoneStep, Converter={StaticResource InverseBool}}" />
+            <Button Grid.Column="2"
+                    Text="Get started"
+                    Command="{Binding FinishCommand}"
+                    IsVisible="{Binding IsDoneStep}" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

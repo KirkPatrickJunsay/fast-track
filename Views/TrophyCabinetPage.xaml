@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.TrophyCabinetPage"
+             x:DataType="vm:TrophyCabinetViewModel"
+             Title="Trophies">
+
+    <Grid Padding="20,12,20,32" RowDefinitions="Auto,Auto,*" RowSpacing="14">
+        <Label Grid.Row="0" Text="Trophy cabinet" Style="{StaticResource HeadlineLg}" />
+        <Label Grid.Row="1" Text="{Binding Summary}" Style="{StaticResource BodyMuted}" />
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Items}"
+                        SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2"
+                                 HorizontalItemSpacing="12"
+                                 VerticalItemSpacing="12" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TrophyItemViewModel">
+                    <Border StrokeShape="RoundRectangle 12"
+                            Stroke="{StaticResource OutlineVariant}"
+                            StrokeThickness="1"
+                            Background="{StaticResource SurfaceContainerLow}"
+                            Padding="14"
+                            Opacity="{Binding Opacity}">
+                        <VerticalStackLayout Spacing="8">
+                            <Border StrokeShape="Ellipse"
+                                    Background="{StaticResource PrimaryContainer}"
+                                    WidthRequest="48" HeightRequest="48"
+                                    HorizontalOptions="Start">
+                                <Label Text="🏅" FontSize="22"
+                                       HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="14" />
+                            <Label Text="{Binding Description}"
+                                   Style="{StaticResource BodyMuted}" FontSize="12"
+                                   LineBreakMode="WordWrap" />
+                            <Label Text="{Binding EarnedText}"
+                                   Style="{StaticResource LabelCaps}"
+                                   FontSize="10" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

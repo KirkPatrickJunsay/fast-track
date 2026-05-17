@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.MainPage"
+             x:DataType="vm:HomeViewModel"
+             Title="FastTrack">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="20">
+
+            <!-- GAMIFICATION STRIP — streak + freezes + level/XP -->
+            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8">
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 999"
+                        Stroke="{StaticResource OutlineVariant}"
+                        StrokeThickness="1"
+                        Background="{StaticResource SurfaceContainerLow}"
+                        Padding="12,8"
+                        VerticalOptions="Center">
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="🔥" FontSize="16" VerticalOptions="Center" />
+                        <Label Text="{Binding StreakChipText}"
+                               FontAttributes="Bold" FontSize="13"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1"
+                        StrokeShape="RoundRectangle 999"
+                        Stroke="{StaticResource Secondary}"
+                        StrokeThickness="1"
+                        Background="{StaticResource SecondaryContainer}"
+                        Padding="10,8"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding HasFreezes}">
+                    <HorizontalStackLayout Spacing="4">
+                        <Label Text="❄" FontSize="13" VerticalOptions="Center"
+                               TextColor="{StaticResource Secondary}" />
+                        <Label Text="{Binding FreezesText}"
+                               FontAttributes="Bold" FontSize="12"
+                               TextColor="{StaticResource Secondary}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Frame Grid.Column="2" Style="{StaticResource CardCompact}">
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="{Binding LevelName}"
+                                   FontAttributes="Bold" FontSize="13" />
+                            <Label Grid.Column="1" Text="{Binding XpProgressText}"
+                                   Style="{StaticResource BodyMuted}" FontSize="11"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                        <ProgressBar Progress="{Binding XpProgressFraction}" HeightRequest="4" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- TODAY'S QUESTS -->
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding HasQuests}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="TODAY'S QUESTS" Style="{StaticResource LabelCaps}" />
+                    <CollectionView ItemsSource="{Binding Quests}" SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:QuestRowViewModel">
+                                <VerticalStackLayout Spacing="4" Opacity="{Binding Opacity}">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <Label Grid.Column="0" Text="{Binding Title}"
+                                               FontAttributes="Bold" FontSize="14" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding XpReward, StringFormat='+{0} XP'}"
+                                               TextColor="{StaticResource Secondary}"
+                                               FontSize="12" FontAttributes="Bold"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                    <Label Text="{Binding Description}"
+                                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <ProgressBar Grid.Column="0" Progress="{Binding Progress}" HeightRequest="4"
+                                                     VerticalOptions="Center" />
+                                        <Label Grid.Column="1" Text="{Binding ProgressText}"
+                                               Style="{StaticResource BodyMuted}" FontSize="11"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ACTIVE FAST hero -->
+            <VerticalStackLayout Spacing="12" IsVisible="{Binding IsActive}">
+                <Label Text="FASTING TIME"
+                       Style="{StaticResource LabelCaps}"
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding ElapsedDisplay}"
+                       Style="{StaticResource TimerDisplay}"
+                       SemanticProperties.Description="{Binding ElapsedDisplay, StringFormat='Elapsed {0}'}" />
+                <Button Text="Edit start time"
+                        Style="{StaticResource LinkButton}"
+                        Command="{Binding EditActiveFastCommand}"
+                        HorizontalOptions="Center" />
+                <ProgressBar Progress="{Binding Progress}"
+                             HeightRequest="6"
+                             Margin="0,8,0,0" />
+            </VerticalStackLayout>
+
+            <!-- IDLE hero -->
+            <Frame Style="{StaticResource Card}"
+                   IsVisible="{Binding IsIdle}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="READY TO FAST" Style="{StaticResource LabelCaps}" />
+                    <Label Text="Tap Start to begin a fast." Style="{StaticResource BodyMd}" />
+                    <Label Text="{Binding DefaultProtocolName, StringFormat='Default protocol · {0}'}"
+                           Style="{StaticResource BodyMuted}"
+                           Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- EATING WINDOW hero -->
+            <Frame Style="{StaticResource CardSecondary}"
+                   IsVisible="{Binding IsEatingWindow}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="EATING WINDOW"
+                           Style="{StaticResource LabelCaps}"
+                           TextColor="{StaticResource Secondary}" />
+                    <Label Text="{Binding EatingWindowRemaining}"
+                           Style="{StaticResource TimerDisplay}"
+                           TextColor="{StaticResource Secondary}" />
+                    <Label Text="remaining"
+                           HorizontalTextAlignment="Center"
+                           Style="{StaticResource BodyMuted}" />
+                    <Label Text="{Binding EatingWindowEndsAt}"
+                           HorizontalTextAlignment="Center"
+                           Style="{StaticResource BodyMuted}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- CURRENT STAGE card -->
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding IsActive}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Border Grid.Column="0"
+                            StrokeShape="RoundRectangle 8"
+                            Stroke="{StaticResource Primary}" StrokeThickness="0"
+                            Background="{StaticResource PrimaryContainer}"
+                            Padding="10"
+                            HeightRequest="44" WidthRequest="44"
+                            VerticalOptions="Start">
+                        <Label Text="●"
+                               TextColor="{StaticResource Primary}"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="{Binding StageName}" Style="{StaticResource HeadlineMd}" />
+                        <Label Text="{Binding StageSummary}" Style="{StaticResource BodyMuted}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+
+            <!-- GOAL / REMAINING quick cards -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" IsVisible="{Binding IsActive}">
+                <Frame Grid.Column="0" Style="{StaticResource CardCompact}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="GOAL" Style="{StaticResource LabelCaps}" />
+                        <Label Text="{Binding GoalDisplay}" Style="{StaticResource HeadlineMd}" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Grid.Column="1" Style="{StaticResource CardCompact}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="PROGRESS" Style="{StaticResource LabelCaps}" />
+                        <Label Text="{Binding ProgressPercent}"
+                               Style="{StaticResource HeadlineMd}"
+                               TextColor="{StaticResource Primary}" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- STAGES ROADMAP (horizontal pager of rich cards) -->
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding IsActive}">
+                <Grid ColumnDefinitions="*,Auto" Padding="0,4,0,0">
+                    <Label Grid.Column="0" Text="PROGRESS ROADMAP" Style="{StaticResource LabelCaps}" />
+                    <Label Grid.Column="1" Text="swipe →" Style="{StaticResource BodyMuted}" FontSize="11" />
+                </Grid>
+
+                <CollectionView ItemsSource="{Binding Stages}"
+                                SelectionMode="None"
+                                HeightRequest="340">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"
+                                           ItemSpacing="12"
+                                           SnapPointsType="MandatorySingle"
+                                           SnapPointsAlignment="Center" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:StageRowViewModel">
+                            <Border StrokeShape="RoundRectangle 16"
+                                    Stroke="{StaticResource OutlineVariant}"
+                                    StrokeThickness="1"
+                                    Background="{StaticResource SurfaceContainerLow}"
+                                    WidthRequest="280"
+                                    Padding="20"
+                                    Opacity="{Binding Opacity}">
+                                <VerticalStackLayout Spacing="14">
+                                    <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Index, StringFormat='STAGE {0} OF 7'}"
+                                               Style="{StaticResource LabelCaps}" />
+                                        <Border Grid.Column="1"
+                                                StrokeShape="RoundRectangle 999"
+                                                Background="{StaticResource PrimaryContainer}"
+                                                Padding="8,3"
+                                                IsVisible="{Binding IsCurrent}">
+                                            <Label Text="{Binding StatusLabel}"
+                                                   FontSize="10" FontAttributes="Bold"
+                                                   CharacterSpacing="1.5"
+                                                   TextColor="{StaticResource Primary}" />
+                                        </Border>
+                                    </Grid>
+
+                                    <Image Source="{Binding IconAsset}"
+                                           HeightRequest="56" WidthRequest="56"
+                                           HorizontalOptions="Center" />
+
+                                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                        <Label Text="{Binding Name}"
+                                               Style="{StaticResource HeadlineMd}"
+                                               HorizontalTextAlignment="Center" />
+                                        <Label Text="{Binding Range}"
+                                               Style="{StaticResource BodyMuted}"
+                                               FontSize="12"
+                                               HorizontalTextAlignment="Center" />
+                                    </VerticalStackLayout>
+
+                                    <Label Text="{Binding LongDescription}"
+                                           Style="{StaticResource BodyMd}"
+                                           FontSize="14"
+                                           HorizontalTextAlignment="Center"
+                                           LineBreakMode="WordWrap" />
+
+                                    <BoxView HeightRequest="1"
+                                             Color="{StaticResource OutlineVariant}" />
+
+                                    <Label Text="{Binding FeelingsBulleted}"
+                                           Style="{StaticResource BodyMuted}"
+                                           FontSize="13"
+                                           LineBreakMode="WordWrap" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- EDUCATIONAL MODE notice (medical screening flagged a contraindication) -->
+            <Frame Style="{StaticResource Card}"
+                   BorderColor="{StaticResource Tertiary}"
+                   IsVisible="{Binding IsEducationalMode}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="EDUCATIONAL MODE" Style="{StaticResource LabelCaps}"
+                           TextColor="{StaticResource Tertiary}" />
+                    <Label Text="Consult your doctor before starting any fasting regimen."
+                           Style="{StaticResource BodyMd}" />
+                    <Label Text="The timer is disabled based on your safety screening. You can still browse protocols and content."
+                           Style="{StaticResource BodyMuted}" FontSize="13" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ACTIONS -->
+            <Button Text="Start fast"
+                    Command="{Binding StartFastCommand}"
+                    IsVisible="{Binding StartButtonVisible}"
+                    HorizontalOptions="Fill" />
+
+            <Button Text="Start fast now"
+                    Command="{Binding StartFastNowCommand}"
+                    IsVisible="{Binding EatingStartButtonVisible}"
+                    HorizontalOptions="Fill" />
+
+            <Button Text="End fast"
+                    Command="{Binding EndFastCommand}"
+                    Style="{StaticResource DangerButton}"
+                    IsVisible="{Binding IsActive}"
+                    HorizontalOptions="Fill" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}"
+                   FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

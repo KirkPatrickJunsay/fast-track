@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Title="Settings">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="Settings" Style="{StaticResource HeadlineLg}" />
+
+            <!-- PROFILE -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="PROFILE" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding ProfileSummary}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- NOTIFICATIONS -->
+            <Frame Style="{StaticResource Card}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenNotificationsCommand}" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Notifications" Style="{StaticResource HeadlineMd}" />
+                        <Label Text="Local-only reminders, stage tips, quiet hours."
+                               Style="{StaticResource BodyMuted}" FontSize="13" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="1" Text="›"
+                           FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <!-- TROPHIES -->
+            <Frame Style="{StaticResource Card}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenTrophiesCommand}" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Trophies" Style="{StaticResource HeadlineMd}" />
+                        <Label Text="Your earned badges and what's left to chase."
+                               Style="{StaticResource BodyMuted}" FontSize="13" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="1" Text="›"
+                           FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <!-- INTEGRATIONS (coming) -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="HEALTH INTEGRATIONS" Style="{StaticResource LabelCaps}" />
+                    <Label Text="HealthKit / Health Connect"
+                           Style="{StaticResource BodyMd}" />
+                    <Label Text="Coming with Epic 03."
+                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- DATA -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="DATA" Style="{StaticResource LabelCaps}" />
+                    <Label Text="Export &amp; import" Style="{StaticResource BodyMd}" />
+                    <Label Text="Coming with Epic 10."
+                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ADVANCED -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="ADVANCED" Style="{StaticResource LabelCaps}" />
+                    <Button Text="Redo onboarding"
+                            Style="{StaticResource GhostButton}"
+                            Command="{Binding RedoOnboardingCommand}"
+                            HorizontalOptions="Fill" />
+                    <Label Text="Useful if your goals, experience, or safety screening have changed."
+                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding VersionText}"
+                   Style="{StaticResource BodyMuted}"
+                   FontSize="11"
+                   HorizontalOptions="Center"
+                   Margin="0,16,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

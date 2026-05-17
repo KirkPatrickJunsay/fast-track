@@ -1,0 +1,228 @@
+# ============================================================
+# .NET MAUI .gitignore
+# Covers: .NET / MSBuild, MAUI, iOS, Android, MacCatalyst, Windows
+# IDEs: Visual Studio, Rider, VS Code, Visual Studio for Mac
+# OS: macOS, Windows, Linux
+# ============================================================
+
+# ---------- Build output ----------
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Pp]ublish/
+publish/
+[Bb]uilds/
+out/
+
+# Generated XAML / source generators
+*.g.cs
+*.g.i.cs
+*.designer.cs
+GeneratedFiles/
+**/Generated*/
+
+# ---------- NuGet ----------
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+.nuget/
+.config/dotnet-tools.json.user
+
+# ---------- .NET intermediate ----------
+*.pdb
+*.dll.config
+*.exe.config
+*.suo
+*.user
+*.userprefs
+*.userosscache
+*.sln.docstates
+*.binlog
+*.fingerprint
+.vs/
+.vsconfig
+*.lock.json
+
+# ---------- Test output ----------
+TestResults/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+*.trx
+*.coverage
+*.coveragexml
+*.cobertura.xml
+coverage*.json
+coverage*.xml
+coverage*.info
+*.opencover.xml
+.coverage/
+.coverlet/
+
+# ---------- MAUI / Xamarin specific ----------
+*.apk
+*.aab
+*.aab.idsig
+*.apk.idsig
+*.app
+*.ipa
+*.xcframework/
+*.dSYM/
+*.dSYM.zip
+Resources/Raw/Trimmed*
+Resources/Raw/Generated*
+**/Resources/AppIcon/*.designer.cs
+
+# Hot reload
+*.tlog
+*.lastbuildstate
+
+# ---------- Android ----------
+*.keystore
+*.jks
+local.properties
+.android/
+.gradle/
+**/Platforms/Android/Resources/Resource.designer.cs
+**/Platforms/Android/Resources/values/strings.xml.bak
+**/Platforms/Android/obj/
+
+# ---------- iOS / Mac Catalyst ----------
+*.mtouch
+*.mobileprovision
+*.p12
+*.cer
+xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+Carthage/Build
+Pods/
+
+# ---------- Windows / WinUI ----------
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+
+# ---------- Visual Studio ----------
+.vs/
+*.sln.docstates
+*.vsidx
+*.suo
+*.user
+*.vssscc
+*.scc
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+*.psess
+*.vsp
+*.vspx
+*.sap
+ipch/
+*.aps
+*.ncb
+*.opensdf
+*.unsuccessfulbuild
+ClientBin/
+~$*
+*~
+
+# ---------- Rider / JetBrains ----------
+.idea/
+*.iml
+*.sln.iml
+*.DotSettings.user
+*.DotSettings
+
+# ---------- VS Code ----------
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+
+# ---------- Visual Studio for Mac ----------
+.vsmac/
+*.userprefs
+
+# ---------- Tooling caches ----------
+.fake/
+.paket/paket.exe
+paket-files/
+.tools/
+node_modules/
+
+# ---------- ReSharper ----------
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# ---------- macOS ----------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+
+# ---------- Windows ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ---------- Linux ----------
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ---------- Secrets / local config ----------
+*.local.json
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+secrets.json
+*.pfx
+.env
+.env.*
+!.env.example
+
+# ---------- Misc ----------
+*.bak
+*.tmp
+*.temp
+*.swp
+*.swo
+*.orig
+*.rej
+*.merge_file*

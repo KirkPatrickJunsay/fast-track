@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.CustomProtocolPage"
+             x:DataType="vm:CustomProtocolViewModel"
+             Title="New custom protocol">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="New protocol" Style="{StaticResource HeadlineLg}" />
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="NAME" Style="{StaticResource LabelCaps}" />
+                    <Entry Text="{Binding Name}" Placeholder="My protocol" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="FAST DURATION" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Slider Grid.Column="0"
+                                Minimum="1" Maximum="72"
+                                Value="{Binding FastHours}" />
+                        <Label Grid.Column="1"
+                               Text="{Binding FastHours, StringFormat='{0:F0}h'}"
+                               VerticalOptions="Center" FontAttributes="Bold" />
+                    </Grid>
+
+                    <Label Text="EATING WINDOW" Style="{StaticResource LabelCaps}" Margin="0,8,0,0" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Slider Grid.Column="0"
+                                Minimum="0" Maximum="24"
+                                Value="{Binding EatHours}" />
+                        <Label Grid.Column="1"
+                               Text="{Binding EatHours, StringFormat='{0:F0}h'}"
+                               VerticalOptions="Center" FontAttributes="Bold" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="SUMMARY" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding SummaryText}"
+                           Style="{StaticResource HeadlineMd}"
+                           TextColor="{StaticResource Primary}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Button Text="Save protocol"
+                    Command="{Binding SaveCommand}"
+                    HorizontalOptions="Fill" Margin="0,16,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

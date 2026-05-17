@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.HistoryPage"
+             x:DataType="vm:HistoryViewModel"
+             Title="History">
+
+    <Grid Padding="20,12,20,32" RowDefinitions="Auto,Auto,*" RowSpacing="16">
+        <Label Grid.Row="0" Text="History" Style="{StaticResource HeadlineLg}" />
+        <Label Grid.Row="1"
+               Text="Review and edit past fasts."
+               Style="{StaticResource BodyMuted}" />
+
+        <Label Grid.Row="2"
+               Text="No completed fasts yet. Finish one to see it here."
+               IsVisible="{Binding IsEmpty}"
+               HorizontalOptions="Center" VerticalOptions="Center"
+               Style="{StaticResource BodyMuted}" />
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Items}"
+                        IsVisible="{Binding IsEmpty, Converter={StaticResource InverseBool}}"
+                        SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:HistoryItemViewModel">
+                    <Frame Style="{StaticResource Card}" Padding="16">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, Path=OpenCommand}"
+                                CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="10" RowSpacing="4">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Title}" Style="{StaticResource HeadlineMd}" />
+                            <Border Grid.Row="0" Grid.Column="1"
+                                    StrokeShape="RoundRectangle 999"
+                                    Background="{StaticResource SecondaryContainer}"
+                                    Padding="8,3"
+                                    IsVisible="{Binding GoalMet}"
+                                    VerticalOptions="Center">
+                                <Label Text="GOAL MET"
+                                       FontSize="10" FontAttributes="Bold"
+                                       CharacterSpacing="1.5"
+                                       TextColor="{StaticResource Secondary}" />
+                            </Border>
+                            <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                   Style="{StaticResource BodyMd}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding DurationDisplay}" />
+                                        <Span Text="  ·  " TextColor="{StaticResource OnSurfaceVariant}" />
+                                        <Span Text="{Binding GoalDisplay}" TextColor="{StaticResource OnSurfaceVariant}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="2" Grid.ColumnSpan="2"
+                                   Text="{Binding StartedLocal, StringFormat='Started {0}'}"
+                                   Style="{StaticResource BodyMuted}"
+                                   FontSize="12" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
