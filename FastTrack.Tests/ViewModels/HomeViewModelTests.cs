@@ -121,6 +121,15 @@ public class HomeViewModelTests
         var ticker = new FakeTicker();
         var stages = new StageCalculator();
 
+        var water = new Mock<IWaterService>();
+        water.Setup(w => w.GetTodayAsync()).ReturnsAsync(new WaterTodaySnapshot(0, 2000, 0, false));
+        var moodsSvc = new Mock<IMoodService>();
+        moodsSvc.Setup(m => m.GetRecentAsync(It.IsAny<int>())).ReturnsAsync(Array.Empty<MoodEntry>());
+        moodsSvc.Setup(m => m.GetTotalCountAsync()).ReturnsAsync(0);
+        var weightsSvc = new Mock<IWeightService>();
+        weightsSvc.Setup(w => w.GetTrendAsync(It.IsAny<TimeSpan?>()))
+            .ReturnsAsync(new WeightTrend(null, null, null, 0));
+
         var vm = new HomeViewModel(
             fasting,
             fasts.Object,
@@ -133,7 +142,10 @@ public class HomeViewModelTests
             orchestrator,
             quests.Object,
             nav.Object,
-            ticker);
+            ticker,
+            water.Object,
+            moodsSvc.Object,
+            weightsSvc.Object);
 
         return (vm, fasting, fasts, profiles, dialogs, nav, ticker, profile);
     }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.LogMoodPage"
+             x:DataType="vm:LogMoodViewModel"
+             Title="Log mood">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="How do you feel?" Style="{StaticResource HeadlineLg}" />
+            <Label Text="Quick tap — this builds your mood history over time."
+                   Style="{StaticResource BodyMuted}" />
+
+            <Frame Style="{StaticResource Card}">
+                <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="8">
+                    <Border Grid.Column="0" StrokeShape="RoundRectangle 12" StrokeThickness="2" Padding="12">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel1Selected}" Value="True">
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel1Selected}" Value="False">
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickLevelCommand}" CommandParameter="1" />
+                        </Border.GestureRecognizers>
+                        <Label Text="😞" FontSize="34" HorizontalOptions="Center" />
+                    </Border>
+
+                    <Border Grid.Column="1" StrokeShape="RoundRectangle 12" StrokeThickness="2" Padding="12">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel2Selected}" Value="True">
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel2Selected}" Value="False">
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickLevelCommand}" CommandParameter="2" />
+                        </Border.GestureRecognizers>
+                        <Label Text="😐" FontSize="34" HorizontalOptions="Center" />
+                    </Border>
+
+                    <Border Grid.Column="2" StrokeShape="RoundRectangle 12" StrokeThickness="2" Padding="12">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel3Selected}" Value="True">
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel3Selected}" Value="False">
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickLevelCommand}" CommandParameter="3" />
+                        </Border.GestureRecognizers>
+                        <Label Text="🙂" FontSize="34" HorizontalOptions="Center" />
+                    </Border>
+
+                    <Border Grid.Column="3" StrokeShape="RoundRectangle 12" StrokeThickness="2" Padding="12">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel4Selected}" Value="True">
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel4Selected}" Value="False">
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickLevelCommand}" CommandParameter="4" />
+                        </Border.GestureRecognizers>
+                        <Label Text="😊" FontSize="34" HorizontalOptions="Center" />
+                    </Border>
+
+                    <Border Grid.Column="4" StrokeShape="RoundRectangle 12" StrokeThickness="2" Padding="12">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel5Selected}" Value="True">
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                <Setter Property="Background" Value="{StaticResource PrimaryContainer}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsLevel5Selected}" Value="False">
+                                <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+                                <Setter Property="Background" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickLevelCommand}" CommandParameter="5" />
+                        </Border.GestureRecognizers>
+                        <Label Text="🤩" FontSize="34" HorizontalOptions="Center" />
+                    </Border>
+                </Grid>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="NOTE (OPTIONAL)" Style="{StaticResource LabelCaps}" />
+                    <Entry Text="{Binding Note}" Placeholder="What's contributing to this?" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Button Text="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" HorizontalOptions="Fill" Margin="0,16,0,0" />
+            <Button Text="Cancel" Style="{StaticResource LinkButton}" Command="{Binding CancelCommand}" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

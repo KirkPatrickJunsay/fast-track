@@ -21,7 +21,7 @@ public class DatabaseInitializerTests
         using var db = new TestDb();
         var conn = await db.Initializer.InitializeAsync();
         var version = await conn.ExecuteScalarAsync<int>("PRAGMA user_version;");
-        version.Should().Be(5); // V001..V005
+        version.Should().Be(6); // V001..V006
     }
 
     [Fact]
@@ -53,7 +53,8 @@ public class DatabaseInitializerTests
         var names = tables.Select(t => t.Name).ToList();
         names.Should().Contain(new[]
         {
-            "UserProfile", "FastingProtocols", "Fasts", "EarnedBadges", "DailyQuests"
+            "UserProfile", "FastingProtocols", "Fasts", "EarnedBadges", "DailyQuests",
+            "WeightEntries", "MoodEntries", "WaterEntries",
         });
     }
 
@@ -75,7 +76,7 @@ public class DatabaseInitializerTests
                 new FixedPathProviderForReopen(path));
             var conn = await second.InitializeAsync();
             var version = await conn.ExecuteScalarAsync<int>("PRAGMA user_version;");
-            version.Should().Be(5);
+            version.Should().Be(6);
         }
         finally
         {

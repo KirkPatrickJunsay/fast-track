@@ -38,16 +38,23 @@ public sealed class BadgeService : IBadgeService
         new BadgeDefinition("trophy_hunter",     "Trophy Hunter",     "Earn 10 badges.",                                                "badge_hidden.svg", IsHidden: true),
     };
 
+    private readonly IWaterService _water;
+    private readonly IMoodService _moods;
+
     public BadgeService(
         IEarnedBadgeRepository earned,
         IFastRepository fasts,
         IUserProfileRepository profiles,
-        IFastingProtocolRepository protocols)
+        IFastingProtocolRepository protocols,
+        IWaterService water,
+        IMoodService moods)
     {
         _earned = earned;
         _fasts = fasts;
         _profiles = profiles;
         _protocols = protocols;
+        _water = water;
+        _moods = moods;
     }
 
     public IReadOnlyList<BadgeDefinition> Definitions => _definitions;
@@ -98,7 +105,14 @@ public sealed class BadgeService : IBadgeService
         await TryAward("protocol_explorer", distinctProtocols >= 5, newlyEarned);
         await TryAward("autophagy_achieved", fastsAtLeast24h >= 10, newlyEarned);
         await TryAward("level_five", level.Number >= 5, newlyEarned);
-        // hydration_hero + mood_tracker stay locked until Epic 03 logs exist.
+
+        // Hydration Hero — hit the daily water goal on 10 days (use a generous lookback window).
+        var goalHitDays = await _water.CountGoalHitDaysAsync(lookbackDays: 365);
+        await TryAward("hydration_hero", goalHitDays >= 10, newlyEarned);
+
+        // Mood Tracker — 30 total mood log entries.
+        var moodCount = await _moods.GetTotalCountAsync();
+        await TryAward("mood_tracker", moodCount >= 30, newlyEarned);
 
         // HIDDEN BADGE EVALUATION
         var localEnd = (fast.EndUtc ?? DateTime.UtcNow).ToLocalTime();

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.LogWeightPage"
+             x:DataType="vm:LogWeightViewModel"
+             Title="Log weight">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="Log weight" Style="{StaticResource HeadlineLg}" />
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="UNIT" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Grid.Column="0" Text="kg"
+                                Command="{Binding PickKgCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsKgSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource PrimaryContainer}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsKgSelected}" Value="False">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Grid.Column="1" Text="lb"
+                                Command="{Binding PickLbCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsLbSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource PrimaryContainer}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsLbSelected}" Value="False">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+
+                    <Label Text="WEIGHT" Style="{StaticResource LabelCaps}" Margin="0,8,0,0" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Entry Grid.Column="0"
+                               Text="{Binding TextValue}"
+                               Keyboard="Numeric"
+                               FontSize="22" />
+                        <Label Grid.Column="1"
+                               Text="{Binding UnitLabel}"
+                               FontSize="22"
+                               VerticalOptions="Center"
+                               Opacity="0.6" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="WHEN" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <DatePicker Grid.Column="0" Date="{Binding EntryDate}" />
+                        <TimePicker Grid.Column="1" Time="{Binding EntryTime}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="NOTE (OPTIONAL)" Style="{StaticResource LabelCaps}" />
+                    <Entry Text="{Binding Note}" Placeholder="e.g. morning, after coffee" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Button Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="Fill" Margin="0,16,0,0" />
+            <Button Text="Cancel" Style="{StaticResource LinkButton}" Command="{Binding CancelCommand}" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

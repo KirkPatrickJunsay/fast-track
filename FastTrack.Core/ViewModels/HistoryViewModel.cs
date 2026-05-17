@@ -56,7 +56,7 @@ public partial class HistoryViewModel : ObservableObject
     private async Task OpenAsync(HistoryItemViewModel? item)
     {
         if (item is null) return;
-        await _navigation.GoToAsync($"EditFastPage?fastId={item.Id}");
+        await _navigation.GoToAsync($"FastDetailPage?fastId={item.Id}");
     }
 
     private static string FormatReason(FastEndReason? r) => r switch

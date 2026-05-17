@@ -87,6 +87,7 @@ public sealed class DatabaseInitializer : IDatabaseInitializer
             new V003_AddEducationalMode(),
             new V004_AddGamification(),
             new V005_AddQuests(),
+            new V006_AddHealthLogs(),
         };
 
     private static async Task<int> GetUserVersionAsync(SQLiteAsyncConnection db)

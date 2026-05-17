@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.DataManagementPage"
+             x:DataType="vm:DataManagementViewModel"
+             Title="Data">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="Your data" Style="{StaticResource HeadlineLg}" />
+            <Label Text="Everything stays on this device. Use export to back up or move to a new phone."
+                   Style="{StaticResource BodyMuted}" />
+
+            <!-- EXPORT -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="EXPORT" Style="{StaticResource LabelCaps}" />
+                    <Label Text="Save a complete JSON snapshot of every fast, log, badge and preference."
+                           Style="{StaticResource BodyMd}" />
+                    <Button Text="Export to file"
+                            Command="{Binding ExportCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                            HorizontalOptions="Fill"
+                            Margin="0,8,0,0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- IMPORT -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="IMPORT" Style="{StaticResource LabelCaps}" />
+                    <Label Text="Restore from a previously exported file. Your current data will be replaced."
+                           Style="{StaticResource BodyMd}" />
+                    <Button Text="Import from file"
+                            Style="{StaticResource GhostButton}"
+                            Command="{Binding ImportCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                            HorizontalOptions="Fill"
+                            Margin="0,8,0,0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- DANGER -->
+            <Frame Style="{StaticResource Card}"
+                   BorderColor="{StaticResource Tertiary}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="RESET ALL DATA"
+                           Style="{StaticResource LabelCaps}"
+                           TextColor="{StaticResource Tertiary}" />
+                    <Label Text="Wipes everything on this device and returns to onboarding. Cannot be undone."
+                           Style="{StaticResource BodyMd}" />
+                    <Button Text="Reset all data"
+                            Style="{StaticResource DangerButton}"
+                            Command="{Binding ResetCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                            HorizontalOptions="Fill"
+                            Margin="0,8,0,0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding StatusMessage}"
+                   IsVisible="{Binding HasStatus}"
+                   Style="{StaticResource BodyMuted}"
+                   HorizontalTextAlignment="Center"
+                   FontSize="13" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="{StaticResource Primary}"
+                               HeightRequest="24" />
+
+            <Button Text="Done"
+                    Style="{StaticResource LinkButton}"
+                    Command="{Binding BackCommand}"
+                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

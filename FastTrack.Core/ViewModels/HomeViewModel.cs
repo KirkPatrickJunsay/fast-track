@@ -21,6 +21,9 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     private readonly IQuestService _quests;
     private readonly INavigationService _navigation;
     private readonly ITicker _ticker;
+    private readonly IWaterService _water;
+    private readonly IMoodService _moods;
+    private readonly IWeightService _weights;
 
     private GamificationResult? _pendingRewards;
 
@@ -79,6 +82,17 @@ public partial class HomeViewModel : ObservableObject, IDisposable
 
     [ObservableProperty] private bool hasQuests;
 
+    // Today health summary (Epic 03)
+    [ObservableProperty] private int waterTodayMl;
+    [ObservableProperty] private int waterGoalMl = 2000;
+    [ObservableProperty] private double waterFraction;
+    [ObservableProperty] private string waterDisplay = "0 / 2000 ml";
+    [ObservableProperty] private bool waterGoalHit;
+    [ObservableProperty] private string latestMoodEmoji = "—";
+    [ObservableProperty] private string latestMoodAgo = "Tap to log";
+    [ObservableProperty] private string latestWeightDisplay = "—";
+    [ObservableProperty] private string weightDeltaDisplay = "Tap to log";
+
     public ObservableCollection<StageRowViewModel> Stages { get; } = new();
     public ObservableCollection<QuestRowViewModel> Quests { get; } = new();
 
@@ -98,7 +112,10 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         IGamificationOrchestrator gamification,
         IQuestService quests,
         INavigationService navigation,
-        ITicker ticker)
+        ITicker ticker,
+        IWaterService water,
+        IMoodService moods,
+        IWeightService weights)
     {
         _fasting = fasting;
         _fasts = fasts;
@@ -113,6 +130,9 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         _quests = quests;
         _navigation = navigation;
         _ticker = ticker;
+        _water = water;
+        _moods = moods;
+        _weights = weights;
 
         for (var i = 0; i < _stages.Stages.Count; i++)
         {
@@ -141,6 +161,7 @@ public partial class HomeViewModel : ObservableObject, IDisposable
             IsEducationalMode = profile.IsEducationalMode;
 
             await RefreshGamificationAsync();
+            await RefreshHealthAsync();
             await ResolveDefaultProtocolAsync();
             DefaultProtocolName = _defaultProtocol?.Name ?? "(none)";
 
@@ -202,6 +223,113 @@ public partial class HomeViewModel : ObservableObject, IDisposable
             });
         }
         HasQuests = Quests.Count > 0;
+    }
+
+    private async Task RefreshHealthAsync()
+    {
+        try
+        {
+            // Water
+            var snap = await _water.GetTodayAsync();
+            WaterTodayMl = snap.TotalMl;
+            WaterGoalMl = snap.GoalMl;
+            WaterFraction = snap.GoalFraction;
+            WaterGoalHit = snap.GoalHit;
+            WaterDisplay = FormatWater(snap.TotalMl, snap.GoalMl);
+
+            // Latest mood — newest one of any kind.
+            var recentMoods = await _moods.GetRecentAsync(1);
+            if (recentMoods.Count > 0)
+            {
+                var latest = recentMoods[0];
+                LatestMoodEmoji = MoodEmoji(latest.MoodLevel);
+                LatestMoodAgo = FormatAgo(latest.TimestampUtc);
+            }
+            else
+            {
+                LatestMoodEmoji = "—";
+                LatestMoodAgo = "Tap to log";
+            }
+
+            // Latest weight + delta
+            var trend = await _weights.GetTrendAsync(TimeSpan.FromDays(30));
+            if (trend.LatestKg is double kg)
+            {
+                LatestWeightDisplay = $"{kg:0.0} kg";
+                if (trend.ChangeKg is double delta)
+                {
+                    var sign = delta > 0 ? "+" : (delta < 0 ? "−" : "");
+                    WeightDeltaDisplay = $"{sign}{Math.Abs(delta):0.0} kg vs prior";
+                }
+                else
+                {
+                    WeightDeltaDisplay = "First entry";
+                }
+            }
+            else
+            {
+                LatestWeightDisplay = "—";
+                WeightDeltaDisplay = "Tap to log";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+
+    [RelayCommand]
+    private async Task AddWaterAsync(string amount)
+    {
+        if (!int.TryParse(amount, out var ml) || ml <= 0) return;
+        try
+        {
+            await _water.AddAsync(ml);
+            await RefreshHealthAsync();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+
+    [RelayCommand]
+    private async Task OpenLogMoodAsync() =>
+        await _navigation.GoToAsync(_activeFast is null
+            ? "LogMoodPage"
+            : $"LogMoodPage?fastId={_activeFast.Id}");
+
+    [RelayCommand]
+    private async Task OpenLogWeightAsync() =>
+        await _navigation.GoToAsync("LogWeightPage");
+
+    private static string FormatWater(int totalMl, int goalMl)
+    {
+        // Show in L if goal is ≥ 1L; otherwise ml.
+        if (goalMl >= 1000)
+        {
+            return $"{totalMl / 1000.0:0.#}L / {goalMl / 1000.0:0.#}L";
+        }
+        return $"{totalMl} / {goalMl} ml";
+    }
+
+    private static string MoodEmoji(int level) => level switch
+    {
+        1 => "😞",
+        2 => "😐",
+        3 => "🙂",
+        4 => "😊",
+        5 => "🤩",
+        _ => "—",
+    };
+
+    private static string FormatAgo(DateTime utc)
+    {
+        var delta = DateTime.UtcNow - utc;
+        if (delta.TotalSeconds < 60) return "just now";
+        if (delta.TotalMinutes < 60) return $"{(int)delta.TotalMinutes}m ago";
+        if (delta.TotalHours < 24) return $"{(int)delta.TotalHours}h ago";
+        return $"{(int)delta.TotalDays}d ago";
     }
 
     private async Task ResolveDefaultProtocolAsync()

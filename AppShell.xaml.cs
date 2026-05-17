@@ -18,6 +18,10 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("EditFastPage", typeof(EditFastPage));
 		Routing.RegisterRoute("NotificationPreferencesPage", typeof(NotificationPreferencesPage));
 		Routing.RegisterRoute("TrophyCabinetPage", typeof(TrophyCabinetPage));
+		Routing.RegisterRoute("LogWeightPage", typeof(LogWeightPage));
+		Routing.RegisterRoute("LogMoodPage", typeof(LogMoodPage));
+		Routing.RegisterRoute("DataManagementPage", typeof(DataManagementPage));
+		Routing.RegisterRoute("FastDetailPage", typeof(FastDetailPage));
 	}
 
 	protected override async void OnNavigated(ShellNavigatedEventArgs args)

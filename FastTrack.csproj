@@ -71,6 +71,8 @@
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
 		<PackageReference Include="Plugin.LocalNotification" Version="11.1.4" />
+		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.116.1" />
 	</ItemGroup>
 
 	<!-- Keep sibling sub-projects out of the MAUI compile graph. -->

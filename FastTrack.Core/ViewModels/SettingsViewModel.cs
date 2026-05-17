@@ -39,6 +39,10 @@ public partial class SettingsViewModel : ObservableObject
         await _navigation.GoToAsync("TrophyCabinetPage");
 
     [RelayCommand]
+    private async Task OpenDataAsync() =>
+        await _navigation.GoToAsync("DataManagementPage");
+
+    [RelayCommand]
     private async Task RedoOnboardingAsync()
     {
         var confirm = await _dialogs.ConfirmAsync(

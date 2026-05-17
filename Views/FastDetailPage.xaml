@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.FastDetailPage"
+             x:DataType="vm:FastDetailViewModel"
+             Title="Fast detail">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="{Binding Title}" Style="{StaticResource HeadlineLg}" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding IsLoaded}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="DURATION" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding DurationDisplay}" Style="{StaticResource HeadlineLg}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0" Text="{Binding GoalDisplay}" Style="{StaticResource BodyMuted}" />
+                        <Border Grid.Column="1"
+                                StrokeShape="RoundRectangle 999"
+                                Background="{StaticResource SecondaryContainer}"
+                                Padding="8,3"
+                                IsVisible="{Binding GoalMet}">
+                            <Label Text="GOAL MET" FontSize="10" FontAttributes="Bold"
+                                   CharacterSpacing="1.5" TextColor="{StaticResource Secondary}" />
+                        </Border>
+                    </Grid>
+                    <Label Text="{Binding StageReachedDisplay, StringFormat='Furthest stage · {0}'}"
+                           Style="{StaticResource BodyMd}" />
+                    <Label Text="{Binding EndReasonDisplay}" Style="{StaticResource BodyMuted}" FontSize="13" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding IsLoaded}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="TIMES" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Label Grid.Column="0" Text="Start" Style="{StaticResource BodyMuted}" />
+                        <Label Grid.Column="1" Text="{Binding StartedLocal}" FontAttributes="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Label Grid.Column="0" Text="End" Style="{StaticResource BodyMuted}" />
+                        <Label Grid.Column="1" Text="{Binding EndedLocal}" FontAttributes="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Label Grid.Column="0" Text="Protocol" Style="{StaticResource BodyMuted}" />
+                        <Label Grid.Column="1" Text="{Binding ProtocolDisplay}" FontAttributes="Bold" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding HasMoods}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="MOOD TIMELINE" Style="{StaticResource LabelCaps}" />
+                    <CollectionView ItemsSource="{Binding MoodTimeline}" SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:MoodTimelineItem">
+                                <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10">
+                                    <Label Grid.Column="0" Text="{Binding Emoji}" FontSize="22" />
+                                    <Label Grid.Column="1" Text="{Binding Label}"
+                                           Style="{StaticResource BodyMuted}" FontSize="12"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Note}"
+                                           Style="{StaticResource BodyMd}" FontSize="13"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Edit times"
+                    Command="{Binding EditCommand}"
+                    Style="{StaticResource GhostButton}"
+                    IsVisible="{Binding IsLoaded}"
+                    HorizontalOptions="Fill" />
+            <Button Text="Back" Style="{StaticResource LinkButton}"
+                    Command="{Binding BackCommand}"
+                    HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

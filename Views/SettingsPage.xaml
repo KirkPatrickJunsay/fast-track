@@ -66,12 +66,19 @@
 
             <!-- DATA -->
             <Frame Style="{StaticResource Card}">
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="DATA" Style="{StaticResource LabelCaps}" />
-                    <Label Text="Export &amp; import" Style="{StaticResource BodyMd}" />
-                    <Label Text="Coming with Epic 10."
-                           Style="{StaticResource BodyMuted}" FontSize="12" />
-                </VerticalStackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenDataCommand}" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Data" Style="{StaticResource HeadlineMd}" />
+                        <Label Text="Export, import, or reset your data."
+                               Style="{StaticResource BodyMuted}" FontSize="13" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="1" Text="›"
+                           FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </Grid>
             </Frame>
 
             <!-- ADVANCED -->

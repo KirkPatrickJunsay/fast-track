@@ -1,6 +1,7 @@
 using FastTrack.Data;
 using FastTrack.Models;
 using FastTrack.Services.Implementations;
+using FastTrack.Services.Interfaces;
 using FluentAssertions;
 using Moq;
 
@@ -36,7 +37,12 @@ public class BadgeServiceTests
         var protocolsRepo = new Mock<IFastingProtocolRepository>();
         protocolsRepo.Setup(p => p.GetAllAsync()).ReturnsAsync(protocols);
 
-        var sut = new BadgeService(earned.Object, fastsRepo.Object, profiles.Object, protocolsRepo.Object);
+        var water = new Mock<IWaterService>();
+        water.Setup(w => w.CountGoalHitDaysAsync(It.IsAny<int>())).ReturnsAsync(0);
+        var moods = new Mock<IMoodService>();
+        moods.Setup(m => m.GetTotalCountAsync()).ReturnsAsync(0);
+
+        var sut = new BadgeService(earned.Object, fastsRepo.Object, profiles.Object, protocolsRepo.Object, water.Object, moods.Object);
         return (sut, earnedStore, profile, history, protocols);
     }
 
@@ -180,6 +186,69 @@ public class BadgeServiceTests
         history.Add(Completed(DateTime.UtcNow.AddHours(-1), DateTime.UtcNow, reason: FastEndReason.Hungry));
         var newly = await sut.EvaluateOnFastCompletedAsync(history[^1], new FastingProtocol());
         newly.Should().NotContain(b => b.Key == "disciplined_soul");
+    }
+
+    [Fact]
+    public async Task Hydration_hero_unlocks_after_10_goal_hit_days()
+    {
+        var earnedStore = new List<EarnedBadge>();
+        var earned = new Mock<IEarnedBadgeRepository>();
+        earned.Setup(r => r.GetAllAsync()).ReturnsAsync(() => earnedStore.AsReadOnly());
+        earned.Setup(r => r.HasAsync(It.IsAny<string>())).ReturnsAsync((string k) => earnedStore.Any(e => e.BadgeKey == k));
+        earned.Setup(r => r.UpsertAsync(It.IsAny<EarnedBadge>())).Callback<EarnedBadge>(b =>
+        {
+            earnedStore.RemoveAll(e => e.BadgeKey == b.BadgeKey);
+            earnedStore.Add(b);
+        }).Returns(Task.CompletedTask);
+
+        var fastsRepo = new Mock<IFastRepository>();
+        fastsRepo.Setup(r => r.GetHistoryAsync(It.IsAny<int>())).ReturnsAsync(new List<Fast>().AsReadOnly());
+
+        var profiles = new Mock<IUserProfileRepository>();
+        profiles.Setup(p => p.GetOrCreateAsync()).ReturnsAsync(new UserProfile { Id = Guid.NewGuid() });
+        var protocolsRepo = new Mock<IFastingProtocolRepository>();
+        protocolsRepo.Setup(p => p.GetAllAsync()).ReturnsAsync(new List<FastingProtocol>());
+
+        var water = new Mock<IWaterService>();
+        water.Setup(w => w.CountGoalHitDaysAsync(It.IsAny<int>())).ReturnsAsync(10);
+        var moods = new Mock<IMoodService>();
+        moods.Setup(m => m.GetTotalCountAsync()).ReturnsAsync(0);
+
+        var sut = new BadgeService(earned.Object, fastsRepo.Object, profiles.Object, protocolsRepo.Object, water.Object, moods.Object);
+        var fast = Completed(DateTime.UtcNow.AddHours(-16), DateTime.UtcNow);
+        var newly = await sut.EvaluateOnFastCompletedAsync(fast, new FastingProtocol());
+        newly.Should().Contain(b => b.Key == "hydration_hero");
+    }
+
+    [Fact]
+    public async Task Mood_tracker_unlocks_after_30_mood_entries()
+    {
+        var earnedStore = new List<EarnedBadge>();
+        var earned = new Mock<IEarnedBadgeRepository>();
+        earned.Setup(r => r.GetAllAsync()).ReturnsAsync(() => earnedStore.AsReadOnly());
+        earned.Setup(r => r.HasAsync(It.IsAny<string>())).ReturnsAsync((string k) => earnedStore.Any(e => e.BadgeKey == k));
+        earned.Setup(r => r.UpsertAsync(It.IsAny<EarnedBadge>())).Callback<EarnedBadge>(b =>
+        {
+            earnedStore.RemoveAll(e => e.BadgeKey == b.BadgeKey);
+            earnedStore.Add(b);
+        }).Returns(Task.CompletedTask);
+
+        var fastsRepo = new Mock<IFastRepository>();
+        fastsRepo.Setup(r => r.GetHistoryAsync(It.IsAny<int>())).ReturnsAsync(new List<Fast>().AsReadOnly());
+        var profiles = new Mock<IUserProfileRepository>();
+        profiles.Setup(p => p.GetOrCreateAsync()).ReturnsAsync(new UserProfile { Id = Guid.NewGuid() });
+        var protocolsRepo = new Mock<IFastingProtocolRepository>();
+        protocolsRepo.Setup(p => p.GetAllAsync()).ReturnsAsync(new List<FastingProtocol>());
+
+        var water = new Mock<IWaterService>();
+        water.Setup(w => w.CountGoalHitDaysAsync(It.IsAny<int>())).ReturnsAsync(0);
+        var moods = new Mock<IMoodService>();
+        moods.Setup(m => m.GetTotalCountAsync()).ReturnsAsync(30);
+
+        var sut = new BadgeService(earned.Object, fastsRepo.Object, profiles.Object, protocolsRepo.Object, water.Object, moods.Object);
+        var fast = Completed(DateTime.UtcNow.AddHours(-16), DateTime.UtcNow);
+        var newly = await sut.EvaluateOnFastCompletedAsync(fast, new FastingProtocol());
+        newly.Should().Contain(b => b.Key == "mood_tracker");
     }
 
     [Fact]

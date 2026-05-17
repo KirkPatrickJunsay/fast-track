@@ -65,7 +65,7 @@ public class HistoryViewModelTests
         var (vm, _, nav) = Build();
         var item = new HistoryItemViewModel { Id = Guid.Parse("11111111-2222-3333-4444-555555555555"), Title = "16:8" };
         await vm.OpenCommand.ExecuteAsync(item);
-        nav.Verify(n => n.GoToAsync($"EditFastPage?fastId={item.Id}"), Times.Once);
+        nav.Verify(n => n.GoToAsync($"FastDetailPage?fastId={item.Id}"), Times.Once);
     }
 
     [Fact]

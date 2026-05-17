@@ -58,6 +58,60 @@
                 </Frame>
             </Grid>
 
+            <!-- TODAY HEALTH SUMMARY -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="TODAY" Style="{StaticResource LabelCaps}" />
+
+                    <!-- Water -->
+                    <VerticalStackLayout Spacing="6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="💧 Water" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding WaterDisplay}"
+                                   Style="{StaticResource BodyMuted}" VerticalOptions="Center" />
+                        </Grid>
+                        <ProgressBar Progress="{Binding WaterFraction}" HeightRequest="6" />
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,4,0,0">
+                            <Button Grid.Column="0" Text="+250 ml"
+                                    Style="{StaticResource GhostButton}"
+                                    Command="{Binding AddWaterCommand}" CommandParameter="250" />
+                            <Button Grid.Column="1" Text="+500 ml"
+                                    Style="{StaticResource GhostButton}"
+                                    Command="{Binding AddWaterCommand}" CommandParameter="500" />
+                            <Button Grid.Column="2" Text="+1 L"
+                                    Style="{StaticResource GhostButton}"
+                                    Command="{Binding AddWaterCommand}" CommandParameter="1000" />
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
+
+                    <!-- Mood + Weight side-by-side -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="MOOD" Style="{StaticResource LabelCaps}" />
+                            <Label Text="{Binding LatestMoodEmoji}" FontSize="28" />
+                            <Label Text="{Binding LatestMoodAgo}" Style="{StaticResource BodyMuted}" FontSize="11" />
+                            <Button Text="Log mood"
+                                    Style="{StaticResource GhostButton}"
+                                    Command="{Binding OpenLogMoodCommand}"
+                                    HorizontalOptions="Fill"
+                                    Margin="0,4,0,0" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="WEIGHT" Style="{StaticResource LabelCaps}" />
+                            <Label Text="{Binding LatestWeightDisplay}" FontSize="22" FontAttributes="Bold" />
+                            <Label Text="{Binding WeightDeltaDisplay}" Style="{StaticResource BodyMuted}" FontSize="11" />
+                            <Button Text="Log weight"
+                                    Style="{StaticResource GhostButton}"
+                                    Command="{Binding OpenLogWeightCommand}"
+                                    HorizontalOptions="Fill"
+                                    Margin="0,4,0,0" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
             <!-- TODAY'S QUESTS -->
             <Frame Style="{StaticResource Card}" IsVisible="{Binding HasQuests}">
                 <VerticalStackLayout Spacing="12">
