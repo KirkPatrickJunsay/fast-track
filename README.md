@@ -77,7 +77,7 @@ FastTrack/
 │
 ├─ Platforms/Android/                ← Manifest, MainActivity, ProGuard rules
 │
-└─ Docs/
+└─ docs/
    ├─ Release.md                     ← Keystore + signed-AAB workflow
    └─ PrivacyPolicy.md               ← Hosted-version of in-app Privacy & Terms
 ```
@@ -115,7 +115,7 @@ Roughly half a second from clean. The suite covers every ViewModel, every catalo
 
 ### Production build (signed AAB for Play Store)
 
-See [`Docs/Release.md`](Docs/Release.md) for the keystore generation, `signing.local.props` template, and the full publish workflow. Short version:
+See [`docs/Release.md`](docs/Release.md) for the keystore generation, `signing.local.props` template, and the full publish workflow. Short version:
 
 ```bash
 dotnet publish FastTrack.csproj -f net9.0-android -c Release
