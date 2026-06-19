@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stages overview — stairs ascending through colour-coded steps. -->
+  <rect x="0" y="0" width="96" height="96" rx="20" fill="#1C1B1B"/>
+  <rect x="14" y="64" width="14" height="14" rx="2" fill="#C4C0FF"/>
+  <rect x="28" y="54" width="14" height="24" rx="2" fill="#A9D38B"/>
+  <rect x="42" y="44" width="14" height="34" rx="2" fill="#FFE3B0"/>
+  <rect x="56" y="34" width="14" height="44" rx="2" fill="#FFB3B5"/>
+  <rect x="70" y="24" width="14" height="54" rx="2" fill="#7A6FD8"/>
+  <circle cx="77" cy="20" r="3" fill="#FAFAFA"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="160" viewBox="0 0 180 160" fill="none">
+  <!-- Backing panel -->
+  <rect x="20" y="30" width="140" height="100" rx="14" fill="#1C1B1B" stroke="#C4C0FF" stroke-width="2"/>
+  <rect x="20" y="30" width="140" height="100" rx="14" fill="#7A6FD8" opacity="0.12"/>
+  <!-- Axis -->
+  <line x1="36" y1="50" x2="36" y2="116" stroke="#C4C0FF" stroke-width="1.5" opacity="0.5"/>
+  <line x1="36" y1="116" x2="148" y2="116" stroke="#C4C0FF" stroke-width="1.5" opacity="0.5"/>
+  <!-- Bars rising -->
+  <rect x="50" y="98" width="14" height="18" rx="3" fill="#C4C0FF" opacity="0.55"/>
+  <rect x="72" y="86" width="14" height="30" rx="3" fill="#C4C0FF" opacity="0.7"/>
+  <rect x="94" y="70" width="14" height="46" rx="3" fill="#C4C0FF" opacity="0.85"/>
+  <rect x="116" y="58" width="14" height="58" rx="3" fill="#A9D38B"/>
+  <!-- Sparkle -->
+  <circle cx="138" cy="50" r="2" fill="#FFE3B0"/>
+  <circle cx="50" cy="46" r="1.5" fill="#FFE3B0" opacity="0.7"/>
+</svg>

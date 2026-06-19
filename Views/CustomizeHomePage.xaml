@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.CustomizeHomePage"
+             x:DataType="vm:CustomizeHomeViewModel"
+             Title="Customize home">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Image Grid.Column="0" Source="settings_customize.svg"
+                       HeightRequest="64" WidthRequest="64"
+                       Aspect="AspectFit" VerticalOptions="Center" />
+                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                    <Label Text="Customize home" Style="{StaticResource HeadlineLg}" />
+                    <Label Text="Toggle which cards show on the Home tab. Changes save automatically."
+                           Style="{StaticResource BodyMuted}" FontSize="13" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="14">
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                            <Label Text="Gamification strip" Style="{StaticResource HeadlineMd}" FontSize="15" />
+                            <Label Text="Streak chip, freeze badge, level &amp; XP bar."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding ShowGamification, Mode=TwoWay}"
+                                OnColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                            <Label Text="Daily health card" Style="{StaticResource HeadlineMd}" FontSize="15" />
+                            <Label Text="Today's water, mood and weight."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding ShowDailyHealth, Mode=TwoWay}"
+                                OnColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                            <Label Text="Daily quests" Style="{StaticResource HeadlineMd}" FontSize="15" />
+                            <Label Text="Today's quest list and XP rewards."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding ShowQuests, Mode=TwoWay}"
+                                OnColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                            <Label Text="Goal &amp; progress cards" Style="{StaticResource HeadlineMd}" FontSize="15" />
+                            <Label Text="The two-up Goal / Progress quick cards shown while fasting."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding ShowProgressCards, Mode=TwoWay}"
+                                OnColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                            <Label Text="Stages roadmap" Style="{StaticResource HeadlineMd}" FontSize="15" />
+                            <Label Text="The horizontal swipeable stage cards shown while fasting."
+                                   Style="{StaticResource BodyMuted}" FontSize="12" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding ShowStagesRoadmap, Mode=TwoWay}"
+                                OnColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Reset to defaults"
+                    Style="{StaticResource GhostButton}"
+                    Command="{Binding ResetCommand}"
+                    HorizontalOptions="Fill" />
+
+            <Label Text="Active fast hero, action buttons and the educational-mode notice are always visible — they're essential signal, not cards you can hide."
+                   Style="{StaticResource BodyMuted}" FontSize="12"
+                   HorizontalTextAlignment="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

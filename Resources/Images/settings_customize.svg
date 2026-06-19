@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="112" height="112" viewBox="0 0 112 112" xmlns="http://www.w3.org/2000/svg">
+  <!-- Customize home — three sliders on a dark tile. -->
+  <rect x="0" y="0" width="112" height="112" rx="22" fill="#1C1B1B"/>
+  <line x1="26" y1="36" x2="86" y2="36" stroke="#2A2A2A" stroke-width="4" stroke-linecap="round"/>
+  <line x1="26" y1="56" x2="86" y2="56" stroke="#2A2A2A" stroke-width="4" stroke-linecap="round"/>
+  <line x1="26" y1="76" x2="86" y2="76" stroke="#2A2A2A" stroke-width="4" stroke-linecap="round"/>
+  <line x1="26" y1="36" x2="62" y2="36" stroke="#C4C0FF" stroke-width="4" stroke-linecap="round"/>
+  <line x1="26" y1="56" x2="44" y2="56" stroke="#A9D38B" stroke-width="4" stroke-linecap="round"/>
+  <line x1="26" y1="76" x2="76" y2="76" stroke="#FFE3B0" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="62" cy="36" r="7" fill="#C4C0FF" stroke="#FAFAFA" stroke-width="2"/>
+  <circle cx="44" cy="56" r="7" fill="#A9D38B" stroke="#FAFAFA" stroke-width="2"/>
+  <circle cx="76" cy="76" r="7" fill="#FFE3B0" stroke="#FAFAFA" stroke-width="2"/>
+</svg>

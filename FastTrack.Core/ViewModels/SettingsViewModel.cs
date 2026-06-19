@@ -12,7 +12,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly INavigationService _navigation;
 
     [ObservableProperty] private string profileSummary = "—";
-    [ObservableProperty] private string versionText = "FastTrack 0.1.0 · local-only";
+    [ObservableProperty] private string versionText = "Fast Track 0.1.0 · local-only";
 
     public SettingsViewModel(IUserProfileRepository profiles, IDialogService dialogs, INavigationService navigation)
     {
@@ -41,6 +41,14 @@ public partial class SettingsViewModel : ObservableObject
     [RelayCommand]
     private async Task OpenDataAsync() =>
         await _navigation.GoToAsync("DataManagementPage");
+
+    [RelayCommand]
+    private async Task OpenPrivacyAsync() =>
+        await _navigation.GoToAsync("PrivacyPage");
+
+    [RelayCommand]
+    private async Task OpenCustomizeHomeAsync() =>
+        await _navigation.GoToAsync("CustomizeHomePage");
 
     [RelayCommand]
     private async Task RedoOnboardingAsync()

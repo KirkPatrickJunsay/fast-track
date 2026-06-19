@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.PrivacyPage"
+             x:DataType="vm:PrivacyViewModel"
+             Title="Privacy &amp; Terms">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <!-- HERO -->
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Image Grid.Column="0"
+                       Source="settings_privacy.svg"
+                       HeightRequest="72" WidthRequest="72"
+                       Aspect="AspectFit"
+                       VerticalOptions="Center" />
+                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                    <Label Text="Privacy &amp; Terms" Style="{StaticResource HeadlineLg}" />
+                    <Label Text="{Binding LastUpdatedDisplay}"
+                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Label Text="{Binding Intro}" Style="{StaticResource BodyMd}" />
+
+            <!-- LOCAL-ONLY -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="LOCAL-ONLY BY DESIGN" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding LocalOnlyBody}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- WHAT WE COLLECT -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="WHAT WE COLLECT" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding WhatWeCollectBody}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- PERMISSIONS -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="PERMISSIONS" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding PermissionsBody}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- YOUR RIGHTS -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="YOUR DATA, YOUR CONTROL" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding YourRightsBody}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- MEDICAL DISCLAIMER -->
+            <Frame Style="{StaticResource Card}"
+                   BorderColor="{StaticResource Tertiary}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="MEDICAL DISCLAIMER"
+                           Style="{StaticResource LabelCaps}"
+                           TextColor="{StaticResource Tertiary}" />
+                    <Label Text="{Binding MedicalBody}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- TERMS -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="TERMS OF USE" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding TermsBody}" Style="{StaticResource BodyMd}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding VersionText}"
+                   Style="{StaticResource BodyMuted}"
+                   FontSize="11"
+                   HorizontalOptions="Center"
+                   Margin="0,8,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

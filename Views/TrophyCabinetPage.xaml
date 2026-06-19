@@ -10,7 +10,23 @@
         <Label Grid.Row="0" Text="Trophy cabinet" Style="{StaticResource HeadlineLg}" />
         <Label Grid.Row="1" Text="{Binding Summary}" Style="{StaticResource BodyMuted}" />
 
+        <VerticalStackLayout Grid.Row="2"
+                             IsVisible="{Binding HasNoneEarned}"
+                             HorizontalOptions="Center" VerticalOptions="Center"
+                             Spacing="14">
+            <Image Source="empty_trophies.svg"
+                   HeightRequest="180" WidthRequest="180"
+                   HorizontalOptions="Center" />
+            <Label Text="No trophies yet"
+                   Style="{StaticResource HeadlineMd}"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="Hit milestones to fill the cabinet."
+                   Style="{StaticResource BodyMuted}"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
         <CollectionView Grid.Row="2"
+                        IsVisible="{Binding HasAnyEarned}"
                         ItemsSource="{Binding Items}"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>

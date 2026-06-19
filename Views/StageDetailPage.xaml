@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.StageDetailPage"
+             x:DataType="vm:StageDetailViewModel"
+             Shell.PresentationMode="ModalAnimated"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="Stage">
+
+    <Grid x:Name="RootGrid" RowDefinitions="*,Auto" Padding="20,24,20,24">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="18">
+
+                <!-- Top row: stage index chip + close affordance -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding StageIndexDisplay}"
+                           Style="{StaticResource LabelCaps}"
+                           VerticalOptions="Center" />
+                    <Button Grid.Column="1"
+                            Text="✕"
+                            FontSize="18"
+                            WidthRequest="40" HeightRequest="40"
+                            Padding="0"
+                            Style="{StaticResource GhostButton}"
+                            Command="{Binding CloseCommand}" />
+                </Grid>
+
+                <!-- Hero illustration -->
+                <Image x:Name="HeroImage"
+                       Source="{Binding IconAsset}"
+                       HeightRequest="200" WidthRequest="200"
+                       HorizontalOptions="Center"
+                       Aspect="AspectFit"
+                       Margin="0,4,0,4" />
+
+                <!-- Title + range -->
+                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                    <Label Text="{Binding Name}"
+                           Style="{StaticResource HeadlineLg}"
+                           HorizontalTextAlignment="Center" />
+                    <Border StrokeShape="RoundRectangle 999"
+                            Background="{StaticResource PrimaryContainer}"
+                            Padding="12,5"
+                            HorizontalOptions="Center">
+                        <Label Text="{Binding RangeDisplay}"
+                               TextColor="{StaticResource Primary}"
+                               FontSize="12" FontAttributes="Bold" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- One-liner summary -->
+                <Label Text="{Binding Summary}"
+                       Style="{StaticResource BodyMd}"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,4,0,0" />
+
+                <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" Margin="0,6,0,6" />
+
+                <!-- What's happening -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="WHAT'S HAPPENING" Style="{StaticResource LabelCaps}" />
+                    <Label Text="{Binding LongDescription}"
+                           Style="{StaticResource BodyMd}"
+                           LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+
+                <!-- How you might feel -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="HOW YOU MIGHT FEEL" Style="{StaticResource LabelCaps}" />
+                    <CollectionView ItemsSource="{Binding Feelings}" SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                    <Label Grid.Column="0" Text="•"
+                                           TextColor="{StaticResource Primary}"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Start" />
+                                    <Label Grid.Column="1" Text="{Binding .}"
+                                           Style="{StaticResource BodyMd}"
+                                           LineBreakMode="WordWrap" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Reassuring footnote -->
+                <Frame Style="{StaticResource CardCompact}" Margin="0,8,0,0">
+                    <Label Text="Everyone's experience differs. Use this as a guide, not a rule."
+                           Style="{StaticResource BodyMuted}" FontSize="12"
+                           HorizontalTextAlignment="Center" />
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="1"
+                Text="Close"
+                Command="{Binding CloseCommand}"
+                HorizontalOptions="Fill"
+                Margin="0,16,0,0" />
+
+    </Grid>
+</ContentPage>

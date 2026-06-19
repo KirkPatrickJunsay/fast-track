@@ -10,4 +10,5 @@ public sealed class HistoryItemViewModel
     public string StartedLocal { get; init; } = string.Empty;
     public string EndedLocal { get; init; } = string.Empty;
     public bool GoalMet { get; init; }
+    public string IconAsset { get; init; } = "protocol_custom.svg";
 }

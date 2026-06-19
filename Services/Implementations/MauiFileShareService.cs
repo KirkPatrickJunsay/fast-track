@@ -15,4 +15,14 @@ public sealed class MauiFileShareService : IFileShareService
             File = new ShareFile(path),
         });
     }
+
+    public async Task ShareTextAsync(string title, string text)
+    {
+        await Share.Default.RequestAsync(new ShareTextRequest
+        {
+            Title = title,
+            Text = text,
+            Subject = title,
+        });
+    }
 }

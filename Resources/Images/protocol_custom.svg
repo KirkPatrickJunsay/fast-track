@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="60" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Three sliders -->
+  <!-- Track 1 -->
+  <rect x="22" y="38" width="76" height="4" rx="2" fill="#2A2A2A"/>
+  <rect x="22" y="38" width="42" height="4" rx="2" fill="#C4C0FF"/>
+  <circle cx="64" cy="40" r="7" fill="#C4C0FF" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Track 2 -->
+  <rect x="22" y="58" width="76" height="4" rx="2" fill="#2A2A2A"/>
+  <rect x="22" y="58" width="22" height="4" rx="2" fill="#A9D38B"/>
+  <circle cx="44" cy="60" r="7" fill="#A9D38B" stroke="#6BAA52" stroke-width="2"/>
+  <!-- Track 3 -->
+  <rect x="22" y="78" width="76" height="4" rx="2" fill="#2A2A2A"/>
+  <rect x="22" y="78" width="60" height="4" rx="2" fill="#FFB3B5"/>
+  <circle cx="82" cy="80" r="7" fill="#FFB3B5" stroke="#C26B6E" stroke-width="2"/>
+  <!-- Sparkle accents -->
+  <circle cx="30" cy="26" r="2" fill="#FFE3B0"/>
+  <circle cx="94" cy="96" r="2" fill="#FFE3B0" opacity="0.8"/>
+</svg>

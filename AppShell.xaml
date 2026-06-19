@@ -5,12 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FastTrack"
     xmlns:views="clr-namespace:FastTrack.Views"
-    Title="FastTrack">
+    Title="Fast Track">
 
-    <!-- Onboarding lives outside the TabBar so navigating to it hides the chrome. -->
-    <ShellContent Title="Onboarding"
-                  ContentTemplate="{DataTemplate views:OnboardingPage}"
-                  Route="OnboardingPage"
+    <!--
+        BootPage is listed FIRST so it's the cold-launch route. It visually matches
+        the system splash and immediately routes to //MainPage or //OnboardingPage
+        based on the persisted profile — no flash of either before the decision lands.
+    -->
+    <ShellContent Title=""
+                  ContentTemplate="{DataTemplate views:BootPage}"
+                  Route="BootPage"
                   Shell.TabBarIsVisible="False"
                   Shell.NavBarIsVisible="False"
                   Shell.FlyoutItemIsVisible="False" />
@@ -32,10 +36,22 @@
                       Icon="tab_insights.svg"
                       ContentTemplate="{DataTemplate views:InsightsPage}"
                       Route="InsightsPage" />
+        <ShellContent Title="Learn"
+                      Icon="tab_learn.svg"
+                      ContentTemplate="{DataTemplate views:LearnPage}"
+                      Route="LearnPage" />
         <ShellContent Title="Settings"
                       Icon="tab_settings.svg"
                       ContentTemplate="{DataTemplate views:SettingsPage}"
                       Route="SettingsPage" />
     </TabBar>
+
+    <!-- Onboarding lives outside the TabBar so navigating to it hides the chrome. -->
+    <ShellContent Title="Onboarding"
+                  ContentTemplate="{DataTemplate views:OnboardingPage}"
+                  Route="OnboardingPage"
+                  Shell.TabBarIsVisible="False"
+                  Shell.NavBarIsVisible="False"
+                  Shell.FlyoutItemIsVisible="False" />
 
 </Shell>

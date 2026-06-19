@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="60" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Trophy cup body -->
+  <path d="M 38 28 H 82 V 50 C 82 64, 74 74, 60 76 C 46 74, 38 64, 38 50 Z" fill="#C4C0FF"/>
+  <path d="M 38 28 H 82 V 50 C 82 64, 74 74, 60 76 C 46 74, 38 64, 38 50 Z" fill="none" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Handles -->
+  <path d="M 38 34 C 24 34, 22 46, 30 54" stroke="#C4C0FF" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M 82 34 C 96 34, 98 46, 90 54" stroke="#C4C0FF" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Star -->
+  <path d="M 60 40 L 64 50 L 74 51 L 66 58 L 68 68 L 60 63 L 52 68 L 54 58 L 46 51 L 56 50 Z" fill="#FFE3B0"/>
+  <!-- Stem -->
+  <rect x="54" y="76" width="12" height="10" fill="#7A6FD8"/>
+  <!-- Base -->
+  <rect x="40" y="86" width="40" height="8" rx="2" fill="#A9D38B"/>
+  <!-- Sparkles -->
+  <circle cx="26" cy="22" r="2" fill="#FFE3B0"/>
+  <circle cx="96" cy="20" r="2" fill="#FFE3B0"/>
+</svg>

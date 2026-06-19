@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- Breaking a fast safely — bowl with soft warm fill. -->
+  <rect x="0" y="0" width="96" height="96" rx="20" fill="#1C1B1B"/>
+  <path d="M 18 46 L 78 46 C 78 64 64 78 48 78 C 32 78 18 64 18 46 Z" fill="#FFE3B0"/>
+  <path d="M 18 46 L 78 46 C 78 64 64 78 48 78 C 32 78 18 64 18 46 Z" fill="none" stroke="#A9D38B" stroke-width="2.5"/>
+  <ellipse cx="48" cy="46" rx="30" ry="4" fill="#A9D38B" opacity="0.4"/>
+  <path d="M 38 36 C 38 32 42 30 42 26" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+  <path d="M 48 34 C 48 30 52 28 52 24" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+  <path d="M 58 36 C 58 32 62 30 62 26" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+</svg>

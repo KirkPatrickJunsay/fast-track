@@ -1,6 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C4C0FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/>
-  <line x1="5" y1="11" x2="5" y2="22"/>
-  <path d="M19 2v20"/>
-  <path d="M16 2c0 4 3 5 3 9"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Soft halo -->
+  <circle cx="60" cy="60" r="50" fill="#4A3FBE" opacity="0.18"/>
+  <circle cx="60" cy="60" r="36" fill="#4A3FBE" opacity="0.28"/>
+  <!-- Plate -->
+  <ellipse cx="60" cy="80" rx="36" ry="6" fill="#1C1B1B"/>
+  <ellipse cx="60" cy="78" rx="36" ry="8" fill="none" stroke="#C4C0FF" stroke-width="2"/>
+  <!-- Sun / belly -->
+  <circle cx="60" cy="60" r="16" fill="#C4C0FF" opacity="0.9"/>
+  <circle cx="60" cy="60" r="8" fill="#FFE3B0"/>
+  <!-- Heat trails rising -->
+  <path d="M44 38 C 42 30, 48 26, 46 18" stroke="#C4C0FF" stroke-width="2.5" stroke-linecap="round" opacity="0.65"/>
+  <path d="M60 32 C 58 22, 64 18, 60 8" stroke="#C4C0FF" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M76 38 C 74 30, 80 26, 78 18" stroke="#C4C0FF" stroke-width="2.5" stroke-linecap="round" opacity="0.65"/>
 </svg>

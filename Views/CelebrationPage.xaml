@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             xmlns:h="clr-namespace:FastTrack.Helpers"
+             x:Class="FastTrack.Views.CelebrationPage"
+             x:DataType="vm:CelebrationViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="Celebration">
+
+    <Grid x:Name="RootGrid" Padding="20,32,20,32" RowDefinitions="*,Auto">
+
+        <!-- Confetti overlay spans the whole page; pointer-transparent (no gesture recognizers attached). -->
+        <GraphicsView x:Name="ConfettiView"
+                      Grid.Row="0" Grid.RowSpan="2"
+                      InputTransparent="True"
+                      HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="18" VerticalOptions="Center">
+
+                <Label Text="{Binding Emoji}" FontSize="64"
+                       HorizontalOptions="Center"
+                       x:Name="EmojiLabel" />
+
+                <Label Text="{Binding Headline}" Style="{StaticResource HeadlineLg}"
+                       HorizontalOptions="Center" />
+
+                <VerticalStackLayout Spacing="4" HorizontalOptions="Center" Margin="0,8,0,8">
+                    <Label Text="{Binding DurationDisplay}" Style="{StaticResource TimerDisplay}" />
+                    <Label Text="{Binding StageDisplay}" Style="{StaticResource BodyMuted}"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <!-- XP -->
+                <Frame x:Name="XpCard" Style="{StaticResource Card}" IsVisible="{Binding HasXp}">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="EXPERIENCE" Style="{StaticResource LabelCaps}" HorizontalOptions="Center" />
+                        <h:AnimatedNumberLabel Value="{Binding XpAmount}"
+                                               Format="+{0:0} XP"
+                                               DurationMs="900"
+                                               Style="{StaticResource HeadlineLg}"
+                                               TextColor="{StaticResource Primary}"
+                                               HorizontalOptions="Center" />
+                        <Label Text="{Binding XpBonusDisplay}" Style="{StaticResource BodyMuted}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Streak -->
+                <Frame x:Name="StreakCard" Style="{StaticResource Card}" IsVisible="{Binding HasStreak}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Image Grid.Column="0"
+                               Source="streak_flame_large.svg"
+                               HeightRequest="48" WidthRequest="48"
+                               Aspect="AspectFit"
+                               VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                            <Label Text="{Binding StreakDisplay}" Style="{StaticResource HeadlineMd}" />
+                            <Label Text="{Binding StreakSubtext}" Style="{StaticResource BodyMuted}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <!-- Level up -->
+                <Frame x:Name="LevelUpCard" Style="{StaticResource CardSecondary}" IsVisible="{Binding HasLevelUp}">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="LEVEL UP" Style="{StaticResource LabelCaps}"
+                               TextColor="{StaticResource Secondary}" HorizontalOptions="Center" />
+                        <Label Text="{Binding LevelUpDisplay}" Style="{StaticResource HeadlineMd}"
+                               HorizontalTextAlignment="Center" TextColor="{StaticResource Secondary}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Quests -->
+                <Frame x:Name="QuestsCard" Style="{StaticResource Card}" IsVisible="{Binding HasQuests}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="QUESTS COMPLETED" Style="{StaticResource LabelCaps}" />
+                        <CollectionView ItemsSource="{Binding Quests}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Text="{Binding ., StringFormat='✅  {0}'}" Style="{StaticResource BodyMd}" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Badges -->
+                <Frame x:Name="BadgesCard" Style="{StaticResource Card}" IsVisible="{Binding HasBadges}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="BADGES EARNED" Style="{StaticResource LabelCaps}" />
+                        <CollectionView ItemsSource="{Binding Badges}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Text="{Binding ., StringFormat='🏅  {0}'}"
+                                           Style="{StaticResource BodyMd}" FontAttributes="Bold" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="1" Text="Continue"
+                Command="{Binding ContinueCommand}"
+                HorizontalOptions="Fill"
+                Margin="0,16,0,0" />
+    </Grid>
+</ContentPage>

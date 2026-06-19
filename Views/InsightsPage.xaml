@@ -7,6 +7,9 @@
              x:DataType="vm:InsightsViewModel"
              Title="Insights">
 
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}"
+                 RefreshColor="{StaticResource Primary}">
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
@@ -123,9 +126,15 @@
                     <Label Text="FAST DURATION" Style="{StaticResource LabelCaps}" />
                     <charts:ChartView x:Name="FastDurationChart" HeightRequest="160"
                                       IsVisible="{Binding HasFastDuration}" />
-                    <Label Text="No completed fasts in this range yet."
-                           Style="{StaticResource BodyMuted}" FontSize="12"
-                           IsVisible="{Binding HasFastDuration, Converter={StaticResource InverseBool}}" />
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center"
+                                         IsVisible="{Binding HasFastDuration, Converter={StaticResource InverseBool}}">
+                        <Image Source="empty_insights.svg"
+                               HeightRequest="120" WidthRequest="120"
+                               HorizontalOptions="Center" />
+                        <Label Text="No completed fasts in this range yet."
+                               Style="{StaticResource BodyMuted}" FontSize="12"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
                 </VerticalStackLayout>
             </Frame>
 
@@ -163,32 +172,58 @@
 
             <!-- PERSONAL BESTS -->
             <Frame Style="{StaticResource Card}">
-                <VerticalStackLayout Spacing="10">
+                <VerticalStackLayout Spacing="14">
                     <Label Text="PERSONAL BESTS" Style="{StaticResource LabelCaps}" />
 
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Grid.Column="0" Text="Longest fast" Style="{StaticResource BodyMd}" />
-                        <Label Grid.Column="1" Text="{Binding LongestFastDisplay}" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="best_longest_fast.svg"
+                               HeightRequest="36" WidthRequest="36" Aspect="AspectFit"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Longest fast"
+                               Style="{StaticResource BodyMd}" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding LongestFastDisplay}"
+                               FontAttributes="Bold" VerticalOptions="Center" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Grid.Column="0" Text="Longest streak" Style="{StaticResource BodyMd}" />
-                        <Label Grid.Column="1" Text="{Binding LongestStreakDisplay}" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="best_streak.svg"
+                               HeightRequest="36" WidthRequest="36" Aspect="AspectFit"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Longest streak"
+                               Style="{StaticResource BodyMd}" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding LongestStreakDisplay}"
+                               FontAttributes="Bold" VerticalOptions="Center" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Grid.Column="0" Text="Most fasts in a month" Style="{StaticResource BodyMd}" />
-                        <Label Grid.Column="1" Text="{Binding MostFastsInMonthDisplay}" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="best_monthly.svg"
+                               HeightRequest="36" WidthRequest="36" Aspect="AspectFit"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Most fasts in a month"
+                               Style="{StaticResource BodyMd}" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding MostFastsInMonthDisplay}"
+                               FontAttributes="Bold" VerticalOptions="Center" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Grid.Column="0" Text="Highest weekly hours" Style="{StaticResource BodyMd}" />
-                        <Label Grid.Column="1" Text="{Binding HighestWeeklyHoursDisplay}" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="best_weekly.svg"
+                               HeightRequest="36" WidthRequest="36" Aspect="AspectFit"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Highest weekly hours"
+                               Style="{StaticResource BodyMd}" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding HighestWeeklyHoursDisplay}"
+                               FontAttributes="Bold" VerticalOptions="Center" />
                     </Grid>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Grid.Column="0" Text="Total fasts completed" Style="{StaticResource BodyMd}" />
-                        <Label Grid.Column="1" Text="{Binding TotalCompletedDisplay}" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Image Grid.Column="0" Source="best_total.svg"
+                               HeightRequest="36" WidthRequest="36" Aspect="AspectFit"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="Total fasts completed"
+                               Style="{StaticResource BodyMd}" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding TotalCompletedDisplay}"
+                               FontAttributes="Bold" VerticalOptions="Center" />
                     </Grid>
                 </VerticalStackLayout>
             </Frame>
 
         </VerticalStackLayout>
     </ScrollView>
+    </RefreshView>
 </ContentPage>

@@ -75,4 +75,17 @@ public class ProtocolsViewModelTests
         await vm.NewCustomCommand.ExecuteAsync(null);
         nav.Verify(n => n.GoToAsync("CustomProtocolPage"), Times.Once);
     }
+
+    [Theory]
+    [InlineData("16:8", "protocol_16_8.svg")]
+    [InlineData("18:6", "protocol_18_6.svg")]
+    [InlineData("20:4", "protocol_20_4.svg")]
+    [InlineData("OMAD", "protocol_omad.svg")]
+    [InlineData("5:2",  "protocol_5_2.svg")]
+    [InlineData("My weird custom one", "protocol_custom.svg")]
+    public void ResolveIcon_maps_known_presets_and_falls_back_to_custom(string name, string expected)
+    {
+        var p = new FastingProtocol { Name = name, FastHours = 16, EatHours = 8 };
+        ProtocolsViewModel.ResolveIcon(p).Should().Be(expected);
+    }
 }

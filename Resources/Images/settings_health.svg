@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="60" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Heart -->
+  <path d="M 60 88
+           C 44 76, 28 64, 28 50
+           C 28 40, 36 32, 46 32
+           C 52 32, 56 36, 60 42
+           C 64 36, 68 32, 74 32
+           C 84 32, 92 40, 92 50
+           C 92 64, 76 76, 60 88 Z"
+        fill="#FFB3B5"/>
+  <path d="M 60 88
+           C 44 76, 28 64, 28 50
+           C 28 40, 36 32, 46 32
+           C 52 32, 56 36, 60 42
+           C 64 36, 68 32, 74 32
+           C 84 32, 92 40, 92 50
+           C 92 64, 76 76, 60 88 Z"
+        fill="none" stroke="#C26B6E" stroke-width="2"/>
+  <!-- Pulse line cutting across the heart -->
+  <path d="M 30 60 L 44 60 L 50 50 L 56 68 L 62 46 L 70 60 L 90 60"
+        stroke="#A9D38B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Sparkle -->
+  <circle cx="30" cy="26" r="2" fill="#FFE3B0"/>
+  <circle cx="92" cy="22" r="2" fill="#FFE3B0" opacity="0.8"/>
+</svg>

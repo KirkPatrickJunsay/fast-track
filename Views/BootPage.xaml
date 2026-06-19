@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FastTrack.Views.BootPage"
+             BackgroundColor="#131313"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutItemIsVisible="False"
+             Title="">
+
+    <!--
+        Visually a continuation of the system splash — same #131313, same small
+        ring + wordmark. The OnAppearing handler runs the BootViewModel and
+        replaces this page with either //MainPage or //OnboardingPage before the
+        user can notice we ever drew anything here.
+    -->
+    <Grid>
+        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="14">
+            <Image Source="splash.svg"
+                   HeightRequest="160" WidthRequest="160"
+                   Aspect="AspectFit" />
+            <ActivityIndicator IsRunning="True"
+                               Color="#C4C0FF"
+                               HeightRequest="20"
+                               WidthRequest="20" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -8,7 +8,7 @@ public sealed class MauiFilePickerService : IFilePickerService
     {
         var options = new PickOptions
         {
-            PickerTitle = "Pick a FastTrack export (.json)",
+            PickerTitle = "Pick a Fast Track export (.json)",
             FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
             {
                 { DevicePlatform.Android, new[] { "application/json", "text/plain", "*/*" } },

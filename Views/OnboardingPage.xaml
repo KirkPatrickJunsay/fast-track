@@ -13,7 +13,7 @@
         <!-- Header / progress -->
         <VerticalStackLayout Grid.Row="0" Spacing="8">
             <Grid ColumnDefinitions="*,Auto">
-                <Label Grid.Column="0" Text="FASTTRACK" Style="{StaticResource LabelCaps}"
+                <Label Grid.Column="0" Text="FAST TRACK" Style="{StaticResource LabelCaps}"
                        TextColor="{StaticResource Primary}" />
                 <Label Grid.Column="1" Text="{Binding StepLabel}" Style="{StaticResource LabelCaps}" />
             </Grid>
@@ -22,7 +22,7 @@
 
         <!-- Step body -->
         <ScrollView Grid.Row="1" Margin="0,16,0,16">
-            <Grid>
+            <Grid x:Name="StepBody">
 
                 <!-- 1. WELCOME -->
                 <VerticalStackLayout Spacing="16" IsVisible="{Binding IsWelcomeStep}">
@@ -30,19 +30,15 @@
                             Background="{StaticResource SurfaceContainerHigh}"
                             HeightRequest="220"
                             Padding="0">
-                        <Border StrokeShape="Ellipse"
-                                Background="{StaticResource PrimaryContainer}"
-                                WidthRequest="64" HeightRequest="64"
-                                HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="🔒" FontSize="28"
-                                   HorizontalOptions="Center" VerticalOptions="Center" />
-                        </Border>
+                        <Image Source="onboarding_welcome.svg"
+                               Aspect="AspectFit"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
                     </Border>
 
                     <Label Text="PRIVACY FIRST" Style="{StaticResource LabelCaps}"
                            TextColor="{StaticResource Primary}" />
                     <Label Text="Your data stays on your device." Style="{StaticResource HeadlineLg}" />
-                    <Label Text="FastTrack is local-only. No accounts, no cloud, just you and your progress."
+                    <Label Text="Fast Track is local-only. No accounts, no cloud, just you and your progress."
                            Style="{StaticResource BodyMd}" />
 
                     <Frame Style="{StaticResource CardCompact}">

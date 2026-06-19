@@ -22,6 +22,8 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+				fonts.AddFont("Manrope-Variable.ttf", "Manrope");
+				fonts.AddFont("Inter-Variable.ttf", "Inter");
 			});
 
 		RegisterData(builder.Services);
@@ -76,6 +78,10 @@ public static class MauiProgram
 		services.AddSingleton<IQuestService, QuestService>();
 		services.AddSingleton<IGamificationOrchestrator, GamificationOrchestrator>();
 		services.AddSingleton<IAnalyticsService, AnalyticsService>();
+		services.AddSingleton<IHapticService, MauiHapticService>();
+		services.AddSingleton<ICelebrationCarrier, CelebrationCarrier>();
+		services.AddSingleton<IArticleCatalog, ArticleCatalog>();
+		services.AddSingleton<IDashboardPreferencesService, DashboardPreferencesService>();
 	}
 
 	private static void RegisterViewModels(IServiceCollection services)
@@ -94,6 +100,13 @@ public static class MauiProgram
 		services.AddTransient<DataManagementViewModel>();
 		services.AddTransient<InsightsViewModel>();
 		services.AddTransient<FastDetailViewModel>();
+		services.AddTransient<CelebrationViewModel>();
+		services.AddTransient<StageDetailViewModel>();
+		services.AddTransient<PrivacyViewModel>();
+		services.AddTransient<LearnViewModel>();
+		services.AddTransient<ArticleViewModel>();
+		services.AddTransient<BootViewModel>();
+		services.AddTransient<CustomizeHomeViewModel>();
 	}
 
 	private static void RegisterViews(IServiceCollection services)
@@ -112,5 +125,12 @@ public static class MauiProgram
 		services.AddTransient<LogMoodPage>();
 		services.AddTransient<DataManagementPage>();
 		services.AddTransient<FastDetailPage>();
+		services.AddTransient<CelebrationPage>();
+		services.AddTransient<StageDetailPage>();
+		services.AddTransient<PrivacyPage>();
+		services.AddTransient<LearnPage>();
+		services.AddTransient<ArticleDetailPage>();
+		services.AddTransient<BootPage>();
+		services.AddTransient<CustomizeHomePage>();
 	}
 }

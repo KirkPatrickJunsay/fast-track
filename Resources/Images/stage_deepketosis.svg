@@ -1,6 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C4C0FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 22c-2 0-7-2-7-9 0-4 2-7 7-11 5 4 7 7 7 11 0 7-5 9-7 9z"/>
-  <path d="M12 22V8"/>
-  <path d="M12 12c-1.5-1.5-3-1.5-4-1"/>
-  <path d="M12 16c1.5-1.5 3-1.5 4-1"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Outer halo -->
+  <circle cx="60" cy="60" r="50" fill="#7A6FD8" opacity="0.22"/>
+  <!-- Sprout pot -->
+  <path d="M40 88 L 80 88 L 76 104 L 44 104 Z" fill="#1C1B1B" stroke="#C4C0FF" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Soil curve -->
+  <path d="M44 88 Q 60 92 76 88" stroke="#C4C0FF" stroke-width="1.5" opacity="0.5" fill="none"/>
+  <!-- Trunk -->
+  <path d="M60 88 L 60 50" stroke="#A9D38B" stroke-width="4" stroke-linecap="round"/>
+  <!-- Left leaf -->
+  <path d="M60 70 C 44 66, 38 56, 42 50 C 50 50, 58 58, 60 70 Z" fill="#A9D38B"/>
+  <!-- Right leaf -->
+  <path d="M60 60 C 76 56, 84 46, 80 38 C 70 38, 62 46, 60 60 Z" fill="#C4C0FF"/>
+  <!-- Top sprout -->
+  <path d="M60 50 C 56 44, 56 36, 60 32 C 64 36, 64 44, 60 50 Z" fill="#A9D38B"/>
+  <!-- Sparkles -->
+  <circle cx="36" cy="36" r="1.5" fill="#FFE3B0"/>
+  <circle cx="92" cy="48" r="1.5" fill="#FFE3B0"/>
+  <circle cx="86" cy="24" r="1" fill="#FFE3B0" opacity="0.8"/>
 </svg>

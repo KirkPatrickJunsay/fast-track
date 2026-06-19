@@ -1,3 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C4C0FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 17a2.5 2.5 0 0 0 2.5-2.5C13.5 12 11 11 12 8c-3 0-5 2.5-5 5.5a5.5 5.5 0 0 0 11 0c0-2.6-1.5-4-2-5.5-2 2-5 2-6 1.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Heat halo -->
+  <circle cx="60" cy="60" r="50" fill="#7A6FD8" opacity="0.2"/>
+  <!-- Outer flame -->
+  <path d="M60 12 C 38 38, 30 50, 30 70 C 30 88, 42 102, 60 102 C 78 102, 90 88, 90 70 C 90 50, 82 38, 60 12 Z"
+        fill="#C4C0FF" opacity="0.9"/>
+  <!-- Middle flame -->
+  <path d="M60 34 C 46 54, 42 64, 44 78 C 50 92, 70 92, 76 78 C 78 64, 74 54, 60 34 Z"
+        fill="#FFB870" opacity="0.95"/>
+  <!-- Core -->
+  <path d="M60 56 C 54 68, 54 78, 58 84 C 62 88, 66 84, 64 76 C 64 70, 62 64, 60 56 Z" fill="#FFE38A"/>
+  <circle cx="60" cy="78" r="4" fill="#FFF4D0"/>
+  <!-- Faint ember marks below -->
+  <circle cx="36" cy="100" r="2" fill="#FFB870" opacity="0.5"/>
+  <circle cx="84" cy="100" r="2" fill="#FFB870" opacity="0.5"/>
 </svg>

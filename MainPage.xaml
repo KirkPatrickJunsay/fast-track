@@ -2,15 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             xmlns:h="clr-namespace:FastTrack.Helpers"
              x:Class="FastTrack.MainPage"
              x:DataType="vm:HomeViewModel"
-             Title="FastTrack">
+             Title="Fast Track">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20,12,20,32" Spacing="20">
+    <ScrollView Background="{StaticResource HomeAmbientBackground}">
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="18">
+
+            <!-- GREETING -->
+            <VerticalStackLayout Spacing="2" Margin="0,0,0,4">
+                <Label Text="{Binding Greeting}" Style="{StaticResource HeadlineLg}" />
+                <Label Text="{Binding SubGreeting}" Style="{StaticResource BodyMuted}" />
+            </VerticalStackLayout>
 
             <!-- GAMIFICATION STRIP — streak + freezes + level/XP -->
-            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8">
+            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8"
+                  IsVisible="{Binding ShowGamification}">
                 <Border Grid.Column="0"
                         StrokeShape="RoundRectangle 999"
                         Stroke="{StaticResource OutlineVariant}"
@@ -19,7 +27,9 @@
                         Padding="12,8"
                         VerticalOptions="Center">
                     <HorizontalStackLayout Spacing="6">
-                        <Label Text="🔥" FontSize="16" VerticalOptions="Center" />
+                        <Image Source="{Binding StreakFlameAsset}"
+                               HeightRequest="20" WidthRequest="20"
+                               VerticalOptions="Center" />
                         <Label Text="{Binding StreakChipText}"
                                FontAttributes="Bold" FontSize="13"
                                VerticalOptions="Center" />
@@ -59,7 +69,7 @@
             </Grid>
 
             <!-- TODAY HEALTH SUMMARY -->
-            <Frame Style="{StaticResource Card}">
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding ShowDailyHealth}">
                 <VerticalStackLayout Spacing="14">
                     <Label Text="TODAY" Style="{StaticResource LabelCaps}" />
 
@@ -67,8 +77,13 @@
                     <VerticalStackLayout Spacing="6">
                         <Grid ColumnDefinitions="*,Auto">
                             <Label Grid.Column="0" Text="💧 Water" FontAttributes="Bold" />
-                            <Label Grid.Column="1" Text="{Binding WaterDisplay}"
-                                   Style="{StaticResource BodyMuted}" VerticalOptions="Center" />
+                            <HorizontalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <h:AnimatedNumberLabel Value="{Binding WaterTodayMl}"
+                                                       Format="{}{0:0}"
+                                                       Style="{StaticResource BodyMuted}" />
+                                <Label Text="{Binding WaterGoalMl, StringFormat=' / {0} ml'}"
+                                       Style="{StaticResource BodyMuted}" />
+                            </HorizontalStackLayout>
                         </Grid>
                         <ProgressBar Progress="{Binding WaterFraction}" HeightRequest="6" />
                         <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,4,0,0">
@@ -113,7 +128,7 @@
             </Frame>
 
             <!-- TODAY'S QUESTS -->
-            <Frame Style="{StaticResource Card}" IsVisible="{Binding HasQuests}">
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding ShowQuestsCard}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="TODAY'S QUESTS" Style="{StaticResource LabelCaps}" />
                     <CollectionView ItemsSource="{Binding Quests}" SelectionMode="None">
@@ -148,22 +163,30 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- ACTIVE FAST hero -->
-            <VerticalStackLayout Spacing="12" IsVisible="{Binding IsActive}">
-                <Label Text="FASTING TIME"
-                       Style="{StaticResource LabelCaps}"
-                       HorizontalOptions="Center" />
-                <Label Text="{Binding ElapsedDisplay}"
-                       Style="{StaticResource TimerDisplay}"
-                       SemanticProperties.Description="{Binding ElapsedDisplay, StringFormat='Elapsed {0}'}" />
-                <Button Text="Edit start time"
-                        Style="{StaticResource LinkButton}"
-                        Command="{Binding EditActiveFastCommand}"
-                        HorizontalOptions="Center" />
-                <ProgressBar Progress="{Binding Progress}"
-                             HeightRequest="6"
-                             Margin="0,8,0,0" />
-            </VerticalStackLayout>
+            <!-- ACTIVE FAST hero: circular ring + centred elapsed time -->
+            <Grid x:Name="RingContainer"
+                  IsVisible="{Binding IsActive}"
+                  HeightRequest="320"
+                  Margin="0,8,0,0">
+                <GraphicsView x:Name="FastingRingView" />
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
+                    <Label Text="FASTING TIME"
+                           Style="{StaticResource LabelCaps}"
+                           HorizontalOptions="Center" />
+                    <Label Text="{Binding ElapsedDisplay}"
+                           Style="{StaticResource TimerDisplay}"
+                           FontSize="44"
+                           SemanticProperties.Description="{Binding ElapsedDisplay, StringFormat='Elapsed {0}'}" />
+                    <Label Text="{Binding ProgressPercent}"
+                           Style="{StaticResource BodyMuted}"
+                           HorizontalOptions="Center" />
+                    <Button Text="Edit start time"
+                            Style="{StaticResource LinkButton}"
+                            Command="{Binding EditActiveFastCommand}"
+                            HorizontalOptions="Center"
+                            Margin="0,6,0,0" />
+                </VerticalStackLayout>
+            </Grid>
 
             <!-- IDLE hero -->
             <Frame Style="{StaticResource Card}"
@@ -218,7 +241,7 @@
             </Frame>
 
             <!-- GOAL / REMAINING quick cards -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" IsVisible="{Binding IsActive}">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" IsVisible="{Binding ShowProgressGrid}">
                 <Frame Grid.Column="0" Style="{StaticResource CardCompact}">
                     <VerticalStackLayout Spacing="6">
                         <Label Text="GOAL" Style="{StaticResource LabelCaps}" />
@@ -236,20 +259,20 @@
             </Grid>
 
             <!-- STAGES ROADMAP (horizontal pager of rich cards) -->
-            <VerticalStackLayout Spacing="10" IsVisible="{Binding IsActive}">
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding ShowStagesRoadmapSection}">
                 <Grid ColumnDefinitions="*,Auto" Padding="0,4,0,0">
                     <Label Grid.Column="0" Text="PROGRESS ROADMAP" Style="{StaticResource LabelCaps}" />
                     <Label Grid.Column="1" Text="swipe →" Style="{StaticResource BodyMuted}" FontSize="11" />
                 </Grid>
 
-                <CollectionView ItemsSource="{Binding Stages}"
+                <CollectionView x:Name="StagesView" ItemsSource="{Binding Stages}"
                                 SelectionMode="None"
-                                HeightRequest="340">
+                                HeightRequest="500">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal"
                                            ItemSpacing="12"
                                            SnapPointsType="MandatorySingle"
-                                           SnapPointsAlignment="Center" />
+                                           SnapPointsAlignment="Start" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="vm:StageRowViewModel">
@@ -260,6 +283,11 @@
                                     WidthRequest="280"
                                     Padding="20"
                                     Opacity="{Binding Opacity}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=OpenStageCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
                                 <VerticalStackLayout Spacing="14">
                                     <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
                                         <Label Grid.Column="0"
@@ -278,8 +306,9 @@
                                     </Grid>
 
                                     <Image Source="{Binding IconAsset}"
-                                           HeightRequest="56" WidthRequest="56"
-                                           HorizontalOptions="Center" />
+                                           HeightRequest="120" WidthRequest="120"
+                                           HorizontalOptions="Center"
+                                           Aspect="AspectFit" />
 
                                     <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                         <Label Text="{Binding Name}"

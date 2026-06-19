@@ -69,11 +69,6 @@
             <ActivityIndicator IsRunning="{Binding IsBusy}"
                                Color="{StaticResource Primary}"
                                HeightRequest="24" />
-
-            <Button Text="Done"
-                    Style="{StaticResource LinkButton}"
-                    Command="{Binding BackCommand}"
-                    HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

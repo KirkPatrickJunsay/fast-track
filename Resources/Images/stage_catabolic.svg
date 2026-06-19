@@ -1,3 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C4C0FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 2.7s5.5 5.6 5.5 10.4a5.5 5.5 0 0 1-11 0C6.5 8.3 12 2.7 12 2.7z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Backdrop -->
+  <circle cx="60" cy="60" r="50" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Glycogen reserve as stacked tokens depleting -->
+  <rect x="34" y="84" width="52" height="6" rx="3" fill="#C4C0FF" opacity="0.85"/>
+  <rect x="38" y="74" width="44" height="6" rx="3" fill="#C4C0FF" opacity="0.6"/>
+  <rect x="44" y="64" width="32" height="6" rx="3" fill="#C4C0FF" opacity="0.35"/>
+  <!-- Large droplet draining downward -->
+  <path d="M60 20 C 48 36, 42 48, 42 58 C 42 70, 50 78, 60 78 C 70 78, 78 70, 78 58 C 78 48, 72 36, 60 20 Z"
+        fill="#C4C0FF" opacity="0.95"/>
+  <!-- Inner highlight -->
+  <path d="M52 38 C 48 46, 48 54, 52 58" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+  <!-- Tiny droplets escaping -->
+  <circle cx="34" cy="46" r="2" fill="#C4C0FF" opacity="0.6"/>
+  <circle cx="88" cy="48" r="2" fill="#C4C0FF" opacity="0.6"/>
+  <circle cx="30" cy="58" r="1.5" fill="#C4C0FF" opacity="0.4"/>
 </svg>

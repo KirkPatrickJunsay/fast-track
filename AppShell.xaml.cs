@@ -1,17 +1,12 @@
-using FastTrack.Data;
 using FastTrack.Views;
 
 namespace FastTrack;
 
 public partial class AppShell : Shell
 {
-	private readonly IUserProfileRepository _profiles;
-	private bool _onboardingChecked;
-
-	public AppShell(IUserProfileRepository profiles)
+	public AppShell()
 	{
 		InitializeComponent();
-		_profiles = profiles;
 
 		// Modal / detail routes (not in TabBar / not auto-created).
 		Routing.RegisterRoute("CustomProtocolPage", typeof(CustomProtocolPage));
@@ -22,27 +17,11 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("LogMoodPage", typeof(LogMoodPage));
 		Routing.RegisterRoute("DataManagementPage", typeof(DataManagementPage));
 		Routing.RegisterRoute("FastDetailPage", typeof(FastDetailPage));
-	}
-
-	protected override async void OnNavigated(ShellNavigatedEventArgs args)
-	{
-		base.OnNavigated(args);
-
-		if (_onboardingChecked) return;
-		_onboardingChecked = true;
-
-		try
-		{
-			var profile = await _profiles.GetOrCreateAsync();
-			if (!profile.OnboardingCompleted)
-			{
-				await GoToAsync("//OnboardingPage");
-			}
-		}
-		catch
-		{
-			// Don't block app launch on a profile read failure — onboarding will get another chance.
-			_onboardingChecked = false;
-		}
+		Routing.RegisterRoute("CelebrationPage", typeof(CelebrationPage));
+		Routing.RegisterRoute("StageDetailPage", typeof(StageDetailPage));
+		Routing.RegisterRoute("PrivacyPage", typeof(PrivacyPage));
+		Routing.RegisterRoute("ArticleDetailPage", typeof(ArticleDetailPage));
+		Routing.RegisterRoute("CustomizeHomePage", typeof(CustomizeHomePage));
+		// Cold-launch routing is owned by BootPage now (the default ShellContent).
 	}
 }

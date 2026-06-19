@@ -13,10 +13,17 @@
 
             <!-- PROFILE -->
             <Frame Style="{StaticResource Card}">
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="PROFILE" Style="{StaticResource LabelCaps}" />
-                    <Label Text="{Binding ProfileSummary}" Style="{StaticResource BodyMd}" />
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_profile.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                        <Label Text="PROFILE" Style="{StaticResource LabelCaps}" />
+                        <Label Text="{Binding ProfileSummary}" Style="{StaticResource BodyMd}" />
+                    </VerticalStackLayout>
+                </Grid>
             </Frame>
 
             <!-- NOTIFICATIONS -->
@@ -24,13 +31,18 @@
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OpenNotificationsCommand}" />
                 </Frame.GestureRecognizers>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_notifications.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
                         <Label Text="Notifications" Style="{StaticResource HeadlineMd}" />
                         <Label Text="Local-only reminders, stage tips, quiet hours."
                                Style="{StaticResource BodyMuted}" FontSize="13" />
                     </VerticalStackLayout>
-                    <Label Grid.Column="1" Text="›"
+                    <Label Grid.Column="2" Text="›"
                            FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
                            VerticalOptions="Center" />
                 </Grid>
@@ -41,13 +53,18 @@
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OpenTrophiesCommand}" />
                 </Frame.GestureRecognizers>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_trophies.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
                         <Label Text="Trophies" Style="{StaticResource HeadlineMd}" />
                         <Label Text="Your earned badges and what's left to chase."
                                Style="{StaticResource BodyMuted}" FontSize="13" />
                     </VerticalStackLayout>
-                    <Label Grid.Column="1" Text="›"
+                    <Label Grid.Column="2" Text="›"
                            FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
                            VerticalOptions="Center" />
                 </Grid>
@@ -55,13 +72,20 @@
 
             <!-- INTEGRATIONS (coming) -->
             <Frame Style="{StaticResource Card}">
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="HEALTH INTEGRATIONS" Style="{StaticResource LabelCaps}" />
-                    <Label Text="HealthKit / Health Connect"
-                           Style="{StaticResource BodyMd}" />
-                    <Label Text="Coming with Epic 03."
-                           Style="{StaticResource BodyMuted}" FontSize="12" />
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_health.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                        <Label Text="HEALTH INTEGRATIONS" Style="{StaticResource LabelCaps}" />
+                        <Label Text="HealthKit / Health Connect"
+                               Style="{StaticResource BodyMd}" />
+                        <Label Text="Coming in a future update — Fast Track will stay local-only by default and only sync the metrics you opt into."
+                               Style="{StaticResource BodyMuted}" FontSize="12" />
+                    </VerticalStackLayout>
+                </Grid>
             </Frame>
 
             <!-- DATA -->
@@ -69,13 +93,62 @@
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding OpenDataCommand}" />
                 </Frame.GestureRecognizers>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_data.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
                         <Label Text="Data" Style="{StaticResource HeadlineMd}" />
                         <Label Text="Export, import, or reset your data."
                                Style="{StaticResource BodyMuted}" FontSize="13" />
                     </VerticalStackLayout>
-                    <Label Grid.Column="1" Text="›"
+                    <Label Grid.Column="2" Text="›"
+                           FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <!-- CUSTOMIZE HOME -->
+            <Frame Style="{StaticResource Card}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenCustomizeHomeCommand}" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_customize.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                        <Label Text="Customize home" Style="{StaticResource HeadlineMd}" />
+                        <Label Text="Toggle which cards appear on the Home tab."
+                               Style="{StaticResource BodyMuted}" FontSize="13" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2" Text="›"
+                           FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </Frame>
+
+            <!-- PRIVACY & TERMS -->
+            <Frame Style="{StaticResource Card}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenPrivacyCommand}" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_privacy.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                        <Label Text="Privacy &amp; Terms" Style="{StaticResource HeadlineMd}" />
+                        <Label Text="Local-only data, permissions, medical disclaimer."
+                               Style="{StaticResource BodyMuted}" FontSize="13" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2" Text="›"
                            FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
                            VerticalOptions="Center" />
                 </Grid>
@@ -83,15 +156,23 @@
 
             <!-- ADVANCED -->
             <Frame Style="{StaticResource Card}">
-                <VerticalStackLayout Spacing="14">
-                    <Label Text="ADVANCED" Style="{StaticResource LabelCaps}" />
-                    <Button Text="Redo onboarding"
-                            Style="{StaticResource GhostButton}"
-                            Command="{Binding RedoOnboardingCommand}"
-                            HorizontalOptions="Fill" />
-                    <Label Text="Useful if your goals, experience, or safety screening have changed."
-                           Style="{StaticResource BodyMuted}" FontSize="12" />
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Image Grid.Column="0"
+                           Source="settings_advanced.svg"
+                           HeightRequest="56" WidthRequest="56"
+                           Aspect="AspectFit"
+                           VerticalOptions="Start"
+                           Margin="0,4,0,0" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="14">
+                        <Label Text="ADVANCED" Style="{StaticResource LabelCaps}" />
+                        <Button Text="Redo onboarding"
+                                Style="{StaticResource GhostButton}"
+                                Command="{Binding RedoOnboardingCommand}"
+                                HorizontalOptions="Fill" />
+                        <Label Text="Useful if your goals, experience, or safety screening have changed."
+                               Style="{StaticResource BodyMuted}" FontSize="12" />
+                    </VerticalStackLayout>
+                </Grid>
             </Frame>
 
             <Label Text="{Binding VersionText}"

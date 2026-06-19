@@ -11,6 +11,9 @@ public partial class TrophyCabinetViewModel : ObservableObject
     public ObservableCollection<TrophyItemViewModel> Items { get; } = new();
 
     [ObservableProperty] private string summary = "—";
+    [ObservableProperty] private bool hasAnyEarned;
+    public bool HasNoneEarned => !HasAnyEarned;
+    partial void OnHasAnyEarnedChanged(bool value) => OnPropertyChanged(nameof(HasNoneEarned));
 
     public TrophyCabinetViewModel(IBadgeService badges) => _badges = badges;
 
@@ -35,5 +38,6 @@ public partial class TrophyCabinetViewModel : ObservableObject
         }
 
         Summary = $"{earnedCount} of {evaluated.Count} badges earned";
+        HasAnyEarned = earnedCount > 0;
     }
 }

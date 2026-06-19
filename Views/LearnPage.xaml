@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.LearnPage"
+             x:DataType="vm:LearnViewModel"
+             Title="Learn">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <!-- HEADER -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="{Binding Headline}" Style="{StaticResource HeadlineLg}" />
+                <Label Text="{Binding Subhead}" Style="{StaticResource BodyMuted}" />
+            </VerticalStackLayout>
+
+            <!-- ARTICLES -->
+            <Label Text="ARTICLES" Style="{StaticResource LabelCaps}" />
+
+            <CollectionView ItemsSource="{Binding Articles}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ArticleSummaryViewModel">
+                        <Frame Style="{StaticResource Card}" Padding="16">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LearnViewModel}}, Path=OpenArticleCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                                <Image Grid.Column="0" Source="{Binding HeroAsset}"
+                                       HeightRequest="72" WidthRequest="72"
+                                       Aspect="AspectFit" VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                    <Label Text="{Binding Title}" Style="{StaticResource HeadlineMd}" />
+                                    <Label Text="{Binding Summary}" Style="{StaticResource BodyMuted}" FontSize="13" />
+                                    <Label Text="{Binding ReadingTimeDisplay}"
+                                           Style="{StaticResource LabelCaps}" FontSize="10"
+                                           TextColor="{StaticResource OnSurfaceVariant}"
+                                           Margin="0,2,0,0" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- STAGE GLOSSARY -->
+            <Label Text="STAGE GLOSSARY"
+                   Style="{StaticResource LabelCaps}"
+                   Margin="0,8,0,0" />
+            <Label Text="Tap a stage to see what's happening in your body and how you might feel."
+                   Style="{StaticResource BodyMuted}" FontSize="12" />
+
+            <CollectionView ItemsSource="{Binding Stages}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:StageRowViewModel">
+                        <Frame Style="{StaticResource CardCompact}" Padding="12">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LearnViewModel}}, Path=OpenStageCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Image Grid.Column="0" Source="{Binding IconAsset}"
+                                       HeightRequest="44" WidthRequest="44"
+                                       Aspect="AspectFit" VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" Style="{StaticResource HeadlineMd}" FontSize="15" />
+                                    <Label Text="{Binding Summary}" Style="{StaticResource BodyMuted}" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2" Text="{Binding Range}"
+                                       Style="{StaticResource LabelCaps}" FontSize="11"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

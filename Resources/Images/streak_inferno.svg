@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- Outer aura -->
+  <path d="M12 0.5 C 6 4, 3 9, 3 14 C 3 19.5, 6.5 23, 12 23 C 17.5 23, 21 19.5, 21 14 C 21 9, 18 4, 12 0.5 Z"
+        fill="#FF3D1F" stroke="#A22307" stroke-width="0.6" stroke-linejoin="round"/>
+  <!-- Outer flame -->
+  <path d="M12 3.5 C 7.5 7.5, 5.5 12, 6 17 C 7 20.5, 17 20.5, 18 17 C 18.5 12, 16.5 7.5, 12 3.5 Z"
+        fill="#FF7C2E"/>
+  <!-- Inner flame -->
+  <path d="M12 7 C 9 11, 8 14, 9 18 C 10.5 20, 13.5 20, 15 18 C 16 14, 15 11, 12 7 Z"
+        fill="#FFC149"/>
+  <!-- Core -->
+  <path d="M12 11 C 10.5 14, 10.5 17, 12 18 C 13.5 17, 13.5 14, 12 11 Z" fill="#FFEFB0"/>
+  <circle cx="12" cy="15" r="1.7" fill="#FFFAE0"/>
+  <!-- Sparks orbiting -->
+  <circle cx="4" cy="5" r="0.8" fill="#FFC678" opacity="0.85"/>
+  <circle cx="20" cy="6" r="0.8" fill="#FFC678" opacity="0.85"/>
+  <circle cx="3" cy="12" r="0.6" fill="#FFD9A1" opacity="0.7"/>
+  <circle cx="21" cy="12" r="0.6" fill="#FFD9A1" opacity="0.7"/>
+  <circle cx="6" cy="20" r="0.5" fill="#FFE4B5" opacity="0.6"/>
+  <circle cx="18" cy="20" r="0.5" fill="#FFE4B5" opacity="0.6"/>
+</svg>

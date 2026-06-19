@@ -10,6 +10,7 @@ public partial class InsightsViewModel : ObservableObject
     private readonly IAnalyticsService _analytics;
 
     [ObservableProperty] private bool isLoading;
+    [ObservableProperty] private bool isRefreshing;
 
     // Personal bests
     [ObservableProperty] private string longestFastDisplay = "—";
@@ -105,6 +106,13 @@ public partial class InsightsViewModel : ObservableObject
         {
             IsLoading = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task RefreshAsync()
+    {
+        try { await LoadAsync(); }
+        finally { IsRefreshing = false; }
     }
 
     [RelayCommand]

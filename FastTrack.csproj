@@ -21,13 +21,20 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>FastTrack</ApplicationTitle>
+		<ApplicationTitle>Fast Track</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.codesandchips.fasttrack</ApplicationId>
 
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<!--
+		    Versions.
+		    ApplicationDisplayVersion (SemVer): user-facing "1.0.0" — bump on every release.
+		    ApplicationVersion (Android versionCode / iOS CFBundleVersion): monotonic integer
+		    Play Store uses to detect updates — must increase on every uploaded build, never reused.
+		    Convention: yyMMdd0 for release builds (e.g. 2605190 = 2026-05-19 build #0). The
+		    trailing digit reserves room for same-day rebuilds.
+		-->
+		<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
@@ -41,17 +48,44 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
-	<!-- Embed assemblies into the APK so plain `adb install` works without Fast Deployment sideload. -->
-	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+	<!--
+	    Android packaging.
+	    Debug — embed assemblies so plain `adb install` works without Fast Deployment sideload.
+	    Release — let MAUI produce a shrunken, AOT-friendly AAB. Wire in our ProGuard rules and
+	    target arm64 + x86_64 (Play Store requires arm64; x86_64 covers the emulator).
+	-->
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and '$(Configuration)' == 'Debug'">
 		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 	</PropertyGroup>
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and '$(Configuration)' == 'Release'">
+		<AndroidPackageFormat>aab</AndroidPackageFormat>
+		<AndroidLinkMode>SdkOnly</AndroidLinkMode>
+		<EnableLLVM>true</EnableLLVM>
+		<AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+		<RuntimeIdentifiers>android-arm64;android-x64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<!--
+	    Our top-up R8 / ProGuard rules. Layered on top of MAUI's defaults
+	    rather than replacing them — see Platforms/Android/proguard.cfg.
+	-->
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' and '$(Configuration)' == 'Release'">
+		<ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!--
+		    App Icon — colour version uses the foreground + background combo with our brand
+		    Surface as the chamber colour. The monochrome layer ships a single-colour version
+		    so Android 13+ themed-icon mode can tint the mark to the user's wallpaper palette.
+		-->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg"
+		          ForegroundFile="Resources\AppIcon\appiconfg.svg"
+		          MonochromeFile="Resources\AppIcon\appiconfg_mono.svg"
+		          Color="#131313" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#131313" BaseSize="192,192" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -90,5 +124,22 @@
 	<ItemGroup>
 		<ProjectReference Include="FastTrack.Core\FastTrack.Core.csproj" />
 	</ItemGroup>
+
+	<!--
+	    Android Release signing config.
+	    Reads keystore credentials from a gitignored `signing.local.props` file
+	    so secrets never enter source control. Falls back to no-op for Debug.
+	    Create the file with:
+	      <Project>
+	        <PropertyGroup>
+	          <AndroidKeyStore>true</AndroidKeyStore>
+	          <AndroidSigningKeyStore>fasttrack-upload.keystore</AndroidSigningKeyStore>
+	          <AndroidSigningStorePass>...</AndroidSigningStorePass>
+	          <AndroidSigningKeyAlias>fasttrack-upload</AndroidSigningKeyAlias>
+	          <AndroidSigningKeyPass>...</AndroidSigningKeyPass>
+	        </PropertyGroup>
+	      </Project>
+	-->
+	<Import Project="signing.local.props" Condition="Exists('signing.local.props') and '$(Configuration)' == 'Release'" />
 
 </Project>

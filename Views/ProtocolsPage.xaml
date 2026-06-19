@@ -31,44 +31,53 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:ProtocolListItem">
                     <Frame Style="{StaticResource Card}">
-                        <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10"
-                              ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="{Binding Name}"
-                                   Style="{StaticResource HeadlineMd}" />
-                            <Border Grid.Row="0" Grid.Column="1"
-                                    StrokeShape="RoundRectangle 999"
-                                    Background="{StaticResource PrimaryContainer}"
-                                    Padding="10,4"
-                                    IsVisible="{Binding IsDefault}"
-                                    VerticalOptions="Center">
-                                <Label Text="DEFAULT"
-                                       FontSize="10" FontAttributes="Bold"
-                                       TextColor="{StaticResource Primary}"
-                                       CharacterSpacing="1.5" />
-                            </Border>
-
-                            <Label Grid.Row="1" Grid.ColumnSpan="2"
-                                   Text="{Binding Difficulty}"
-                                   Style="{StaticResource BodyMuted}"
-                                   TextColor="{StaticResource Secondary}" />
-
-                            <Label Grid.Row="2" Grid.ColumnSpan="2"
-                                   Text="{Binding Subtitle}"
-                                   Style="{StaticResource BodyMd}"
-                                   Margin="0,4,0,0" />
-
-                            <Label Grid.Row="3" Grid.Column="0"
-                                   Text="{Binding Description}"
-                                   Style="{StaticResource BodyMuted}"
-                                   FontSize="13"
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <Image Grid.Column="0"
+                                   Source="{Binding IconAsset}"
+                                   HeightRequest="72" WidthRequest="72"
+                                   Aspect="AspectFit"
                                    VerticalOptions="Center" />
-                            <Button Grid.Row="3" Grid.Column="1"
-                                    Text="Set as default"
-                                    Style="{StaticResource LinkButton}"
-                                    HorizontalOptions="End"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProtocolsViewModel}}, Path=SetDefaultCommand}"
-                                    CommandParameter="{Binding .}" />
+
+                            <Grid Grid.Column="1"
+                                  RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="6"
+                                  ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <Label Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       Style="{StaticResource HeadlineMd}" />
+                                <Border Grid.Row="0" Grid.Column="1"
+                                        StrokeShape="RoundRectangle 999"
+                                        Background="{StaticResource PrimaryContainer}"
+                                        Padding="10,4"
+                                        IsVisible="{Binding IsDefault}"
+                                        VerticalOptions="Center">
+                                    <Label Text="DEFAULT"
+                                           FontSize="10" FontAttributes="Bold"
+                                           TextColor="{StaticResource Primary}"
+                                           CharacterSpacing="1.5" />
+                                </Border>
+
+                                <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                       Text="{Binding Difficulty}"
+                                       Style="{StaticResource BodyMuted}"
+                                       TextColor="{StaticResource Secondary}" />
+
+                                <Label Grid.Row="2" Grid.ColumnSpan="2"
+                                       Text="{Binding Subtitle}"
+                                       Style="{StaticResource BodyMd}"
+                                       Margin="0,2,0,0" />
+
+                                <Label Grid.Row="3" Grid.Column="0"
+                                       Text="{Binding Description}"
+                                       Style="{StaticResource BodyMuted}"
+                                       FontSize="13"
+                                       VerticalOptions="Center" />
+                                <Button Grid.Row="3" Grid.Column="1"
+                                        Text="Set as default"
+                                        Style="{StaticResource LinkButton}"
+                                        HorizontalOptions="End"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProtocolsViewModel}}, Path=SetDefaultCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </Grid>
                         </Grid>
                     </Frame>
                 </DataTemplate>

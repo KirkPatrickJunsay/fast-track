@@ -1,4 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C4C0FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-  <polyline points="8.5 12 11 14.5 16 9.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Aura -->
+  <circle cx="60" cy="62" r="50" fill="#A9D38B" opacity="0.18"/>
+  <!-- Shield -->
+  <path d="M60 12 L 22 26 L 22 60 C 22 84, 40 100, 60 108 C 80 100, 98 84, 98 60 L 98 26 Z"
+        fill="#7A6FD8" opacity="0.45"/>
+  <path d="M60 12 L 22 26 L 22 60 C 22 84, 40 100, 60 108 C 80 100, 98 84, 98 60 L 98 26 Z"
+        fill="none" stroke="#C4C0FF" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Inner decorative ring -->
+  <circle cx="60" cy="60" r="20" fill="#A9D38B" opacity="0.18"/>
+  <circle cx="60" cy="60" r="20" fill="none" stroke="#A9D38B" stroke-width="2"/>
+  <!-- Check / phoenix mark -->
+  <path d="M48 60 L 56 68 L 74 50" stroke="#A9D38B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Wing flourish -->
+  <path d="M28 38 Q 36 30 44 36" stroke="#C4C0FF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+  <path d="M76 36 Q 84 30 92 38" stroke="#C4C0FF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
 </svg>

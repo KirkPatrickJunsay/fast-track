@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.ArticleDetailPage"
+             x:DataType="vm:ArticleViewModel"
+             Title="Article">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,40" Spacing="14">
+
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding HasError}"
+                   TextColor="{StaticResource Tertiary}" />
+
+            <VerticalStackLayout Spacing="14" IsVisible="{Binding IsLoaded}">
+
+                <Image Source="{Binding HeroAsset}"
+                       HeightRequest="140" WidthRequest="140"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center" />
+
+                <Label Text="{Binding Title}" Style="{StaticResource HeadlineLg}"
+                       HorizontalTextAlignment="Center" />
+
+                <Label Text="{Binding Summary}" Style="{StaticResource BodyMuted}"
+                       HorizontalTextAlignment="Center" />
+
+                <Label Text="{Binding ReadingTimeDisplay}"
+                       Style="{StaticResource LabelCaps}" FontSize="10"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+
+                <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" Margin="0,4,0,4" />
+
+                <CollectionView ItemsSource="{Binding Sections}" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="14" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ArticleSectionViewModel">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="{Binding Heading}"
+                                       Style="{StaticResource HeadlineMd}" FontSize="16"
+                                       IsVisible="{Binding HasHeading}" />
+                                <Label Text="{Binding Body}" Style="{StaticResource BodyMd}"
+                                       LineHeight="1.4" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

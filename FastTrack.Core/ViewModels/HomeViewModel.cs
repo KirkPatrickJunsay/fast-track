@@ -24,6 +24,9 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     private readonly IWaterService _water;
     private readonly IMoodService _moods;
     private readonly IWeightService _weights;
+    private readonly IHapticService _haptics;
+    private readonly ICelebrationCarrier _celebrations;
+    private readonly IDashboardPreferencesService _dashboardPrefs;
 
     private GamificationResult? _pendingRewards;
 
@@ -37,6 +40,8 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     [NotifyPropertyChangedFor(nameof(IsIdle))]
     [NotifyPropertyChangedFor(nameof(ShowStartButton))]
     [NotifyPropertyChangedFor(nameof(StartButtonVisible))]
+    [NotifyPropertyChangedFor(nameof(ShowProgressGrid))]
+    [NotifyPropertyChangedFor(nameof(ShowStagesRoadmapSection))]
     private bool isActive;
 
     [ObservableProperty]
@@ -57,9 +62,19 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     public bool EatingStartButtonVisible => IsEatingWindow && !IsEducationalMode;
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
+    [ObservableProperty] private string greeting = "Today";
+    [ObservableProperty] private string subGreeting = string.Empty;
+
+    [ObservableProperty] private int currentStageIndex = -1;
+    /// <summary>Raised when the active fast crosses into a new stage. The page plays a glow animation in response.</summary>
+    public event EventHandler? StageJustChanged;
+
     [ObservableProperty] private string elapsedDisplay = "00:00:00";
     [ObservableProperty] private string goalDisplay = "—";
     [ObservableProperty] private double progress;
+    /// <summary>Un-clamped progress (can exceed 1.0 when goal is beaten). Drives the ring beyond 100%.</summary>
+    [ObservableProperty] private double rawProgress;
+    [ObservableProperty] private bool isGoalMet;
     [ObservableProperty] private string progressPercent = "0%";
     [ObservableProperty] private string stageName = "—";
     [ObservableProperty] private string stageSummary = "Tap Start to begin a fast.";
@@ -70,8 +85,22 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     [ObservableProperty] private string eatingWindowEndsAt = string.Empty;
 
     // Gamification (Epic 02)
-    [ObservableProperty] private int currentStreak;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StreakFlameAsset))]
+    private int currentStreak;
     [ObservableProperty] private string streakChipText = "0 day streak";
+
+    /// <summary>Streak chip flame illustration — escalates with streak length.</summary>
+    public string StreakFlameAsset => CurrentStreak switch
+    {
+        <= 0 => "streak_spark.svg",
+        < 3 => "streak_spark.svg",
+        < 7 => "streak_flame_small.svg",
+        < 14 => "streak_flame_large.svg",
+        < 30 => "streak_bonfire.svg",
+        _ => "streak_inferno.svg",
+    };
+
     [ObservableProperty] private int freezesAvailable;
     [ObservableProperty] private string freezesText = string.Empty;
     [ObservableProperty] private bool hasFreezes;
@@ -80,7 +109,31 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     [ObservableProperty] private string xpProgressText = "0 / 500 XP";
     [ObservableProperty] private double xpProgressFraction;
 
-    [ObservableProperty] private bool hasQuests;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowQuestsCard))]
+    private bool hasQuests;
+
+    // Dashboard preferences (Epic 10) — these gate which sections of Home render.
+    // Default to "show everything" so empty profiles see the original layout.
+    [ObservableProperty] private bool showGamification = true;
+    [ObservableProperty] private bool showDailyHealth = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowQuestsCard))]
+    private bool showQuestsPref = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowProgressGrid))]
+    [NotifyPropertyChangedFor(nameof(ShowStagesRoadmapSection))]
+    private bool showProgressCardsPref = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowStagesRoadmapSection))]
+    private bool showStagesRoadmapPref = true;
+
+    public bool ShowQuestsCard => ShowQuestsPref && HasQuests;
+    public bool ShowProgressGrid => ShowProgressCardsPref && IsActive;
+    public bool ShowStagesRoadmapSection => ShowStagesRoadmapPref && IsActive;
 
     // Today health summary (Epic 03)
     [ObservableProperty] private int waterTodayMl;
@@ -115,7 +168,10 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         ITicker ticker,
         IWaterService water,
         IMoodService moods,
-        IWeightService weights)
+        IWeightService weights,
+        IHapticService haptics,
+        ICelebrationCarrier celebrations,
+        IDashboardPreferencesService dashboardPrefs)
     {
         _fasting = fasting;
         _fasts = fasts;
@@ -133,6 +189,9 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         _water = water;
         _moods = moods;
         _weights = weights;
+        _haptics = haptics;
+        _celebrations = celebrations;
+        _dashboardPrefs = dashboardPrefs;
 
         for (var i = 0; i < _stages.Stages.Count; i++)
         {
@@ -159,6 +218,15 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         {
             var profile = await _profiles.GetOrCreateAsync();
             IsEducationalMode = profile.IsEducationalMode;
+
+            UpdateGreeting(profile.DisplayName);
+
+            var prefs = await _dashboardPrefs.GetAsync();
+            ShowGamification = prefs.ShowGamification;
+            ShowDailyHealth = prefs.ShowDailyHealth;
+            ShowQuestsPref = prefs.ShowQuests;
+            ShowProgressCardsPref = prefs.ShowProgressCards;
+            ShowStagesRoadmapPref = prefs.ShowStagesRoadmap;
 
             await RefreshGamificationAsync();
             await RefreshHealthAsync();
@@ -285,6 +353,7 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         try
         {
             await _water.AddAsync(ml);
+            _haptics.Tick();
             await RefreshHealthAsync();
         }
         catch (Exception ex)
@@ -302,6 +371,14 @@ public partial class HomeViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task OpenLogWeightAsync() =>
         await _navigation.GoToAsync("LogWeightPage");
+
+    [RelayCommand]
+    private async Task OpenStageAsync(StageRowViewModel? row)
+    {
+        if (row is null) return;
+        _haptics.Tick(HapticIntensity.Light);
+        await _navigation.GoToAsync($"StageDetailPage?stageKey={row.Key}");
+    }
 
     private static string FormatWater(int totalMl, int goalMl)
     {
@@ -383,6 +460,7 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         try
         {
             if (_defaultProtocol is null) return;
+            _haptics.Tick(HapticIntensity.Medium);
             _activeFast = await _fasting.StartAsync(_defaultProtocol.Id);
 
             // Persist as last-used.
@@ -434,54 +512,32 @@ public partial class HomeViewModel : ObservableObject, IDisposable
 
         try
         {
+            _haptics.Tick(goalMet ? HapticIntensity.Heavy : HapticIntensity.Medium);
             var ended = await _fasting.EndAsync(_activeFast.Id, reason);
             _activeFast = null;
 
             // Give the gamification orchestrator a moment to process the FastCompleted event.
             await Task.Delay(150);
-
-            var hh = (int)elapsed.TotalHours;
             var rewards = _pendingRewards;
             _pendingRewards = null;
 
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine(goalMet
-                ? $"🎉 Goal met! {hh}h {elapsed.Minutes}m fasted."
-                : $"{hh}h {elapsed.Minutes}m fasted.");
-            sb.AppendLine($"Furthest stage: {stage.Name}.");
+            _celebrations.Set(new CelebrationData(
+                GoalMet: goalMet,
+                Duration: elapsed,
+                StageName: stage.Name,
+                XpEarned: rewards?.Xp.Total ?? 0,
+                ComebackBonus: rewards?.Xp.ComebackBonus ?? false,
+                GoalExceededBonus: rewards?.Xp.GoalExceededBonus ?? false,
+                CurrentStreak: rewards?.Streak.Current ?? 0,
+                StreakIncremented: rewards?.Streak.IncrementedToday ?? false,
+                FreezeConsumed: rewards?.Streak.FreezeConsumed ?? false,
+                LevelledUp: rewards?.LevelledUp ?? false,
+                PreviousLevel: rewards?.PreviousLevel,
+                NewLevel: rewards?.XpState.Level,
+                NewBadges: rewards?.NewBadges ?? Array.Empty<BadgeDefinition>(),
+                ClaimedQuests: rewards?.QuestUpdates.Where(q => q.NewlyCompleted).Select(q => q.Definition.Title).ToList() ?? new List<string>()));
 
-            if (rewards is not null)
-            {
-                if (rewards.Xp.Total > 0)
-                {
-                    var bonusBits = new List<string>();
-                    if (rewards.Xp.ComebackBonus) bonusBits.Add("comeback +50%");
-                    if (rewards.Xp.GoalExceededBonus) bonusBits.Add("goal beat +25%");
-                    var bonusText = bonusBits.Count > 0 ? $" ({string.Join(", ", bonusBits)})" : "";
-                    sb.AppendLine($"+{rewards.Xp.Total} XP{bonusText}");
-                }
-                if (rewards.LevelledUp && rewards.PreviousLevel is not null)
-                    sb.AppendLine($"⭐ Level up! {rewards.PreviousLevel.Name} → {rewards.XpState.Level.Name}");
-                if (rewards.Streak.IncrementedToday)
-                    sb.AppendLine(rewards.Streak.FreezeConsumed
-                        ? $"🔥 Streak saved with a freeze · {rewards.Streak.Current} days"
-                        : $"🔥 Streak: {rewards.Streak.Current} days");
-                if (rewards.QuestUpdates.Any(u => u.NewlyCompleted))
-                {
-                    sb.AppendLine();
-                    sb.AppendLine("Quests completed:");
-                    foreach (var u in rewards.QuestUpdates.Where(x => x.NewlyCompleted))
-                        sb.AppendLine($"✅ {u.Definition.Title}  +{u.Quest.XpReward} XP");
-                }
-                if (rewards.NewBadges.Count > 0)
-                {
-                    sb.AppendLine();
-                    sb.AppendLine("New badges:");
-                    foreach (var b in rewards.NewBadges) sb.AppendLine($"🏅 {b.Name}");
-                }
-            }
-
-            await _dialogs.ShowAlertAsync(goalMet ? "Fast complete" : "Fast ended", sb.ToString().TrimEnd());
+            await _navigation.GoToAsync("CelebrationPage");
 
             // Refresh state — likely moves into eating window.
             await LoadAsync();
@@ -513,6 +569,9 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         IsEatingWindow = false;
         ElapsedDisplay = "00:00:00";
         Progress = 0;
+        RawProgress = 0;
+        IsGoalMet = false;
+        CurrentStageIndex = -1;
         ProgressPercent = "0%";
         StageName = "—";
         StageSummary = "Tap Start to begin a fast.";
@@ -563,6 +622,8 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         var goalSeconds = Math.Max(1, _activeFast.GoalHours * 3600);
         var pct = elapsed.TotalSeconds / goalSeconds;
         Progress = Math.Min(1.0, pct);
+        RawProgress = pct;
+        IsGoalMet = pct >= 1.0;
         ProgressPercent = $"{pct * 100:0}%";
 
         var stage = _stages.GetStage(elapsed.TotalHours);
@@ -570,6 +631,15 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         StageSummary = stage.Summary;
 
         UpdateStageRows(elapsed.TotalHours, stage.Key);
+
+        // Detect a stage change for the glow animation + auto-snap of the roadmap pager.
+        var newIndex = _stages.Stages.ToList().FindIndex(s => s.Key == stage.Key);
+        if (newIndex >= 0 && newIndex != CurrentStageIndex)
+        {
+            var wasInitial = CurrentStageIndex < 0;
+            CurrentStageIndex = newIndex;
+            if (!wasInitial) StageJustChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void UpdateStageRows(double elapsedHours, string currentKey)
@@ -595,6 +665,21 @@ public partial class HomeViewModel : ObservableObject, IDisposable
             return;
         }
         EatingWindowRemaining = FormatDuration(remaining);
+    }
+
+    private void UpdateGreeting(string? displayName)
+    {
+        var hour = DateTime.Now.Hour;
+        var period = hour switch
+        {
+            >= 5 and < 12 => "Good morning",
+            >= 12 and < 17 => "Good afternoon",
+            >= 17 and < 22 => "Good evening",
+            _ => "Hi there",
+        };
+        var name = string.IsNullOrWhiteSpace(displayName) ? "Faster" : displayName.Trim();
+        Greeting = $"{period}, {name}";
+        SubGreeting = DateTime.Now.ToString("dddd, MMMM d");
     }
 
     private static string FormatDuration(TimeSpan t)

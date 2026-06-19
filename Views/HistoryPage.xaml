@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             xmlns:h="clr-namespace:FastTrack.Helpers"
              x:Class="FastTrack.Views.HistoryPage"
              x:DataType="vm:HistoryViewModel"
              Title="History">
@@ -12,28 +13,59 @@
                Text="Review and edit past fasts."
                Style="{StaticResource BodyMuted}" />
 
-        <Label Grid.Row="2"
-               Text="No completed fasts yet. Finish one to see it here."
-               IsVisible="{Binding IsEmpty}"
-               HorizontalOptions="Center" VerticalOptions="Center"
-               Style="{StaticResource BodyMuted}" />
+        <VerticalStackLayout Grid.Row="2"
+                             IsVisible="{Binding IsEmpty}"
+                             HorizontalOptions="Center" VerticalOptions="Center"
+                             Spacing="14">
+            <Image Source="empty_history.svg"
+                   HeightRequest="160" WidthRequest="160"
+                   HorizontalOptions="Center" />
+            <Label Text="No fasts yet"
+                   Style="{StaticResource HeadlineMd}"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="Finish a fast and it'll show up here."
+                   Style="{StaticResource BodyMuted}"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
 
-        <CollectionView Grid.Row="2"
-                        ItemsSource="{Binding Items}"
-                        IsVisible="{Binding IsEmpty, Converter={StaticResource InverseBool}}"
+        <RefreshView Grid.Row="2"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}"
+                     RefreshColor="{StaticResource Primary}"
+                     IsVisible="{Binding IsEmpty, Converter={StaticResource InverseBool}}">
+        <CollectionView ItemsSource="{Binding Items}"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:HistoryItemViewModel">
-                    <Frame Style="{StaticResource Card}" Padding="16">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="{StaticResource Tertiary}"
+                                           IconImageSource="empty_history.svg"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, Path=SwipeDeleteCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Frame Style="{StaticResource Card}" Padding="16"
+                               h:LongPress.Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, Path=OptionsCommand}"
+                               h:LongPress.CommandParameter="{Binding .}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, Path=OpenCommand}"
                                 CommandParameter="{Binding .}" />
                         </Frame.GestureRecognizers>
-                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="10" RowSpacing="4">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <Image Grid.Column="0"
+                                   Source="{Binding IconAsset}"
+                                   HeightRequest="56" WidthRequest="56"
+                                   Aspect="AspectFit"
+                                   VerticalOptions="Center" />
+                            <Grid Grid.Column="1"
+                                  RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10" RowSpacing="4">
                             <Label Grid.Row="0" Grid.Column="0"
                                    Text="{Binding Title}" Style="{StaticResource HeadlineMd}" />
                             <Border Grid.Row="0" Grid.Column="1"
@@ -47,7 +79,15 @@
                                        CharacterSpacing="1.5"
                                        TextColor="{StaticResource Secondary}" />
                             </Border>
-                            <Label Grid.Row="1" Grid.ColumnSpan="2"
+                            <Button Grid.Row="0" Grid.Column="2"
+                                    Text="⋯"
+                                    FontSize="20"
+                                    WidthRequest="36" HeightRequest="36"
+                                    Padding="0"
+                                    Style="{StaticResource GhostButton}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}, Path=OptionsCommand}"
+                                    CommandParameter="{Binding .}" />
+                            <Label Grid.Row="1" Grid.ColumnSpan="3"
                                    Style="{StaticResource BodyMd}">
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -57,14 +97,17 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label Grid.Row="2" Grid.ColumnSpan="2"
+                            <Label Grid.Row="2" Grid.ColumnSpan="3"
                                    Text="{Binding StartedLocal, StringFormat='Started {0}'}"
                                    Style="{StaticResource BodyMuted}"
                                    FontSize="12" />
+                            </Grid>
                         </Grid>
                     </Frame>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        </RefreshView>
     </Grid>
 </ContentPage>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="60" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Bell body -->
+  <path d="M 60 28
+           C 76 28, 84 40, 84 56
+           L 84 74
+           L 90 82
+           L 30 82
+           L 36 74
+           L 36 56
+           C 36 40, 44 28, 60 28 Z"
+        fill="#C4C0FF"/>
+  <path d="M 60 28
+           C 76 28, 84 40, 84 56
+           L 84 74
+           L 90 82
+           L 30 82
+           L 36 74
+           L 36 56
+           C 36 40, 44 28, 60 28 Z"
+        fill="none" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Bell knob on top -->
+  <rect x="56" y="22" width="8" height="6" rx="2" fill="#7A6FD8"/>
+  <!-- Clapper / bottom dome -->
+  <path d="M 54 82 C 54 90, 66 90, 66 82 Z" fill="#7A6FD8"/>
+  <!-- Sound wave (sage) -->
+  <path d="M 94 50 C 100 56, 100 64, 94 70" stroke="#A9D38B" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M 26 50 C 20 56, 20 64, 26 70" stroke="#A9D38B" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- New-notification dot -->
+  <circle cx="86" cy="34" r="6" fill="#FFB3B5"/>
+  <circle cx="86" cy="34" r="6" fill="none" stroke="#1C1B1B" stroke-width="2"/>
+</svg>

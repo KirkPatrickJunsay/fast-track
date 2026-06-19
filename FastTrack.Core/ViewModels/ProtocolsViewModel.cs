@@ -54,6 +54,21 @@ public partial class ProtocolsViewModel : ObservableObject
         Subtitle = p.EatHours > 0 ? $"{p.FastHours}h fast · {p.EatHours}h eat" : $"{p.FastHours}h fast",
         Difficulty = p.Difficulty.ToString(),
         Description = p.Description ?? string.Empty,
+        IconAsset = ResolveIcon(p),
         IsDefault = defaultId == p.Id,
     };
+
+    public static string ResolveIcon(FastingProtocol p)
+    {
+        // Match by canonical preset name first; custom protocols fall through to the slider icon.
+        return p.Name switch
+        {
+            "16:8" => "protocol_16_8.svg",
+            "18:6" => "protocol_18_6.svg",
+            "20:4" => "protocol_20_4.svg",
+            "OMAD" => "protocol_omad.svg",
+            "5:2"  => "protocol_5_2.svg",
+            _ => "protocol_custom.svg",
+        };
+    }
 }

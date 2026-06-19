@@ -130,6 +130,12 @@ public class HomeViewModelTests
         weightsSvc.Setup(w => w.GetTrendAsync(It.IsAny<TimeSpan?>()))
             .ReturnsAsync(new WeightTrend(null, null, null, 0));
 
+        var haptics = new Mock<IHapticService>();
+        var celebrations = new CelebrationCarrier();
+
+        var dashboardPrefs = new Mock<IDashboardPreferencesService>();
+        dashboardPrefs.Setup(p => p.GetAsync()).ReturnsAsync(DashboardPreferences.Default);
+
         var vm = new HomeViewModel(
             fasting,
             fasts.Object,
@@ -145,7 +151,10 @@ public class HomeViewModelTests
             ticker,
             water.Object,
             moodsSvc.Object,
-            weightsSvc.Object);
+            weightsSvc.Object,
+            haptics.Object,
+            celebrations,
+            dashboardPrefs.Object);
 
         return (vm, fasting, fasts, profiles, dialogs, nav, ticker, profile);
     }

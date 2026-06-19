@@ -98,7 +98,7 @@ public partial class NotificationPreferencesViewModel : ObservableObject
         {
             Id = TestNotificationId,
             Title = "Test notification",
-            Body = "If you see this, FastTrack notifications are working.",
+            Body = "If you see this, Fast Track notifications are working.",
             DeliverAtLocal = DateTime.Now.AddSeconds(5),
         });
 

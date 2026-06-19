@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="60" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Calendar backing -->
+  <rect x="20" y="28" width="80" height="68" rx="8" fill="#C4C0FF" opacity="0.95"/>
+  <rect x="20" y="28" width="80" height="68" rx="8" fill="none" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Header bar -->
+  <rect x="20" y="28" width="80" height="14" rx="8" fill="#7A6FD8"/>
+  <rect x="20" y="36" width="80" height="6" fill="#7A6FD8"/>
+  <!-- Binder rings -->
+  <rect x="34" y="22" width="3" height="14" rx="1.5" fill="#FFE3B0"/>
+  <rect x="58.5" y="22" width="3" height="14" rx="1.5" fill="#FFE3B0"/>
+  <rect x="83" y="22" width="3" height="14" rx="1.5" fill="#FFE3B0"/>
+  <!-- 7-day row (Mon..Sun): 5 sage normal eating, 2 brick fasting -->
+  <rect x="26"  y="54" width="8" height="8" rx="2" fill="#A9D38B"/>
+  <rect x="38"  y="54" width="8" height="8" rx="2" fill="#FFB3B5"/>
+  <rect x="50"  y="54" width="8" height="8" rx="2" fill="#A9D38B"/>
+  <rect x="62"  y="54" width="8" height="8" rx="2" fill="#A9D38B"/>
+  <rect x="74"  y="54" width="8" height="8" rx="2" fill="#FFB3B5"/>
+  <rect x="86"  y="54" width="8" height="8" rx="2" fill="#A9D38B"/>
+  <!-- Second row of dots — bigger to reinforce the metaphor -->
+  <rect x="26"  y="70" width="8" height="3" rx="1.5" fill="#7A6FD8"/>
+  <rect x="38"  y="70" width="8" height="3" rx="1.5" fill="#7A6FD8"/>
+  <rect x="50"  y="70" width="8" height="3" rx="1.5" fill="#7A6FD8"/>
+  <rect x="62"  y="70" width="8" height="3" rx="1.5" fill="#7A6FD8"/>
+  <rect x="74"  y="70" width="8" height="3" rx="1.5" fill="#7A6FD8"/>
+  <rect x="86"  y="70" width="8" height="3" rx="1.5" fill="#7A6FD8"/>
+  <!-- Label -->
+  <text x="60" y="89" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#7A6FD8">5 : 2</text>
+</svg>

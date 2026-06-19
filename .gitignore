@@ -97,6 +97,8 @@ Resources/Raw/Generated*
 *.keystore
 *.jks
 local.properties
+# Release-signing props carry the keystore passwords — never commit.
+signing.local.props
 .android/
 .gradle/
 **/Platforms/Android/Resources/Resource.designer.cs

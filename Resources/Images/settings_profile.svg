@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="60" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Soft inner disc -->
+  <circle cx="60" cy="60" r="42" fill="#C4C0FF" opacity="0.18"/>
+  <!-- Head -->
+  <circle cx="60" cy="48" r="14" fill="#C4C0FF"/>
+  <circle cx="60" cy="48" r="14" fill="none" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Shoulders / torso -->
+  <path d="M 32 92 C 32 76, 46 70, 60 70 C 74 70, 88 76, 88 92 Z" fill="#C4C0FF"/>
+  <path d="M 32 92 C 32 76, 46 70, 60 70 C 74 70, 88 76, 88 92" fill="none" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Accent star -->
+  <circle cx="92" cy="30" r="2.5" fill="#FFE3B0"/>
+  <circle cx="28" cy="34" r="2" fill="#A9D38B" opacity="0.8"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Halo -->
+  <circle cx="60" cy="62" r="54" fill="#4A3FBE" opacity="0.18"/>
+  <!-- Plate (outer rim) -->
+  <circle cx="60" cy="64" r="38" fill="#C4C0FF" opacity="0.95"/>
+  <circle cx="60" cy="64" r="38" fill="none" stroke="#7A6FD8" stroke-width="2"/>
+  <!-- Plate inner well -->
+  <circle cx="60" cy="64" r="28" fill="#1C1B1B"/>
+  <!-- Single meal on the plate — sage dome -->
+  <path d="M 44 70 Q 60 50, 76 70 Z" fill="#A9D38B"/>
+  <!-- Steam wisps rising -->
+  <path d="M 50 38 C 47 32, 53 30, 50 24" stroke="#FFE3B0" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M 60 34 C 57 28, 63 26, 60 20" stroke="#FFE3B0" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M 70 38 C 67 32, 73 30, 70 24" stroke="#FFE3B0" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <!-- Garnish dot -->
+  <circle cx="60" cy="58" r="2.5" fill="#FFB3B5"/>
+</svg>

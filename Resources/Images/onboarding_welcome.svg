@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="220" viewBox="0 0 260 220" fill="none">
+  <!-- Mountains backdrop -->
+  <path d="M0 180 L 60 110 L 100 150 L 140 90 L 200 160 L 260 130 L 260 220 L 0 220 Z" fill="#7A6FD8" opacity="0.18"/>
+  <path d="M0 200 L 50 150 L 110 180 L 170 140 L 230 190 L 260 175 L 260 220 L 0 220 Z" fill="#A9D38B" opacity="0.18"/>
+  <!-- Sun -->
+  <circle cx="130" cy="80" r="36" fill="#C4C0FF" opacity="0.35"/>
+  <circle cx="130" cy="80" r="22" fill="#C4C0FF" opacity="0.7"/>
+  <circle cx="130" cy="80" r="12" fill="#FFE3B0"/>
+  <!-- Lock embedded in sun -->
+  <rect x="120" y="76" width="20" height="16" rx="3" fill="#1C1B1B" opacity="0.85"/>
+  <path d="M124 76 V 70 C 124 67, 126 65, 130 65 C 134 65, 136 67, 136 70 V 76" stroke="#1C1B1B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <circle cx="130" cy="84" r="1.8" fill="#FFE3B0"/>
+  <!-- Stars -->
+  <circle cx="40" cy="40" r="2" fill="#FFE3B0"/>
+  <circle cx="220" cy="50" r="2" fill="#FFE3B0"/>
+  <circle cx="60" cy="80" r="1.5" fill="#FFE3B0" opacity="0.8"/>
+  <circle cx="210" cy="30" r="1.5" fill="#FFE3B0" opacity="0.7"/>
+  <circle cx="180" cy="65" r="1.2" fill="#FFE3B0" opacity="0.6"/>
+  <!-- Soft horizon line -->
+  <path d="M0 215 L 260 215" stroke="#C4C0FF" stroke-width="0.6" opacity="0.4"/>
+</svg>

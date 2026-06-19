@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Fast Track monochrome adaptive-icon layer.
+    Android 13+ themed-icon mode tints this single-colour mark to the user's
+    wallpaper palette, so every shape is solid white (#FFFFFF). No fills below
+    50% opacity — themed-icon rendering ignores translucent regions.
+
+    Shape: same ring + arcs + hub mark as the colour version, redrawn as one
+    flat silhouette so it stays readable at 48dp under the system tint.
+  -->
+
+  <!-- Track ring (solid, white). -->
+  <circle cx="228" cy="228" r="110" fill="none" stroke="#FFFFFF" stroke-width="40"/>
+
+  <!--
+    Two short tick marks at the 12 o'clock / 4 o'clock positions so the mark
+    still reads as a "fasting clock" rather than a plain ring under any tint.
+    Kept short and chunky for legibility at small sizes.
+  -->
+  <line x1="228" y1="98"  x2="228" y2="138" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round"/>
+  <line x1="338" y1="270" x2="304" y2="251" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Centre hub — the focal point of the mark. -->
+  <circle cx="228" cy="228" r="34" fill="#FFFFFF"/>
+</svg>

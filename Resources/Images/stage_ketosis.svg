@@ -1,3 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C4C0FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+  <!-- Sky band -->
+  <circle cx="60" cy="60" r="50" fill="#4A3FBE" opacity="0.22"/>
+  <!-- Calm sea -->
+  <path d="M10 78 Q 30 72 50 78 T 90 78 T 110 78 L 110 110 L 10 110 Z" fill="#7A6FD8" opacity="0.55"/>
+  <path d="M10 88 Q 30 84 50 88 T 90 88 T 110 88 L 110 110 L 10 110 Z" fill="#A9D38B" opacity="0.18"/>
+  <!-- Bolt -->
+  <path d="M70 16 L 42 60 L 56 60 L 50 96 L 80 50 L 64 50 L 70 16 Z"
+        fill="#C4C0FF" stroke="#FFE38A" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Highlight -->
+  <path d="M68 22 L 52 52" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <!-- Stars -->
+  <circle cx="22" cy="24" r="1.5" fill="#FFE3B0" opacity="0.85"/>
+  <circle cx="98" cy="34" r="1.5" fill="#FFE3B0" opacity="0.85"/>
+  <circle cx="18" cy="46" r="1" fill="#FFE3B0" opacity="0.7"/>
 </svg>

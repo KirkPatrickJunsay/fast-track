@@ -73,6 +73,30 @@ public class SettingsViewModelTests
     }
 
     [Fact]
+    public async Task OpenData_navigates_to_data_page()
+    {
+        var (vm, _, _, nav, _) = Build();
+        await vm.OpenDataCommand.ExecuteAsync(null);
+        nav.Verify(n => n.GoToAsync("DataManagementPage"), Times.Once);
+    }
+
+    [Fact]
+    public async Task OpenPrivacy_navigates_to_privacy_page()
+    {
+        var (vm, _, _, nav, _) = Build();
+        await vm.OpenPrivacyCommand.ExecuteAsync(null);
+        nav.Verify(n => n.GoToAsync("PrivacyPage"), Times.Once);
+    }
+
+    [Fact]
+    public async Task OpenCustomizeHome_navigates_to_customize_home_page()
+    {
+        var (vm, _, _, nav, _) = Build();
+        await vm.OpenCustomizeHomeCommand.ExecuteAsync(null);
+        nav.Verify(n => n.GoToAsync("CustomizeHomePage"), Times.Once);
+    }
+
+    [Fact]
     public async Task RedoOnboarding_when_confirmed_flips_flag_and_navigates()
     {
         var (vm, profiles, dialogs, nav, profile) = Build();

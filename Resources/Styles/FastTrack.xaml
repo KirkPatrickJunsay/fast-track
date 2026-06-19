@@ -6,54 +6,66 @@
 
     <!--
         FastTrack typography + component styles.
-        Manrope/Inter to be wired later as TTF assets; using system stack for now.
+        Manrope for display / headlines / timer, Inter for body text & labels — both variable TTFs.
+        FontAttributes drives the weight via the variable axis.
     -->
 
     <!-- Typography styles -->
     <Style x:Key="TimerDisplay" TargetType="Label">
+        <Setter Property="FontFamily" Value="Manrope" />
         <Setter Property="FontSize" Value="48" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="CharacterSpacing" Value="-0.5" />
     </Style>
 
     <Style x:Key="HeadlineLg" TargetType="Label">
+        <Setter Property="FontFamily" Value="Manrope" />
         <Setter Property="FontSize" Value="32" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="CharacterSpacing" Value="-0.4" />
     </Style>
 
     <Style x:Key="HeadlineMd" TargetType="Label">
-        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontFamily" Value="Manrope" />
+        <Setter Property="FontSize" Value="22" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="CharacterSpacing" Value="-0.2" />
     </Style>
 
     <Style x:Key="BodyLg" TargetType="Label">
-        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="17" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
     </Style>
 
     <Style x:Key="BodyMd" TargetType="Label">
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
     </Style>
 
     <Style x:Key="BodyMuted" TargetType="Label">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
     </Style>
 
     <Style x:Key="LabelCaps" TargetType="Label">
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="11" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
-        <Setter Property="CharacterSpacing" Value="1.5" />
+        <Setter Property="CharacterSpacing" Value="2.0" />
     </Style>
 
     <!-- Implicit Label fallback for any unstyled label = body md -->
     <Style TargetType="Label">
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="Inter" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
     </Style>
 
@@ -66,6 +78,36 @@
     <Style TargetType="ScrollView">
         <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
     </Style>
+
+    <!--
+        Shell chrome — override the .NET template defaults so the nav bar / tab bar
+        use Fast Track's actual palette (Surface + Primary) rather than OffBlack +
+        Magenta. ApplyToDerivedTypes ensures our AppShell inherits this.
+    -->
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Shell.ForegroundColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="Shell.TitleColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="Shell.DisabledColor" Value="{StaticResource OutlineVariant}" />
+        <Setter Property="Shell.UnselectedColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="Shell.NavBarHasShadow" Value="False" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource SurfaceContainerLowest}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Primary}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource OnSurfaceVariant}" />
+    </Style>
+
+    <!--
+        Reusable ambient gradient used on Home for depth — soft indigo tint at the
+        top, dissolving into Surface by ~30% of the way down. Living token so any
+        page that wants the same treatment can drop it in.
+    -->
+    <LinearGradientBrush x:Key="HomeAmbientBackground" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#1F1A2E" Offset="0.0" />
+        <GradientStop Color="#171520" Offset="0.18" />
+        <GradientStop Color="#131313" Offset="0.45" />
+        <GradientStop Color="#131313" Offset="1.0" />
+    </LinearGradientBrush>
 
     <!-- Cards -->
     <Style x:Key="Card" TargetType="Frame">
@@ -87,47 +129,78 @@
 
     <!-- Buttons -->
     <Style TargetType="Button">
+        <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="BackgroundColor" Value="{StaticResource PrimaryContainer}" />
         <Setter Property="TextColor" Value="{StaticResource Primary}" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="MinimumHeightRequest" Value="48" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="MinimumHeightRequest" Value="50" />
         <Setter Property="Padding" Value="16,12" />
+        <Setter Property="CharacterSpacing" Value="0.1" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="1.0" />
+                            <Setter Property="Opacity" Value="1.0" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.97" />
+                            <Setter Property="Opacity" Value="0.85" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.4" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style x:Key="DangerButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="BackgroundColor" Value="{StaticResource TertiaryContainer}" />
         <Setter Property="TextColor" Value="{StaticResource Tertiary}" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="MinimumHeightRequest" Value="48" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="MinimumHeightRequest" Value="50" />
     </Style>
 
     <Style x:Key="GhostButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{StaticResource Primary}" />
-        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderColor" Value="{StaticResource OutlineVariant}" />
         <Setter Property="BorderWidth" Value="1" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
         <Setter Property="MinimumHeightRequest" Value="44" />
     </Style>
 
     <Style x:Key="LinkButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{StaticResource Primary}" />
         <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Padding" Value="4,4" />
     </Style>
 
     <!-- Inputs -->
     <Style TargetType="Entry">
+        <Setter Property="FontFamily" Value="Inter" />
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
         <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
         <Setter Property="PlaceholderColor" Value="{StaticResource OnSurfaceVariant}" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="15" />
     </Style>
 
     <Style TargetType="DatePicker">
