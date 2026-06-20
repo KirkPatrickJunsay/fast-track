@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.AddPastFastPage"
+             x:DataType="vm:AddPastFastViewModel"
+             Title="Add past fast">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Label Text="Use this to migrate historical fasts from another app. The record appears in History &amp; Insights right away; it doesn't trigger XP or the celebration screen."
+                   Style="{StaticResource BodyMuted}" FontSize="12" />
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="START TIME" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <DatePicker Grid.Column="0" Date="{Binding StartDate}" />
+                        <TimePicker Grid.Column="1" Time="{Binding StartTime}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="END TIME" Style="{StaticResource LabelCaps}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <DatePicker Grid.Column="0" Date="{Binding EndDate}" />
+                        <TimePicker Grid.Column="1" Time="{Binding EndTime}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="PROTOCOL" Style="{StaticResource LabelCaps}" />
+                    <Picker ItemsSource="{Binding Protocols}"
+                            SelectedItem="{Binding SelectedProtocol}"
+                            ItemDisplayBinding="{Binding Name}"
+                            Title="Pick the plan you followed" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="HOW DID IT END?" Style="{StaticResource LabelCaps}" />
+                    <Picker ItemsSource="{Binding ReasonChoices}"
+                            SelectedItem="{Binding SelectedReason}"
+                            ItemDisplayBinding="{Binding Label}"
+                            Title="Pick a reason" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Button Text="Save past fast"
+                    Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBool}}"
+                    HorizontalOptions="Fill" Margin="0,8,0,0" />
+            <Button Text="Cancel"
+                    Style="{StaticResource LinkButton}"
+                    Command="{Binding CancelCommand}"
+                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

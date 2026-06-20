@@ -5,7 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FastTrack"
     xmlns:views="clr-namespace:FastTrack.Views"
-    Title="Fast Track">
+    Title="Fast Track"
+    BackgroundColor="{StaticResource Surface}"
+    ForegroundColor="{StaticResource OnSurface}"
+    TitleColor="{StaticResource OnSurface}"
+    UnselectedColor="{StaticResource OnSurfaceVariant}"
+    Shell.NavBarHasShadow="False"
+    Shell.TabBarBackgroundColor="{StaticResource SurfaceContainerLowest}"
+    Shell.TabBarForegroundColor="{StaticResource Primary}"
+    Shell.TabBarTitleColor="{StaticResource Primary}"
+    Shell.TabBarUnselectedColor="{StaticResource OnSurfaceVariant}">
 
     <!--
         BootPage is listed FIRST so it's the cold-launch route. It visually matches

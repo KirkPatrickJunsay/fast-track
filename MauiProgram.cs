@@ -82,6 +82,11 @@ public static class MauiProgram
 		services.AddSingleton<ICelebrationCarrier, CelebrationCarrier>();
 		services.AddSingleton<IArticleCatalog, ArticleCatalog>();
 		services.AddSingleton<IDashboardPreferencesService, DashboardPreferencesService>();
+#if ANDROID
+		services.AddSingleton<IFastingTickerService, MauiFastingTickerService>();
+#else
+		services.AddSingleton<IFastingTickerService, NullFastingTickerService>();
+#endif
 	}
 
 	private static void RegisterViewModels(IServiceCollection services)
@@ -107,6 +112,8 @@ public static class MauiProgram
 		services.AddTransient<ArticleViewModel>();
 		services.AddTransient<BootViewModel>();
 		services.AddTransient<CustomizeHomeViewModel>();
+		services.AddTransient<AddPastFastViewModel>();
+		services.AddTransient<ProfileViewModel>();
 	}
 
 	private static void RegisterViews(IServiceCollection services)
@@ -132,5 +139,7 @@ public static class MauiProgram
 		services.AddTransient<ArticleDetailPage>();
 		services.AddTransient<BootPage>();
 		services.AddTransient<CustomizeHomePage>();
+		services.AddTransient<AddPastFastPage>();
+		services.AddTransient<ProfilePage>();
 	}
 }

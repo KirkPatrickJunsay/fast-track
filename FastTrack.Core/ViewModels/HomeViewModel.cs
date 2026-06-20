@@ -485,6 +485,22 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         var goalMet = elapsed.TotalHours >= _activeFast.GoalHours;
         var stage = _stages.GetStage(elapsed.TotalHours);
 
+        // Upfront confirmation guards against accidental taps on the "End fast"
+        // button — especially important when a fast is mid-run and an early
+        // end would lose hours of progress. Wording adapts to goal status so
+        // the celebratory case still feels positive instead of cautionary.
+        var elapsedH = (int)elapsed.TotalHours;
+        var elapsedM = elapsed.Minutes;
+        var confirmMessage = goalMet
+            ? $"You've reached your goal at {elapsedH}h {elapsedM}m. Ready to wrap this fast?"
+            : $"You're {elapsedH}h {elapsedM}m into a {_activeFast.GoalHours:0.#}h fast. Ending now will be logged as a partial fast.";
+        var confirmed = await _dialogs.ConfirmAsync(
+            title: "End fast?",
+            message: confirmMessage,
+            ok: "End fast",
+            cancel: "Keep going");
+        if (!confirmed) return;
+
         FastEndReason reason;
         if (goalMet)
         {
@@ -493,13 +509,13 @@ public partial class HomeViewModel : ObservableObject, IDisposable
         else
         {
             var choice = await _dialogs.ShowActionSheetAsync(
-                "End fast early?",
+                "Reason for ending early?",
                 "Cancel",
                 "I'm hungry",
                 "Social event",
                 "Feeling unwell",
                 "Other");
-            if (choice is null) return; // user cancelled
+            if (choice is null) return; // user cancelled the reason picker
 
             reason = choice switch
             {
@@ -651,7 +667,9 @@ public partial class HomeViewModel : ObservableObject, IDisposable
             var isCurrent = row.Key == currentKey;
             row.IsCurrent = isCurrent;
             row.IsPast = inPast;
-            row.Opacity = isCurrent ? 1.0 : inPast ? 0.7 : 0.55;
+            // Stronger fade-out on past + future so the current card visibly dominates.
+            // Current = full strength; past = clearly done; future = quietly waiting.
+            row.Opacity = isCurrent ? 1.0 : inPast ? 0.55 : 0.45;
             row.StatusLabel = isCurrent ? "NOW" : inPast ? "REACHED" : "UPCOMING";
         }
     }
@@ -665,6 +683,22 @@ public partial class HomeViewModel : ObservableObject, IDisposable
             return;
         }
         EatingWindowRemaining = FormatDuration(remaining);
+    }
+
+    /// <summary>
+    /// Lightweight refresh used by the page's Window.Resumed handler so the
+    /// greeting (and date sub-line) stay current when the user returns from
+    /// background. Cheaper than a full LoadAsync: re-reads the profile and
+    /// rebuilds two labels, nothing else.
+    /// </summary>
+    public async Task RefreshGreetingAsync()
+    {
+        try
+        {
+            var profile = await _profiles.GetOrCreateAsync();
+            UpdateGreeting(profile.DisplayName);
+        }
+        catch { /* greeting is non-critical chrome */ }
     }
 
     private void UpdateGreeting(string? displayName)

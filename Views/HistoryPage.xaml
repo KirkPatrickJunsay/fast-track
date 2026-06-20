@@ -7,13 +7,22 @@
              x:DataType="vm:HistoryViewModel"
              Title="History">
 
-    <Grid Padding="20,12,20,32" RowDefinitions="Auto,Auto,*" RowSpacing="16">
-        <Label Grid.Row="0" Text="History" Style="{StaticResource HeadlineLg}" />
-        <Label Grid.Row="1"
-               Text="Review and edit past fasts."
-               Style="{StaticResource BodyMuted}" />
+    <Grid Padding="20,12,20,32" RowDefinitions="Auto,*" RowSpacing="16">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <Label Grid.Column="0"
+                   Text="Review and edit past fasts."
+                   Style="{StaticResource BodyMuted}"
+                   VerticalOptions="Center" />
+            <Button Grid.Column="1"
+                    Text="+ Add past"
+                    Style="{StaticResource GhostButton}"
+                    Command="{Binding AddPastFastCommand}"
+                    FontSize="12"
+                    Padding="12,6"
+                    MinimumHeightRequest="36" />
+        </Grid>
 
-        <VerticalStackLayout Grid.Row="2"
+        <VerticalStackLayout Grid.Row="1"
                              IsVisible="{Binding IsEmpty}"
                              HorizontalOptions="Center" VerticalOptions="Center"
                              Spacing="14">
@@ -23,12 +32,17 @@
             <Label Text="No fasts yet"
                    Style="{StaticResource HeadlineMd}"
                    HorizontalTextAlignment="Center" />
-            <Label Text="Finish a fast and it'll show up here."
+            <Label Text="Finish a fast and it'll show up here — or migrate past fasts from another app."
                    Style="{StaticResource BodyMuted}"
                    HorizontalTextAlignment="Center" />
+            <Button Text="+ Add past fast"
+                    Style="{StaticResource GhostButton}"
+                    Command="{Binding AddPastFastCommand}"
+                    HorizontalOptions="Center"
+                    Margin="0,6,0,0" />
         </VerticalStackLayout>
 
-        <RefreshView Grid.Row="2"
+        <RefreshView Grid.Row="1"
                      IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}"
                      RefreshColor="{StaticResource Primary}"

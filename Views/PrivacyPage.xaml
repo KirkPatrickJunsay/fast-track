@@ -16,11 +16,9 @@
                        HeightRequest="72" WidthRequest="72"
                        Aspect="AspectFit"
                        VerticalOptions="Center" />
-                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
-                    <Label Text="Privacy &amp; Terms" Style="{StaticResource HeadlineLg}" />
-                    <Label Text="{Binding LastUpdatedDisplay}"
-                           Style="{StaticResource BodyMuted}" FontSize="12" />
-                </VerticalStackLayout>
+                <Label Grid.Column="1" Text="{Binding LastUpdatedDisplay}"
+                       Style="{StaticResource BodyMuted}" FontSize="12"
+                       VerticalOptions="Center" />
             </Grid>
 
             <Label Text="{Binding Intro}" Style="{StaticResource BodyMd}" />

@@ -31,6 +31,10 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task OpenProfileAsync() =>
+        await _navigation.GoToAsync("ProfilePage");
+
+    [RelayCommand]
     private async Task OpenNotificationsAsync() =>
         await _navigation.GoToAsync("NotificationPreferencesPage");
 

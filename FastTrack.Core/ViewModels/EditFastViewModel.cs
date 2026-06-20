@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FastTrack.Data;
@@ -10,19 +11,33 @@ public partial class EditFastViewModel : ObservableObject
 {
     private readonly IFastingService _fasting;
     private readonly IFastRepository _fasts;
+    private readonly IFastingProtocolRepository _protocolsRepo;
     private readonly IDialogService _dialogs;
     private readonly INavigationService _navigation;
 
     private Fast? _fast;
+    private Guid _initialProtocolId;
     private bool _loaded;
 
     public string FastId { get; set; } = string.Empty;
 
-    [ObservableProperty] private bool isPastFast;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActiveFast))]
+    private bool isPastFast;
+    public bool IsActiveFast => !IsPastFast;
+
     [ObservableProperty] private DateTime startDate = DateTime.Today;
     [ObservableProperty] private TimeSpan startTime = TimeSpan.Zero;
     [ObservableProperty] private DateTime endDate = DateTime.Today;
     [ObservableProperty] private TimeSpan endTime = TimeSpan.Zero;
+
+    /// <summary>
+    /// All protocols available for swap on an in-progress fast. Populated from
+    /// the catalog on Load; the UI binds a Picker to this list.
+    /// </summary>
+    public ObservableCollection<FastingProtocol> Protocols { get; } = new();
+
+    [ObservableProperty] private FastingProtocol? selectedProtocol;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
@@ -33,11 +48,13 @@ public partial class EditFastViewModel : ObservableObject
     public EditFastViewModel(
         IFastingService fasting,
         IFastRepository fasts,
+        IFastingProtocolRepository protocolsRepo,
         IDialogService dialogs,
         INavigationService navigation)
     {
         _fasting = fasting;
         _fasts = fasts;
+        _protocolsRepo = protocolsRepo;
         _dialogs = dialogs;
         _navigation = navigation;
     }
@@ -69,6 +86,20 @@ public partial class EditFastViewModel : ObservableObject
             EndDate = endLocal.Date;
             EndTime = endLocal.TimeOfDay;
         }
+
+        // Populate the protocol picker. Only meaningful for active fasts —
+        // protocol-swap is intentionally a live-fast feature.
+        if (!IsPastFast)
+        {
+            Protocols.Clear();
+            foreach (var p in await _protocolsRepo.GetAllAsync())
+            {
+                Protocols.Add(p);
+            }
+            _initialProtocolId = _fast.ProtocolId;
+            SelectedProtocol = Protocols.FirstOrDefault(p => p.Id == _fast.ProtocolId);
+        }
+
         _loaded = true;
     }
 
@@ -90,7 +121,20 @@ public partial class EditFastViewModel : ObservableObject
             }
 
             await _fasting.EditTimesAsync(_fast.Id, newStartUtc, newEndUtc);
-            await _dialogs.ShowAlertAsync("Saved", "Fast times updated.");
+
+            // If the user picked a different protocol on an active fast, apply it.
+            // Times save first so audit trail (OriginalStartUtc) is captured against
+            // the original protocol; protocol swap then updates GoalHours + reschedules
+            // notifications + refreshes the live ticker.
+            if (!IsPastFast
+                && SelectedProtocol is not null
+                && SelectedProtocol.Id != _initialProtocolId)
+            {
+                await _fasting.ChangeProtocolAsync(_fast.Id, SelectedProtocol.Id);
+                _initialProtocolId = SelectedProtocol.Id;
+            }
+
+            await _dialogs.ShowAlertAsync("Saved", IsPastFast ? "Fast times updated." : "Fast updated.");
             await _navigation.GoBackAsync();
         }
         catch (Exception ex)

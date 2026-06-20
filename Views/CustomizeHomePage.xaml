@@ -13,11 +13,10 @@
                 <Image Grid.Column="0" Source="settings_customize.svg"
                        HeightRequest="64" WidthRequest="64"
                        Aspect="AspectFit" VerticalOptions="Center" />
-                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
-                    <Label Text="Customize home" Style="{StaticResource HeadlineLg}" />
-                    <Label Text="Toggle which cards show on the Home tab. Changes save automatically."
-                           Style="{StaticResource BodyMuted}" FontSize="13" />
-                </VerticalStackLayout>
+                <Label Grid.Column="1"
+                       Text="Toggle which cards show on the Home tab. Changes save automatically."
+                       Style="{StaticResource BodyMuted}" FontSize="13"
+                       VerticalOptions="Center" />
             </Grid>
 
             <Frame Style="{StaticResource Card}">

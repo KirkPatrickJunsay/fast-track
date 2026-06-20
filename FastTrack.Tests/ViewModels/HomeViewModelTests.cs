@@ -70,6 +70,11 @@ public class HomeViewModelTests
             return Task.FromResult(ended);
         }
 
+        public Task<Fast> ChangeProtocolAsync(Guid fastId, Guid newProtocolId) =>
+            throw new NotImplementedException();
+        public Task<Fast> AddPastFastAsync(Guid protocolId, DateTime startUtc, DateTime endUtc, FastEndReason reason) =>
+            throw new NotImplementedException();
+
         public Task<Fast> EditTimesAsync(Guid fastId, DateTime newStartUtc, DateTime? newEndUtc) =>
             throw new NotImplementedException();
     }
@@ -249,12 +254,38 @@ public class HomeViewModelTests
             GoalHours = 16,
         };
         var (vm, fasting, _, _, dialogs, _, _, _) = Build(active: active);
+        dialogs.Setup(d => d.ConfirmAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(true);
         await vm.LoadAsync();
 
         await vm.EndFastCommand.ExecuteAsync(null);
 
         dialogs.Verify(d => d.ShowActionSheetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()), Times.Never);
         fasting.EndedFastIds.Should().ContainSingle().Which.Should().Be(active.Id);
+    }
+
+    [Fact]
+    public async Task EndFastAsync_declined_confirmation_does_nothing()
+    {
+        // Misclick safeguard: the confirmation dialog returning Cancel
+        // must abort entirely — no reason picker, no EndAsync call.
+        var active = new Fast
+        {
+            Id = Guid.NewGuid(),
+            ProtocolId = DefaultProtocol.Id,
+            StartUtc = DateTime.UtcNow.AddHours(-3),
+            GoalHours = 16,
+        };
+        var (vm, fasting, _, _, dialogs, _, _, _) = Build(active: active);
+        dialogs.Setup(d => d.ConfirmAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(false);
+        await vm.LoadAsync();
+
+        await vm.EndFastCommand.ExecuteAsync(null);
+
+        dialogs.Verify(d => d.ShowActionSheetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()), Times.Never);
+        fasting.EndedFastIds.Should().BeEmpty();
+        vm.IsActive.Should().BeTrue();
     }
 
     [Fact]
@@ -268,6 +299,8 @@ public class HomeViewModelTests
             GoalHours = 16,
         };
         var (vm, fasting, _, _, dialogs, _, _, _) = Build(active: active);
+        dialogs.Setup(d => d.ConfirmAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(true);
         dialogs.Setup(d => d.ShowActionSheetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()))
                .ReturnsAsync((string?)null);
         await vm.LoadAsync();
@@ -289,6 +322,8 @@ public class HomeViewModelTests
             GoalHours = 16,
         };
         var (vm, fasting, _, _, dialogs, _, _, _) = Build(active: active);
+        dialogs.Setup(d => d.ConfirmAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .ReturnsAsync(true);
         dialogs.Setup(d => d.ShowActionSheetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()))
                .ReturnsAsync("I'm hungry");
         await vm.LoadAsync();

@@ -57,6 +57,14 @@ public class SettingsViewModelTests
     }
 
     [Fact]
+    public async Task OpenProfile_navigates_to_profile_page()
+    {
+        var (vm, _, _, nav, _) = Build();
+        await vm.OpenProfileCommand.ExecuteAsync(null);
+        nav.Verify(n => n.GoToAsync("ProfilePage"), Times.Once);
+    }
+
+    [Fact]
     public async Task OpenNotifications_navigates_to_prefs_page()
     {
         var (vm, _, _, nav, _) = Build();

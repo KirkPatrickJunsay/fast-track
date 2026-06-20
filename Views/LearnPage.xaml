@@ -10,10 +10,7 @@
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
             <!-- HEADER -->
-            <VerticalStackLayout Spacing="4">
-                <Label Text="{Binding Headline}" Style="{StaticResource HeadlineLg}" />
-                <Label Text="{Binding Subhead}" Style="{StaticResource BodyMuted}" />
-            </VerticalStackLayout>
+            <Label Text="{Binding Subhead}" Style="{StaticResource BodyMuted}" />
 
             <!-- ARTICLES -->
             <Label Text="ARTICLES" Style="{StaticResource LabelCaps}" />

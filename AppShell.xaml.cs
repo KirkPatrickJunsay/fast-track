@@ -22,6 +22,8 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("PrivacyPage", typeof(PrivacyPage));
 		Routing.RegisterRoute("ArticleDetailPage", typeof(ArticleDetailPage));
 		Routing.RegisterRoute("CustomizeHomePage", typeof(CustomizeHomePage));
+		Routing.RegisterRoute("AddPastFastPage", typeof(AddPastFastPage));
+		Routing.RegisterRoute("ProfilePage", typeof(ProfilePage));
 		// Cold-launch routing is owned by BootPage now (the default ShellContent).
 	}
 }

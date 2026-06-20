@@ -9,11 +9,12 @@
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
-            <Label Text="Settings" Style="{StaticResource HeadlineLg}" />
-
             <!-- PROFILE -->
             <Frame Style="{StaticResource Card}">
-                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenProfileCommand}" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
                     <Image Grid.Column="0"
                            Source="settings_profile.svg"
                            HeightRequest="56" WidthRequest="56"
@@ -23,6 +24,9 @@
                         <Label Text="PROFILE" Style="{StaticResource LabelCaps}" />
                         <Label Text="{Binding ProfileSummary}" Style="{StaticResource BodyMd}" />
                     </VerticalStackLayout>
+                    <Label Grid.Column="2" Text="›"
+                           FontSize="28" TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
                 </Grid>
             </Frame>
 

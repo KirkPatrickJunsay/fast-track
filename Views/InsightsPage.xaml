@@ -13,7 +13,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
-            <Label Text="Insights" Style="{StaticResource HeadlineLg}" />
             <Label Text="Your fasting story over time." Style="{StaticResource BodyMuted}" />
 
             <!-- WEEKLY SUMMARY -->

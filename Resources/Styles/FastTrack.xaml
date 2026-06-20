@@ -80,22 +80,13 @@
     </Style>
 
     <!--
-        Shell chrome — override the .NET template defaults so the nav bar / tab bar
-        use Fast Track's actual palette (Surface + Primary) rather than OffBlack +
-        Magenta. ApplyToDerivedTypes ensures our AppShell inherits this.
+        Shell chrome lives directly on AppShell.xaml (TabBarBackgroundColor /
+        ForegroundColor / etc.) rather than as an implicit Style here. An implicit
+        Style TargetType="Shell" in a merged ResourceDictionary throws during
+        ResourceDictionary.GetOrCreateInstance on at least Android — bisected the
+        crash to that single construct. Inline attributes on AppShell are simpler
+        and avoid the trap.
     -->
-    <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Surface}" />
-        <Setter Property="Shell.ForegroundColor" Value="{StaticResource OnSurface}" />
-        <Setter Property="Shell.TitleColor" Value="{StaticResource OnSurface}" />
-        <Setter Property="Shell.DisabledColor" Value="{StaticResource OutlineVariant}" />
-        <Setter Property="Shell.UnselectedColor" Value="{StaticResource OnSurfaceVariant}" />
-        <Setter Property="Shell.NavBarHasShadow" Value="False" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource SurfaceContainerLowest}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Primary}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Primary}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource OnSurfaceVariant}" />
-    </Style>
 
     <!--
         Reusable ambient gradient used on Home for depth — soft indigo tint at the

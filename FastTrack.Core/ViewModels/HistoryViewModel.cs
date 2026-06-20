@@ -97,6 +97,14 @@ public partial class HistoryViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task AddPastFastAsync()
+    {
+        // OnAppearing on HistoryPage calls LoadAsync, so the new record will
+        // surface in the list automatically when the user returns from saving.
+        await _navigation.GoToAsync("AddPastFastPage");
+    }
+
+    [RelayCommand]
     private async Task OptionsAsync(HistoryItemViewModel? item)
     {
         if (item is null) return;

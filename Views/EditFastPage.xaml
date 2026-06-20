@@ -9,8 +9,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
-            <Label Text="Edit fast" Style="{StaticResource HeadlineLg}" />
-
             <Frame Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="START TIME" Style="{StaticResource LabelCaps}" />
@@ -28,6 +26,23 @@
                         <DatePicker Grid.Column="0" Date="{Binding EndDate}" />
                         <TimePicker Grid.Column="1" Time="{Binding EndTime}" />
                     </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--
+                Protocol swap — only shown for active fasts. Picking a different
+                protocol here updates GoalHours, reschedules stage notifications,
+                and refreshes the live timer notification.
+            -->
+            <Frame Style="{StaticResource Card}" IsVisible="{Binding IsActiveFast}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="FASTING PLAN" Style="{StaticResource LabelCaps}" />
+                    <Label Text="Switch your protocol mid-fast — your start time stays the same, the goal updates to the new plan."
+                           Style="{StaticResource BodyMuted}" FontSize="12" />
+                    <Picker ItemsSource="{Binding Protocols}"
+                            SelectedItem="{Binding SelectedProtocol}"
+                            ItemDisplayBinding="{Binding Name}"
+                            Title="Select a protocol" />
                 </VerticalStackLayout>
             </Frame>
 

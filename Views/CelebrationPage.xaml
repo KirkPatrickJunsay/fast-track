@@ -11,12 +11,6 @@
 
     <Grid x:Name="RootGrid" Padding="20,32,20,32" RowDefinitions="*,Auto">
 
-        <!-- Confetti overlay spans the whole page; pointer-transparent (no gesture recognizers attached). -->
-        <GraphicsView x:Name="ConfettiView"
-                      Grid.Row="0" Grid.RowSpan="2"
-                      InputTransparent="True"
-                      HorizontalOptions="Fill" VerticalOptions="Fill" />
-
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="18" VerticalOptions="Center">
 
@@ -108,5 +102,15 @@
                 Command="{Binding ContinueCommand}"
                 HorizontalOptions="Fill"
                 Margin="0,16,0,0" />
+
+        <!--
+            Confetti overlay is the LAST child so it z-orders on top of the
+            cards and the Continue button. InputTransparent="True" means it
+            still lets taps pass through to the controls underneath.
+        -->
+        <GraphicsView x:Name="ConfettiView"
+                      Grid.Row="0" Grid.RowSpan="2"
+                      InputTransparent="True"
+                      HorizontalOptions="Fill" VerticalOptions="Fill" />
     </Grid>
 </ContentPage>

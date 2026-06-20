@@ -9,8 +9,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
-            <Label Text="Log weight" Style="{StaticResource HeadlineLg}" />
-
             <Frame Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="UNIT" Style="{StaticResource LabelCaps}" />

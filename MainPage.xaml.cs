@@ -58,6 +58,17 @@ public partial class MainPage : ContentPage
 	protected override async void OnAppearing()
 	{
 		base.OnAppearing();
+
+		// Window.Resumed fires when the user brings the app back from background.
+		// We hook the greeting refresh here so "Good morning / afternoon / evening"
+		// (and the date sub-line) update if the app crossed a time-of-day boundary
+		// while it was suspended. Page is foreground at this point so Window is non-null.
+		if (Window is not null)
+		{
+			Window.Resumed -= OnWindowResumed;
+			Window.Resumed += OnWindowResumed;
+		}
+
 		await _vm.LoadAsync();
 		_ring.Progress = _vm.RawProgress;
 		_ring.GoalMet = _vm.IsGoalMet;
@@ -75,6 +86,12 @@ public partial class MainPage : ContentPage
 	protected override void OnDisappearing()
 	{
 		base.OnDisappearing();
+		if (Window is not null) Window.Resumed -= OnWindowResumed;
 		_vm.Dispose();
+	}
+
+	private async void OnWindowResumed(object? sender, EventArgs e)
+	{
+		await _vm.RefreshGreetingAsync();
 	}
 }

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FastTrack.ViewModels;assembly=FastTrack.Core"
+             x:Class="FastTrack.Views.ProfilePage"
+             x:DataType="vm:ProfileViewModel"
+             Title="Profile">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Image Grid.Column="0" Source="settings_profile.svg"
+                       HeightRequest="64" WidthRequest="64"
+                       Aspect="AspectFit" VerticalOptions="Center" />
+                <Label Grid.Column="1"
+                       Text="Adjust how Fast Track greets you and which protocols it suggests."
+                       Style="{StaticResource BodyMuted}" FontSize="13"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <!-- DISPLAY NAME -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="DISPLAY NAME" Style="{StaticResource LabelCaps}" />
+                    <Entry Text="{Binding DisplayName}"
+                           Placeholder="Your name"
+                           ClearButtonVisibility="WhileEditing"
+                           MaxLength="40" />
+                    <Label Text="Used in the greeting on the Home tab. Leave blank for the default."
+                           Style="{StaticResource BodyMuted}" FontSize="11" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- EXPERIENCE LEVEL -->
+            <Frame Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="FASTING EXPERIENCE" Style="{StaticResource LabelCaps}" />
+
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <!-- Beginner -->
+                        <Border Grid.Column="0"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="{StaticResource OutlineVariant}"
+                                StrokeThickness="1"
+                                Background="{StaticResource SurfaceContainerLow}"
+                                Padding="10,12">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsBeginnerSelected}" Value="True">
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                    <Setter Property="StrokeThickness" Value="2" />
+                                    <Setter Property="Background" Value="{StaticResource SurfaceContainer}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PickBeginnerCommand}" />
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                <Label Text="Beginner"
+                                       FontAttributes="Bold" FontSize="13"
+                                       HorizontalTextAlignment="Center" />
+                                <Label Text="New to IF"
+                                       Style="{StaticResource BodyMuted}" FontSize="10"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Intermediate -->
+                        <Border Grid.Column="1"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="{StaticResource OutlineVariant}"
+                                StrokeThickness="1"
+                                Background="{StaticResource SurfaceContainerLow}"
+                                Padding="10,12">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsIntermediateSelected}" Value="True">
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                    <Setter Property="StrokeThickness" Value="2" />
+                                    <Setter Property="Background" Value="{StaticResource SurfaceContainer}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PickIntermediateCommand}" />
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                <Label Text="Intermediate"
+                                       FontAttributes="Bold" FontSize="13"
+                                       HorizontalTextAlignment="Center" />
+                                <Label Text="Daily 16:8+"
+                                       Style="{StaticResource BodyMuted}" FontSize="10"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Advanced -->
+                        <Border Grid.Column="2"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="{StaticResource OutlineVariant}"
+                                StrokeThickness="1"
+                                Background="{StaticResource SurfaceContainerLow}"
+                                Padding="10,12">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsAdvancedSelected}" Value="True">
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                    <Setter Property="StrokeThickness" Value="2" />
+                                    <Setter Property="Background" Value="{StaticResource SurfaceContainer}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PickAdvancedCommand}" />
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                <Label Text="Advanced"
+                                       FontAttributes="Bold" FontSize="13"
+                                       HorizontalTextAlignment="Center" />
+                                <Label Text="OMAD / extended"
+                                       Style="{StaticResource BodyMuted}" FontSize="10"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <Label Text="{Binding LevelHint}"
+                           Style="{StaticResource BodyMuted}" FontSize="12"
+                           Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="To change Educational mode, use Settings → Advanced → Redo onboarding (it walks the safety screening again)."
+                   Style="{StaticResource BodyMuted}" FontSize="11" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Tertiary}" FontSize="13"
+                   IsVisible="{Binding HasError}" />
+
+            <Button Text="Save changes"
+                    Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding IsSaving, Converter={StaticResource InverseBool}}"
+                    HorizontalOptions="Fill" Margin="0,8,0,0" />
+            <Button Text="Cancel"
+                    Style="{StaticResource LinkButton}"
+                    Command="{Binding CancelCommand}"
+                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

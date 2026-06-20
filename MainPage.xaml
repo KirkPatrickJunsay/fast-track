@@ -101,28 +101,40 @@
 
                     <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
 
-                    <!-- Mood + Weight side-by-side -->
+                    <!--
+                        Mood + Weight side-by-side. Each column uses a locked Grid
+                        (RowDefinitions=16,38,16,Auto) so the four rows — caps label,
+                        value, sub-caption, button — stay vertically aligned even when
+                        the value lengths differ (an emoji is taller than "—", the
+                        delta caption can wrap to one or two lines, etc).
+                    -->
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                        <VerticalStackLayout Grid.Column="0" Spacing="6">
-                            <Label Text="MOOD" Style="{StaticResource LabelCaps}" />
-                            <Label Text="{Binding LatestMoodEmoji}" FontSize="28" />
-                            <Label Text="{Binding LatestMoodAgo}" Style="{StaticResource BodyMuted}" FontSize="11" />
-                            <Button Text="Log mood"
+                        <Grid Grid.Column="0" RowDefinitions="16,38,16,Auto" RowSpacing="6">
+                            <Label Grid.Row="0" Text="MOOD" Style="{StaticResource LabelCaps}" VerticalOptions="Center" />
+                            <Label Grid.Row="1" Text="{Binding LatestMoodEmoji}"
+                                   FontSize="28" VerticalOptions="Center" />
+                            <Label Grid.Row="2" Text="{Binding LatestMoodAgo}"
+                                   Style="{StaticResource BodyMuted}" FontSize="11"
+                                   LineBreakMode="TailTruncation" VerticalOptions="Center" />
+                            <Button Grid.Row="3" Text="Log mood"
                                     Style="{StaticResource GhostButton}"
                                     Command="{Binding OpenLogMoodCommand}"
                                     HorizontalOptions="Fill"
                                     Margin="0,4,0,0" />
-                        </VerticalStackLayout>
-                        <VerticalStackLayout Grid.Column="1" Spacing="6">
-                            <Label Text="WEIGHT" Style="{StaticResource LabelCaps}" />
-                            <Label Text="{Binding LatestWeightDisplay}" FontSize="22" FontAttributes="Bold" />
-                            <Label Text="{Binding WeightDeltaDisplay}" Style="{StaticResource BodyMuted}" FontSize="11" />
-                            <Button Text="Log weight"
+                        </Grid>
+                        <Grid Grid.Column="1" RowDefinitions="16,38,16,Auto" RowSpacing="6">
+                            <Label Grid.Row="0" Text="WEIGHT" Style="{StaticResource LabelCaps}" VerticalOptions="Center" />
+                            <Label Grid.Row="1" Text="{Binding LatestWeightDisplay}"
+                                   FontSize="22" FontAttributes="Bold" VerticalOptions="Center" />
+                            <Label Grid.Row="2" Text="{Binding WeightDeltaDisplay}"
+                                   Style="{StaticResource BodyMuted}" FontSize="11"
+                                   LineBreakMode="TailTruncation" VerticalOptions="Center" />
+                            <Button Grid.Row="3" Text="Log weight"
                                     Style="{StaticResource GhostButton}"
                                     Command="{Binding OpenLogWeightCommand}"
                                     HorizontalOptions="Fill"
                                     Margin="0,4,0,0" />
-                        </VerticalStackLayout>
+                        </Grid>
                     </Grid>
                 </VerticalStackLayout>
             </Frame>
@@ -180,7 +192,7 @@
                     <Label Text="{Binding ProgressPercent}"
                            Style="{StaticResource BodyMuted}"
                            HorizontalOptions="Center" />
-                    <Button Text="Edit start time"
+                    <Button Text="Edit start time / fasting plan"
                             Style="{StaticResource LinkButton}"
                             Command="{Binding EditActiveFastCommand}"
                             HorizontalOptions="Center"
@@ -265,9 +277,15 @@
                     <Label Grid.Column="1" Text="swipe →" Style="{StaticResource BodyMuted}" FontSize="11" />
                 </Grid>
 
+                <!--
+                    Compact roadmap cards — at-a-glance only. Tap opens StageDetailPage
+                    for the full long description + feelings list. 170dp track lets us
+                    fit header + one-line stage caption + 2-line summary + tap hint
+                    with no dead space on any stage.
+                -->
                 <CollectionView x:Name="StagesView" ItemsSource="{Binding Stages}"
                                 SelectionMode="None"
-                                HeightRequest="500">
+                                HeightRequest="170">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal"
                                            ItemSpacing="12"
@@ -276,64 +294,93 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="vm:StageRowViewModel">
-                            <Border StrokeShape="RoundRectangle 16"
+                            <!--
+                                DataTriggers on IsCurrent / IsPast swap the Border's
+                                Stroke + StrokeThickness + Background so the current
+                                stage card visibly lights up in brand indigo against
+                                the muted past + future siblings. The card-level
+                                Opacity binding still does the global dimming.
+                            -->
+                            <Border StrokeShape="RoundRectangle 14"
                                     Stroke="{StaticResource OutlineVariant}"
                                     StrokeThickness="1"
                                     Background="{StaticResource SurfaceContainerLow}"
-                                    WidthRequest="280"
-                                    Padding="20"
+                                    WidthRequest="260"
+                                    Padding="12"
                                     Opacity="{Binding Opacity}">
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding IsCurrent}" Value="True">
+                                        <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                        <Setter Property="StrokeThickness" Value="2" />
+                                        <Setter Property="Background" Value="{StaticResource SurfaceContainer}" />
+                                    </DataTrigger>
+                                </Border.Triggers>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=OpenStageCommand}"
                                         CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
-                                <VerticalStackLayout Spacing="14">
-                                    <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
-                                        <Label Grid.Column="0"
-                                               Text="{Binding Index, StringFormat='STAGE {0} OF 7'}"
-                                               Style="{StaticResource LabelCaps}" />
-                                        <Border Grid.Column="1"
+                                <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="4">
+                                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                        <Image Grid.Column="0" Source="{Binding IconAsset}"
+                                               HeightRequest="36" WidthRequest="36"
+                                               Aspect="AspectFit" VerticalOptions="Center" />
+                                        <VerticalStackLayout Grid.Column="1" Spacing="0" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}"
+                                                   Style="{StaticResource HeadlineMd}"
+                                                   FontSize="15" LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Range}"
+                                                   Style="{StaticResource BodyMuted}"
+                                                   FontSize="11" />
+                                        </VerticalStackLayout>
+
+                                        <!-- NOW chip — brand indigo, only when this is the active stage. -->
+                                        <Border Grid.Column="2"
                                                 StrokeShape="RoundRectangle 999"
-                                                Background="{StaticResource PrimaryContainer}"
-                                                Padding="8,3"
+                                                Background="{StaticResource Primary}"
+                                                Stroke="{StaticResource Primary}"
+                                                StrokeThickness="0"
+                                                Padding="9,3"
+                                                VerticalOptions="Center"
                                                 IsVisible="{Binding IsCurrent}">
-                                            <Label Text="{Binding StatusLabel}"
+                                            <Label Text="NOW"
                                                    FontSize="10" FontAttributes="Bold"
-                                                   CharacterSpacing="1.5"
-                                                   TextColor="{StaticResource Primary}" />
+                                                   CharacterSpacing="1.8"
+                                                   TextColor="{StaticResource OnPrimary}" />
+                                        </Border>
+
+                                        <!-- REACHED chip — sage, only when stage is in the past. -->
+                                        <Border Grid.Column="2"
+                                                StrokeShape="RoundRectangle 999"
+                                                Stroke="{StaticResource Secondary}"
+                                                StrokeThickness="1"
+                                                Background="Transparent"
+                                                Padding="8,2"
+                                                VerticalOptions="Center"
+                                                IsVisible="{Binding IsPast}">
+                                            <Label Text="✓ REACHED"
+                                                   FontSize="9" FontAttributes="Bold"
+                                                   CharacterSpacing="1.2"
+                                                   TextColor="{StaticResource Secondary}" />
                                         </Border>
                                     </Grid>
 
-                                    <Image Source="{Binding IconAsset}"
-                                           HeightRequest="120" WidthRequest="120"
-                                           HorizontalOptions="Center"
-                                           Aspect="AspectFit" />
+                                    <Label Grid.Row="1"
+                                           Text="{Binding Index, StringFormat='STAGE {0} OF 7'}"
+                                           Style="{StaticResource LabelCaps}" FontSize="9" />
 
-                                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
-                                        <Label Text="{Binding Name}"
-                                               Style="{StaticResource HeadlineMd}"
-                                               HorizontalTextAlignment="Center" />
-                                        <Label Text="{Binding Range}"
-                                               Style="{StaticResource BodyMuted}"
-                                               FontSize="12"
-                                               HorizontalTextAlignment="Center" />
-                                    </VerticalStackLayout>
-
-                                    <Label Text="{Binding LongDescription}"
+                                    <Label Grid.Row="2" Text="{Binding Summary}"
                                            Style="{StaticResource BodyMd}"
-                                           FontSize="14"
-                                           HorizontalTextAlignment="Center"
-                                           LineBreakMode="WordWrap" />
+                                           FontSize="12"
+                                           LineBreakMode="TailTruncation"
+                                           MaxLines="2"
+                                           VerticalOptions="Start" />
 
-                                    <BoxView HeightRequest="1"
-                                             Color="{StaticResource OutlineVariant}" />
-
-                                    <Label Text="{Binding FeelingsBulleted}"
+                                    <Label Grid.Row="3" Text="Tap to read more →"
                                            Style="{StaticResource BodyMuted}"
-                                           FontSize="13"
-                                           LineBreakMode="WordWrap" />
-                                </VerticalStackLayout>
+                                           FontSize="10"
+                                           HorizontalOptions="End" />
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

@@ -10,6 +10,12 @@ public enum QuestType
     TryNewProtocol = 3,
     FinishBeforeNoon = 4,
     DontEndEarly = 5,
+    /// <summary>End a fast after 6pm local — the opposite of FinishBeforeNoon.</summary>
+    FinishAfter6pm = 6,
+    /// <summary>Fast ended on Saturday or Sunday (local).</summary>
+    WeekendFast = 7,
+    /// <summary>This fast's start is within 24h of the previous completed fast's end (back-to-back consistency).</summary>
+    BackToBackWithin24h = 8,
 }
 
 /// <summary>

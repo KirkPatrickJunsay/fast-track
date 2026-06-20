@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true">
+		<!--
+		    Live fasting timer foreground service. Declared explicitly (rather than
+		    purely via the [Service] attribute) so we can attach the SPECIAL_USE_FGS_SUBTYPE
+		    property required by Android 14+ — it justifies the service's existence to
+		    the Play Console review team.
+		-->
+		<service
+			android:name="com.codesandchips.fasttrack.FastingForegroundService"
+			android:exported="false"
+			android:foregroundServiceType="specialUse">
+			<property
+				android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+				android:value="Persistent fasting-timer notification showing elapsed hours since the user started a fast. The user explicitly starts the service by tapping &quot;Start fast&quot;; it ends when they tap &quot;End fast&quot;. No sensors, network, or background tasks are used." />
+		</service>
+	</application>
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -8,6 +24,26 @@
 	<!-- Notifications (Plugin.LocalNotification) -->
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-	<uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+	<!--
+	    Plugin.LocalNotification declares SCHEDULE_EXACT_ALARM and USE_EXACT_ALARM
+	    in its own manifest. Google reserves USE_EXACT_ALARM for calendar / alarm-clock
+	    apps only — declaring it triggers a Play Console policy review we'd fail.
+	    Stage milestone notifications work fine on inexact alarms (a 5–15 min drift
+	    on a multi-hour fast is imperceptible). tools:node="remove" strips the
+	    permission from the merged manifest regardless of what libraries declare.
+	-->
+	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
+	<uses-permission android:name="android.permission.USE_EXACT_ALARM" tools:node="remove" />
+
+	<!--
+	    Live fasting timer notification — a foreground service hosts the persistent
+	    chronometer notification so it survives the app being swiped out of recents.
+	    Android 14+ requires a typed permission that matches the service's
+	    foregroundServiceType. We use specialUse because the service is a stopwatch,
+	    not a sensor consumer — the typed Health variant would force us to declare
+	    ACTIVITY_RECOGNITION / BODY_SENSORS which we genuinely don't need.
+	-->
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 </manifest>

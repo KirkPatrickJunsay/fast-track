@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--
-        These three control Android system chrome tinting (status bar, navigation bar,
-        Maui.SplashTheme background). Matched to Fast Track's Surface #131313 and Primary
-        #C4C0FF so the system bars blend into the app instead of advertising the .NET
-        template's old indigo-violet defaults.
+        Android system chrome + Material dialog tinting.
+
+        Why these three colours are split the way they are:
+        - colorPrimaryDark drives the STATUS BAR background — we want this matched
+          to our Surface so the status bar blends with the app instead of showing
+          the old indigo-violet .NET template default.
+        - colorPrimary drives the MATERIAL DIALOG BUTTON TEXT (OK / Cancel on
+          TimePicker, DatePicker, AlertDialog, etc). It must contrast with the
+          dialog background — using Surface here made buttons invisible on the
+          dark dialog. Indigo Primary reads cleanly on both light and dark.
+        - colorAccent is the legacy accent (checkboxes, switches, progress bars).
     -->
-    <color name="colorPrimary">#131313</color>
+    <color name="colorPrimary">#C4C0FF</color>
     <color name="colorPrimaryDark">#131313</color>
     <color name="colorAccent">#C4C0FF</color>
 </resources>

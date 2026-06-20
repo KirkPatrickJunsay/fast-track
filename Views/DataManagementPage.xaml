@@ -9,7 +9,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
-            <Label Text="Your data" Style="{StaticResource HeadlineLg}" />
             <Label Text="Everything stays on this device. Use export to back up or move to a new phone."
                    Style="{StaticResource BodyMuted}" />
 

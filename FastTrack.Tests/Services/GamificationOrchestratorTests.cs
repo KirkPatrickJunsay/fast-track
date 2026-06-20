@@ -16,6 +16,8 @@ public class GamificationOrchestratorTests
         public Task<Fast> StartAsync(Guid p, DateTime? s = null) => throw new NotImplementedException();
         public Task<Fast> EndAsync(Guid id, FastEndReason r, DateTime? e = null) => throw new NotImplementedException();
         public Task<Fast> EditTimesAsync(Guid id, DateTime s, DateTime? e) => throw new NotImplementedException();
+        public Task<Fast> ChangeProtocolAsync(Guid id, Guid newProtocolId) => throw new NotImplementedException();
+        public Task<Fast> AddPastFastAsync(Guid p, DateTime s, DateTime e, FastEndReason r) => throw new NotImplementedException();
         public void Raise(Fast f) => FastCompleted?.Invoke(this, f);
     }
 

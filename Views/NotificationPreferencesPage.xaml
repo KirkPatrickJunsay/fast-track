@@ -9,7 +9,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="20,12,20,32" Spacing="16">
 
-            <Label Text="🔔 Notifications" Style="{StaticResource HeadlineLg}" />
             <Label Text="Local-only. Nothing is sent anywhere. Toggle off any category you don't want."
                    Style="{StaticResource BodyMuted}" />
 

@@ -152,6 +152,97 @@ public class QuestServiceTests
     }
 
     [Fact]
+    public async Task OnFastCompletedAsync_credits_finish_evening_when_end_after_6pm()
+    {
+        var (sut, store, xp, _) = Build();
+        var today = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc);
+        store.Add(new DailyQuest { Id = 1, LocalDateUtc = today, QuestKey = "finish_evening", Target = 1, XpReward = 30 });
+
+        // 7pm local end — Hour=19, past the 18 threshold.
+        var endLocal = DateTime.Today.AddHours(19);
+        var fast = new Fast
+        {
+            Id = Guid.NewGuid(),
+            StartUtc = endLocal.AddHours(-16).ToUniversalTime(),
+            EndUtc = endLocal.ToUniversalTime(),
+            GoalHours = 16,
+            EndReason = FastEndReason.Completed,
+        };
+
+        var updates = await sut.OnFastCompletedAsync(fast, new FastingProtocol(), new List<Fast> { fast });
+
+        updates.Should().ContainSingle(u => u.Definition.Key == "finish_evening" && u.NewlyCompleted);
+        xp.Verify(x => x.AwardAsync(30), Times.Once);
+    }
+
+    [Fact]
+    public async Task OnFastCompletedAsync_credits_weekend_warrior_only_on_sat_or_sun()
+    {
+        var (sut, store, xp, _) = Build();
+        var today = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc);
+        store.Add(new DailyQuest { Id = 1, LocalDateUtc = today, QuestKey = "weekend_warrior", Target = 1, XpReward = 45 });
+
+        // Find the next Saturday — deterministic regardless of when the test runs.
+        var saturday = DateTime.Today.AddDays(((int)DayOfWeek.Saturday - (int)DateTime.Today.DayOfWeek + 7) % 7);
+        var endLocal = saturday.AddHours(11);
+        var fast = new Fast
+        {
+            Id = Guid.NewGuid(),
+            StartUtc = endLocal.AddHours(-16).ToUniversalTime(),
+            EndUtc = endLocal.ToUniversalTime(),
+            GoalHours = 16,
+            EndReason = FastEndReason.Completed,
+        };
+
+        var updates = await sut.OnFastCompletedAsync(fast, new FastingProtocol(), new List<Fast> { fast });
+
+        updates.Should().ContainSingle(u => u.Definition.Key == "weekend_warrior" && u.NewlyCompleted);
+    }
+
+    [Fact]
+    public async Task OnFastCompletedAsync_credits_back_to_back_when_gap_under_24h()
+    {
+        var (sut, store, xp, _) = Build();
+        var today = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc);
+        store.Add(new DailyQuest { Id = 1, LocalDateUtc = today, QuestKey = "back_to_back", Target = 1, XpReward = 55 });
+
+        var previousEnd = DateTime.UtcNow.AddHours(-20); // 20h ago
+        var currentStart = DateTime.UtcNow.AddHours(-16); // 4h gap, well under 24h
+        var previous = new Fast
+        {
+            Id = Guid.NewGuid(),
+            StartUtc = previousEnd.AddHours(-16),
+            EndUtc = previousEnd,
+            GoalHours = 16,
+            EndReason = FastEndReason.Completed,
+        };
+        var current = new Fast
+        {
+            Id = Guid.NewGuid(),
+            StartUtc = currentStart,
+            EndUtc = DateTime.UtcNow,
+            GoalHours = 16,
+            EndReason = FastEndReason.Completed,
+        };
+
+        var updates = await sut.OnFastCompletedAsync(current, new FastingProtocol(), new List<Fast> { previous, current });
+
+        updates.Should().ContainSingle(u => u.Definition.Key == "back_to_back" && u.NewlyCompleted);
+    }
+
+    [Fact]
+    public async Task OnFastCompletedAsync_back_to_back_does_not_credit_if_no_prior_fast()
+    {
+        var (sut, store, _, _) = Build();
+        var today = DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc);
+        store.Add(new DailyQuest { Id = 1, LocalDateUtc = today, QuestKey = "back_to_back", Target = 1, XpReward = 55 });
+
+        var fast = new Fast { Id = Guid.NewGuid(), StartUtc = DateTime.UtcNow.AddHours(-16), EndUtc = DateTime.UtcNow, GoalHours = 16, EndReason = FastEndReason.Completed };
+        var updates = await sut.OnFastCompletedAsync(fast, new FastingProtocol(), new List<Fast> { fast });
+        updates.Should().BeEmpty();
+    }
+
+    [Fact]
     public async Task Already_claimed_quest_is_not_credited_again()
     {
         var (sut, store, xp, _) = Build();
